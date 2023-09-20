@@ -1,16 +1,15 @@
-# traveler
+# Traveller
 
-A new Flutter project.
+> Mikas Pupeikis 2024
 
-## Getting Started
+Development of Mobile Application for Travel Route Planning
 
-This project is a starting point for a Flutter application.
+View Project [Repository](https://git.mif.vu.lt/mipu7431/traveler)
+View Project [Report](https://www.overleaf.com/read/hppnxrpdywbv)
 
-A few resources to get you started if this is your first Flutter project:
+The following are steps to start the project's development servers.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Launching the App
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Install dependencies `flutter pub get`
+- Start a development server `flutter run`

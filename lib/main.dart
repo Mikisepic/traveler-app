@@ -1,5 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:traveler/screens/screens.dart';
+
+final _router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: '/map',
+      builder: (context, state) => const MapScreen(),
+    ),
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: '/trips',
+      builder: (context, state) => const TripsScreen(),
+    ),
+  ],
+);
 
 void main() {
   runApp(const TravelerApp());
@@ -10,34 +32,13 @@ class TravelerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Traveller',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          appBar: AppBar(
-            bottom: const TabBar(
-              tabs: [
-                Tab(icon: Icon(Icons.directions_car)),
-                Tab(icon: Icon(Icons.directions_transit)),
-                Tab(icon: Icon(Icons.directions_bike)),
-              ],
-            ),
-            title: const Text('Traveller'),
-          ),
-          body: const TabBarView(
-            children: [
-              ProfileScreen(),
-              MapScreen(),
-              TripsScreen(),
-            ],
-          ),
-        ),
-      ),
+      routerConfig: _router,
     );
   }
 }

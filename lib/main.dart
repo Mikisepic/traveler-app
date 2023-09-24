@@ -31,9 +31,9 @@ class TravelerApp extends StatelessWidget {
           ),
           body: const TabBarView(
             children: [
-              ProfilePage(),
-              MapPage(),
-              TripPage(),
+              ProfileScreen(),
+              MapScreen(),
+              TripsScreen(),
             ],
           ),
         ),

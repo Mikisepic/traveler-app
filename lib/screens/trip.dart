@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class TripPage extends StatefulWidget {
-  const TripPage({super.key});
+class TripsScreen extends StatefulWidget {
+  const TripsScreen({super.key});
 
   @override
-  State<TripPage> createState() => _TripPageState();
+  State<TripsScreen> createState() => _TripsScreenState();
 }
 
-class _TripPageState extends State<TripPage> {
+class _TripsScreenState extends State<TripsScreen> {
   @override
   Widget build(BuildContext context) {
     return const Placeholder();

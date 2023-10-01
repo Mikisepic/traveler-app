@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:traveler/screens/wrap.dart';
 
 class TripsScreen extends StatefulWidget {
   const TripsScreen({super.key, this.id = ''});
@@ -12,6 +13,6 @@ class TripsScreen extends StatefulWidget {
 class _TripsScreenState extends State<TripsScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Text('Trips');
+    return const WrapScaffold(label: 'Trips', body: Text('Trips'));
   }
 }

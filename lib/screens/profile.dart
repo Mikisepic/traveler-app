@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:traveler/screens/wrap.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -18,10 +19,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
-      ),
+    return WrapScaffold(
+      label: 'Profile',
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

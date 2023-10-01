@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:traveler/screens/wrap.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -10,6 +11,6 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Text('Map');
+    return const WrapScaffold(label: 'Map', body: Text('Map'));
   }
 }

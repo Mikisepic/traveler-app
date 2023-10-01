@@ -2,51 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:traveler/screens/screens.dart';
 
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
-
-final _router = GoRouter(
-  initialLocation: '/',
-  debugLogDiagnostics: true,
-  navigatorKey: _rootNavigatorKey,
-  routes: [
-    GoRoute(
-      name: 'home',
-      path: '/',
-      builder: (context, state) => const HomeScreen(),
-    ),
-    ShellRoute(
-      navigatorKey: _shellNavigatorKey,
-      routes: [
-        GoRoute(
-          name: 'map',
-          path: '/map',
-          builder: (context, state) => const MapScreen(),
-        ),
-        GoRoute(
-          name: 'profile',
-          path: '/profile',
-          builder: (context, state) => const ProfileScreen(),
-        ),
-        GoRoute(
-          name: 'trips',
-          path: '/trips',
-          builder: (context, state) => const TripsScreen(),
-        ),
-        GoRoute(
-          name: 'trip',
-          path: '/trips/:tripId',
-          builder: (context, state) =>
-              TripsScreen(id: state.pathParameters['tripId']),
-        ),
-      ],
-      builder: (BuildContext context, GoRouterState state, Widget child) {
-        return const HomeScreen();
-      },
-    )
-  ],
-);
-
 void main() {
   runApp(const TravelerApp());
 }
@@ -66,3 +21,55 @@ class TravelerApp extends StatelessWidget {
     );
   }
 }
+
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _shellNavigatorKeyTrips = GlobalKey<NavigatorState>();
+final _shellNavigatorKeyMap = GlobalKey<NavigatorState>();
+final _shellNavigatorKeyProfile = GlobalKey<NavigatorState>();
+
+final _router = GoRouter(
+  initialLocation: '/map',
+  debugLogDiagnostics: true,
+  navigatorKey: _rootNavigatorKey,
+  routes: [
+    StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return HomeScreen(
+            navigationShell: navigationShell,
+          );
+        },
+        branches: [
+          StatefulShellBranch(navigatorKey: _shellNavigatorKeyTrips, routes: [
+            GoRoute(
+                path: '/trips',
+                pageBuilder: (context, state) =>
+                    const NoTransitionPage(child: TripsScreen()),
+                routes: [
+                  GoRoute(
+                    name: 'trip',
+                    path: 'trips/:tripId',
+                    builder: (context, state) =>
+                        TripsScreen(id: state.pathParameters['tripId']),
+                  ),
+                ]),
+          ]),
+          StatefulShellBranch(
+            navigatorKey: _shellNavigatorKeyMap,
+            routes: [
+              GoRoute(
+                path: '/map',
+                pageBuilder: (context, state) =>
+                    const NoTransitionPage(child: MapScreen()),
+              ),
+            ],
+          ),
+          StatefulShellBranch(navigatorKey: _shellNavigatorKeyProfile, routes: [
+            GoRoute(
+              path: '/profile',
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: ProfileScreen()),
+            ),
+          ]),
+        ]),
+  ],
+);

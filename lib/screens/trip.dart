@@ -13,6 +13,26 @@ class TripsScreen extends StatefulWidget {
 class _TripsScreenState extends State<TripsScreen> {
   @override
   Widget build(BuildContext context) {
-    return const WrapScaffold(label: 'Trips', body: Text('Trips'));
+    return WrapScaffold(
+        label: 'Trips',
+        body: LayoutBuilder(builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: List.generate(
+                    10,
+                    (index) => Card(
+                          child: SizedBox(
+                            height: 100,
+                            child: Center(child: Text('Item $index')),
+                          ),
+                        )),
+              ),
+            ),
+          );
+        }));
   }
 }

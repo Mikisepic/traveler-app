@@ -55,14 +55,16 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: body,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: selectedIndex,
-        destinations: const [
-          NavigationDestination(label: 'Trips', icon: Icon(Icons.directions)),
-          NavigationDestination(label: 'Map', icon: Icon(Icons.map)),
-          NavigationDestination(label: 'Profile', icon: Icon(Icons.person)),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: selectedIndex,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        items: const [
+          BottomNavigationBarItem(label: 'Trips', icon: Icon(Icons.directions)),
+          BottomNavigationBarItem(label: 'Map', icon: Icon(Icons.map)),
+          BottomNavigationBarItem(label: 'Profile', icon: Icon(Icons.person)),
         ],
-        onDestinationSelected: onDestinationSelected,
+        onTap: onDestinationSelected,
       ),
     );
   }
@@ -87,7 +89,7 @@ class ScaffoldWithNavigationRail extends StatelessWidget {
           NavigationRail(
             selectedIndex: selectedIndex,
             onDestinationSelected: onDestinationSelected,
-            labelType: NavigationRailLabelType.all,
+            labelType: NavigationRailLabelType.none,
             destinations: const <NavigationRailDestination>[
               NavigationRailDestination(
                   label: Text('Trips'), icon: Icon(Icons.directions)),

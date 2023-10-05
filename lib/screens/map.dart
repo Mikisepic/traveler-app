@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:traveler/screens/wrap.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -11,6 +12,8 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
-    return const WrapScaffold(label: 'Map', body: Text('Map'));
+    return MapWidget(
+        resourceOptions: ResourceOptions(
+            accessToken: dotenv.env['MAPBOX_ACCESS_TOKEN'] as String));
   }
 }

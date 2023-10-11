@@ -51,7 +51,7 @@ final _router = GoRouter(
                     name: 'trip',
                     path: 'trips/:tripId',
                     builder: (context, state) =>
-                        TripsScreen(id: state.pathParameters['tripId']),
+                        TripDetailsScreen(id: state.pathParameters['tripId']!),
                   ),
                 ]),
           ]),

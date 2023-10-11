@@ -16,8 +16,9 @@ class TravelerApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Traveller',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        cardColor: Colors.orangeAccent,
       ),
       routerConfig: _router,
     );
@@ -68,8 +69,16 @@ final _router = GoRouter(
           StatefulShellBranch(navigatorKey: _shellNavigatorKeyProfile, routes: [
             GoRoute(
               path: '/profile',
-              pageBuilder: (context, state) =>
-                  const NoTransitionPage(child: ProfileScreen()),
+              pageBuilder: (context, state) => const NoTransitionPage(
+                  child: ProfileScreen(
+                firstName: 'John',
+                lastName: 'Doe',
+                email: 'john.doe@example.com',
+                trips: ['Trip 1', 'Trip 2'],
+                addedLocations: ['Location A', 'Location B'],
+                about:
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+              )),
             ),
           ]),
         ]),

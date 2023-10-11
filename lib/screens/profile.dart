@@ -9,14 +9,15 @@ class ProfileScreen extends StatefulWidget {
   final List<String> addedLocations;
   final String about;
 
-  const ProfileScreen(
-      {super.key,
-      required this.firstName,
-      required this.lastName,
-      required this.email,
-      required this.trips,
-      required this.addedLocations,
-      required this.about});
+  const ProfileScreen({
+    super.key,
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    required this.trips,
+    required this.addedLocations,
+    required this.about,
+  });
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -45,7 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             _buildRow([
               _buildCard(
@@ -63,15 +64,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ]),
             const SizedBox(height: 20.0),
             _buildRow([
-              _buildTripCard(widget.trips),
-              _buildAddedLocationsCard(widget.addedLocations),
+              _buildCard(
+                title: 'Trips',
+                items: widget.trips,
+              ),
+              _buildCard(
+                  title: 'Added Locations', items: widget.addedLocations),
             ]),
             const SizedBox(height: 20.0),
             _buildRow([
               _buildCard(
                 title: 'About',
                 content: widget.about,
-              )
+              ),
             ]),
           ],
         ),
@@ -93,7 +98,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildCard({
     required String title,
-    required String content,
+    List<String>? items,
+    String? content,
   }) {
     return Expanded(
       child: Card(
@@ -111,90 +117,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 5.0),
-              Text(
-                content,
-                style: const TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTripCard(List<String> trips) {
-    return Expanded(
-      child: Card(
-        color: Theme.of(context).cardColor,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Trips',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: trips
-                    .map(
-                      (trip) => Text(
-                        trip,
-                        style: const TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.white,
+              if (items != null)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: items
+                      .map(
+                        (item) => Text(
+                          item,
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                    )
-                    .toList(),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAddedLocationsCard(List<String> addedLocations) {
-    return Expanded(
-      child: Card(
-        color: Theme.of(context).cardColor,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Added Locations',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                      )
+                      .toList(),
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: addedLocations
-                    .map(
-                      (location) => Text(
-                        location,
-                        style: const TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.white,
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ),
+              if (content != null)
+                Text(
+                  content,
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.white,
+                  ),
+                ),
             ],
           ),
         ),

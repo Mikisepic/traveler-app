@@ -25,6 +25,7 @@ class _TripsScreenState extends State<TripsScreen> {
                   10,
                   (index) => Card(
                         margin: const EdgeInsets.all(10.0),
+                        color: Theme.of(context).cardColor,
                         child: ListTile(
                           contentPadding: const EdgeInsets.all(16.0),
                           title: Text(

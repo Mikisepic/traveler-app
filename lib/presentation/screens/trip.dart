@@ -23,24 +23,24 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Trip Title:',
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 5.0),
             Text(
               tripTitle,
-              style: const TextStyle(fontSize: 18.0),
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 20.0),
-            const Text(
+            Text(
               'Trip Date:',
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 5.0),
             Text(
               tripDate,
-              style: const TextStyle(fontSize: 18.0),
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 20.0),
           ],

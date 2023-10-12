@@ -30,14 +30,11 @@ class _TripsScreenState extends State<TripsScreen> {
                           contentPadding: const EdgeInsets.all(16.0),
                           title: Text(
                             'Item $index',
-                            style: const TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context).textTheme.titleLarge,
                           ),
                           subtitle: Text(
                             DateTime.now().toUtc().toString(),
-                            style: const TextStyle(fontSize: 16.0),
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           onTap: () => context.goNamed('trip',
                               pathParameters: {'tripId': index.toString()}),

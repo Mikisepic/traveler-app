@@ -16,11 +16,7 @@ Widget buildCard({
           children: [
             Text(
               title,
-              style: const TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             if (items != null)
               Column(
@@ -29,10 +25,7 @@ Widget buildCard({
                     .map(
                       (item) => Text(
                         item,
-                        style: const TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.white,
-                        ),
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     )
                     .toList(),
@@ -40,10 +33,7 @@ Widget buildCard({
             if (content != null)
               Text(
                 content,
-                style: const TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.white,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
           ],
         ),

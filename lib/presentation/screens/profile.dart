@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:traveler/screens/wrap.dart';
+import 'package:traveler/presentation/widgets/widgets.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String firstName;
@@ -49,31 +49,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
               style: Theme.of(context).textTheme.titleLarge,
             ),
             _buildRow([
-              _buildCard(
+              buildCard(
+                context: context,
                 title: 'First Name',
                 content: widget.firstName,
               ),
-              _buildCard(
+              buildCard(
+                context: context,
                 title: 'Last Name',
                 content: widget.lastName,
               ),
-              _buildCard(
+              buildCard(
+                context: context,
                 title: 'Email',
                 content: widget.email,
               ),
             ]),
             const SizedBox(height: 20.0),
             _buildRow([
-              _buildCard(
+              buildCard(
+                context: context,
                 title: 'Trips',
                 items: widget.trips,
               ),
-              _buildCard(
-                  title: 'Added Locations', items: widget.addedLocations),
+              buildCard(
+                  context: context,
+                  title: 'Added Locations',
+                  items: widget.addedLocations),
             ]),
             const SizedBox(height: 20.0),
             _buildRow([
-              _buildCard(
+              buildCard(
+                context: context,
                 title: 'About',
                 content: widget.about,
               ),
@@ -93,57 +100,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: children,
-    );
-  }
-
-  Widget _buildCard({
-    required String title,
-    List<String>? items,
-    String? content,
-  }) {
-    return Expanded(
-      child: Card(
-        color: Theme.of(context).cardColor,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              if (items != null)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: items
-                      .map(
-                        (item) => Text(
-                          item,
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                            color: Colors.white,
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
-              if (content != null)
-                Text(
-                  content,
-                  style: const TextStyle(
-                    fontSize: 18.0,
-                    color: Colors.white,
-                  ),
-                ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

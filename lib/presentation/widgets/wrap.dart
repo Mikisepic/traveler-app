@@ -19,7 +19,7 @@ class WrapScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
-        title: Text('Tab root - $label'),
+        title: Text(label),
       ),
       body: body,
       floatingActionButton: floatingActionButton,

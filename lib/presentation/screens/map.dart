@@ -10,9 +10,21 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  MapboxMap? mapboxMap;
+
+  _onMapCreated(MapboxMap mapboxMap) {
+    this.mapboxMap = mapboxMap;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MapWidget(
-        resourceOptions: ResourceOptions(accessToken: accessToken));
+      key: const ValueKey('mapWidget'),
+      resourceOptions: ResourceOptions(accessToken: accessToken),
+      onMapCreated: _onMapCreated,
+      cameraOptions: CameraOptions(
+          center: Point(coordinates: Position(-80.1263, 25.7845)).toJson(),
+          zoom: 12.0),
+    );
   }
 }

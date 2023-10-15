@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:traveler/common/constants.dart';
+import 'package:traveler/presentation/widgets/wrap.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -18,13 +19,15 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MapWidget(
-      key: const ValueKey('mapWidget'),
-      resourceOptions: ResourceOptions(accessToken: accessToken),
-      onMapCreated: _onMapCreated,
-      cameraOptions: CameraOptions(
-          center: Point(coordinates: Position(-80.1263, 25.7845)).toJson(),
-          zoom: 12.0),
-    );
+    return WrapScaffold(
+        label: 'Map',
+        body: MapWidget(
+          key: const ValueKey('mapWidget'),
+          resourceOptions: ResourceOptions(accessToken: accessToken),
+          onMapCreated: _onMapCreated,
+          cameraOptions: CameraOptions(
+              center: Point(coordinates: Position(-80.1263, 25.7845)).toJson(),
+              zoom: 12.0),
+        ));
   }
 }

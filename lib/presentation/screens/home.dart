@@ -22,19 +22,24 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth < 450) {
-        return ScaffoldWithNavigationBar(
-          body: navigationShell,
-          selectedIndex: navigationShell.currentIndex,
-          onDestinationSelected: _goBranch,
-        );
-      } else {
-        return ScaffoldWithNavigationRail(
-          body: navigationShell,
-          selectedIndex: navigationShell.currentIndex,
-          onDestinationSelected: _goBranch,
-        );
-      }
+      return ScaffoldWithNavigationBar(
+        body: navigationShell,
+        selectedIndex: navigationShell.currentIndex,
+        onDestinationSelected: _goBranch,
+      );
+      // if (constraints.maxWidth < 450) {
+      //   return ScaffoldWithNavigationBar(
+      //     body: navigationShell,
+      //     selectedIndex: navigationShell.currentIndex,
+      //     onDestinationSelected: _goBranch,
+      //   );
+      // } else {
+      //   return ScaffoldWithNavigationRail(
+      //     body: navigationShell,
+      //     selectedIndex: navigationShell.currentIndex,
+      //     onDestinationSelected: _goBranch,
+      //   );
+      // }
     });
   }
 }

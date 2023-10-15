@@ -2,26 +2,25 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 
-import 'location.dart';
+import 'marker.dart';
 
 class Trip extends ChangeNotifier {
-  final List<Location> _locations = [];
+  final List<Marker> _markers = [];
 
-  UnmodifiableListView<Location> get locations =>
-      UnmodifiableListView(_locations);
+  UnmodifiableListView<Marker> get locations => UnmodifiableListView(_markers);
 
-  void add(Location location) {
-    _locations.add(location);
+  void add(Marker location) {
+    _markers.add(location);
     notifyListeners();
   }
 
   void removeOne(String id) {
-    _locations.removeWhere((loc) => loc.id == id);
+    _markers.removeWhere((loc) => loc.id == id);
     notifyListeners();
   }
 
   void removeAll() {
-    _locations.clear();
+    _markers.clear();
     notifyListeners();
   }
 }

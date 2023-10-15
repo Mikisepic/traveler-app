@@ -1,4 +1,4 @@
-import 'location.dart';
+import 'marker.dart';
 import 'trip.dart';
 
 class User {
@@ -6,7 +6,7 @@ class User {
   final String lastName;
   final String email;
   final List<Trip> trips;
-  final List<Location> locations;
+  final List<Marker> markers;
   final String about;
 
   User(
@@ -14,6 +14,6 @@ class User {
       required this.lastName,
       required this.email,
       required this.trips,
-      required this.locations,
+      required this.markers,
       required this.about});
 }

@@ -27,6 +27,10 @@ final router = GoRouter(
                     const NoTransitionPage(child: TripsScreen()),
                 routes: [
                   GoRoute(
+                      name: 'new_trip',
+                      path: 'trips/new',
+                      builder: (context, state) => const NewTripScreen()),
+                  GoRoute(
                     name: 'trip',
                     path: 'trips/:tripId',
                     builder: (context, state) =>

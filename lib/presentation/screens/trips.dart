@@ -14,38 +14,40 @@ class _TripsScreenState extends State<TripsScreen> {
   Widget build(BuildContext context) {
     return WrapScaffold(
       label: 'Trips',
-      body: LayoutBuilder(builder: (context, constraints) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: constraints.maxHeight),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: List.generate(
-                  10,
-                  (index) => Card(
-                        margin: const EdgeInsets.all(10.0),
-                        color: Theme.of(context).cardColor,
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.all(16.0),
-                          title: Text(
-                            'Item $index',
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                          subtitle: Text(
-                            DateTime.now().toUtc().toString(),
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                          onTap: () => context.goNamed('trip',
-                              pathParameters: {'tripId': index.toString()}),
-                        ),
-                      )),
-            ),
-          ),
-        );
-      }),
+      body: Padding(
+          padding: const EdgeInsets.all(40.0),
+          child: LayoutBuilder(builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: List.generate(
+                      10,
+                      (index) => Card(
+                            margin: const EdgeInsets.all(10.0),
+                            color: Theme.of(context).cardColor,
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.all(16.0),
+                              title: Text(
+                                'Item $index',
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
+                              subtitle: Text(
+                                DateTime.now().toUtc().toString(),
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              onTap: () => context.goNamed('trip',
+                                  pathParameters: {'tripId': index.toString()}),
+                            ),
+                          )),
+                ),
+              ),
+            );
+          })),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
+        onPressed: () => context.goNamed('new_trip'),
         child: const Icon(Icons.add),
       ),
     );

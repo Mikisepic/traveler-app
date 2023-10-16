@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 // import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -50,11 +52,15 @@ class _MapScreenState extends State<MapScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          final random = Random();
+          final randomLatitude = 40 + random.nextDouble() * 10;
+          final randomLongitude = -90 + random.nextDouble() * 20;
+
           markerProvider.addMarker(
             Marker(
               id: const Uuid().v4(),
-              latitude: 12.34,
-              longitude: 56.78,
+              latitude: randomLatitude,
+              longitude: randomLongitude,
             ),
           );
         },

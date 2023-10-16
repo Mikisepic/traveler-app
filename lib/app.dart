@@ -9,8 +9,14 @@ class TravelerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => MarkerProvider(),
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => MarkerProvider(),
+          ),
+          ChangeNotifierProvider(create: (context) => TripProvider()),
+          ChangeNotifierProvider(create: (context) => UserProvider())
+        ],
         child: MaterialApp.router(
           title: 'Traveller',
           theme: theme,

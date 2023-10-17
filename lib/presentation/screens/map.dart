@@ -1,8 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-// import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:traveler/common/constants.dart';
 import 'package:traveler/models/marker.dart';
 import 'package:traveler/presentation/widgets/wrap.dart';
 import 'package:uuid/uuid.dart';
@@ -15,11 +16,12 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  // MapboxMap? mapboxMap;
+  MapboxMap? mapboxMap;
+  var random = Random();
 
-  // _onMapCreated(MapboxMap mapboxMap) {
-  //   this.mapboxMap = mapboxMap;
-  // }
+  _onMapCreated(MapboxMap mapboxMap) {
+    mapboxMap = mapboxMap;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,28 +29,40 @@ class _MapScreenState extends State<MapScreen> {
 
     return WrapScaffold(
       label: 'Map',
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: markerProvider.markers.length,
-              itemBuilder: (context, index) {
-                final marker = markerProvider.markers[index];
-                return ListTile(
-                  title: Text('Marker ${marker.id}'),
-                  subtitle: Text(
-                      'Latitude: ${marker.latitude}, Longitude: ${marker.longitude}'),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () {
-                      markerProvider.removeMarker(marker.id);
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
+      // body: Column(
+      //   children: [
+      //     Expanded(
+      //       child: ListView.builder(
+      //         itemCount: markerProvider.markers.length,
+      //         itemBuilder: (context, index) {
+      //           final marker = markerProvider.markers[index];
+      //           return ListTile(
+      //             title: Text('Marker ${marker.id}'),
+      //             subtitle: Text(
+      //                 'Latitude: ${marker.latitude}, Longitude: ${marker.longitude}'),
+      //             trailing: IconButton(
+      //               icon: const Icon(Icons.delete),
+      //               onPressed: () {
+      //                 markerProvider.removeMarker(marker.id);
+      //               },
+      //             ),
+      //           );
+      //         },
+      //       ),
+      //     ),
+      //   ],
+      // ),
+      body: MapWidget(
+        key: const ValueKey('mapWidget'),
+        resourceOptions: ResourceOptions(accessToken: accessToken),
+        onMapCreated: _onMapCreated,
+        cameraOptions: CameraOptions(
+            center: Point(
+                coordinates: Position(
+              25.2797,
+              54.6872,
+            )).toJson(),
+            zoom: 1.0),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -66,14 +80,6 @@ class _MapScreenState extends State<MapScreen> {
         },
         child: const Icon(Icons.add),
       ),
-      // body: MapWidget(
-      //   key: const ValueKey('mapWidget'),
-      //   resourceOptions: ResourceOptions(accessToken: accessToken),
-      //   onMapCreated: _onMapCreated,
-      //   cameraOptions: CameraOptions(
-      //       center: Point(coordinates: Position(-80.1263, 25.7845)).toJson(),
-      //       zoom: 12.0),
-      // )
     );
   }
 }

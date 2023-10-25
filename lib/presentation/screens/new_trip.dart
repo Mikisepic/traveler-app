@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:traveler/models/trip.dart';
 import 'package:traveler/presentation/widgets/widgets.dart';
+import 'package:uuid/uuid.dart';
 
 class NewTripScreen extends StatefulWidget {
   const NewTripScreen({super.key});
@@ -60,7 +63,11 @@ class _NewTripScreenState extends State<NewTripScreen> {
                         if (_formKey.currentState!.validate()) {
                           final titleValue = titleController.text;
                           final descriptionValue = descriptionController.text;
-                          print('$titleValue, $descriptionValue');
+                          context.read<TripProvider>().addTrip(Trip(
+                              id: const Uuid().v4(),
+                              title: titleValue,
+                              description: descriptionValue,
+                              markers: []));
                         }
                       },
                       child: const Text('Submit'),

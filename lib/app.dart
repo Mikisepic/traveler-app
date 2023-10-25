@@ -11,11 +11,9 @@ class TravelerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(
-            create: (context) => MarkerProvider(),
-          ),
-          ChangeNotifierProvider(create: (context) => TripProvider()),
-          ChangeNotifierProvider(create: (context) => UserProvider())
+          ChangeNotifierProvider(create: (_) => MarkerProvider()),
+          ChangeNotifierProvider(create: (_) => TripProvider()),
+          ChangeNotifierProvider(create: (_) => UserProvider())
         ],
         child: MaterialApp.router(
           title: 'Traveller',

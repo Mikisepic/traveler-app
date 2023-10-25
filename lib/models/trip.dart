@@ -38,5 +38,6 @@ class TripProvider extends ChangeNotifier {
       _trips[tripIndex] = Trip(
           id: id, title: title, description: description, markers: markers);
     }
+    notifyListeners();
   }
 }

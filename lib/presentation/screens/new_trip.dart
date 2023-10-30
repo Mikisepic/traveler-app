@@ -15,6 +15,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool isPrivate = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,8 @@ class _NewTripScreenState extends State<NewTripScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                     child: TextFormField(
                       controller: titleController,
                       autofocus: true,
@@ -45,7 +47,20 @@ class _NewTripScreenState extends State<NewTripScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 16),
+                      child: Switch(
+                        value: isPrivate,
+                        activeColor: Colors.red,
+                        onChanged: (bool value) {
+                          setState(() {
+                            isPrivate = value;
+                          });
+                        },
+                      )),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                     child: TextFormField(
                       controller: descriptionController,
                       decoration: const InputDecoration(

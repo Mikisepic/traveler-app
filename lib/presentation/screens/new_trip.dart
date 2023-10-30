@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:traveler/models/trip.dart';
+import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/widgets/widgets.dart';
 import 'package:uuid/uuid.dart';
 
@@ -53,6 +53,10 @@ class _NewTripScreenState extends State<NewTripScreen> {
                         labelText: 'Description',
                       ),
                     ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    child: PlaceDropwdown(),
                   ),
                   Padding(
                     padding:

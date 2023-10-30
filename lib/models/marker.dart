@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 class Marker {
   final String id;
+  final String title;
   final double latitude;
   final double longitude;
 
   Marker({
     required this.id,
+    required this.title,
     required this.latitude,
     required this.longitude,
   });
@@ -27,11 +29,13 @@ class MarkerProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void editMarker(String id, double newLatitude, double newLongitude) {
+  void editMarker(
+      String id, String title, double newLatitude, double newLongitude) {
     final markerIndex = _markers.indexWhere((marker) => marker.id == id);
     if (markerIndex != -1) {
       _markers[markerIndex] = Marker(
         id: id,
+        title: title,
         latitude: newLatitude,
         longitude: newLongitude,
       );

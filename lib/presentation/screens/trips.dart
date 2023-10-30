@@ -49,48 +49,6 @@ class _TripsScreenState extends State<TripsScreen> {
           )
         ],
       ),
-      // body: Padding(
-      //     padding: const EdgeInsets.all(40.0),
-      //     child: LayoutBuilder(builder: (context, constraints) {
-      //       return SingleChildScrollView(
-      //         child: ConstrainedBox(
-      //           constraints: BoxConstraints(minHeight: constraints.maxHeight),
-      //           child: Column(
-      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //             crossAxisAlignment: CrossAxisAlignment.stretch,
-      //             children: [
-      //               Expanded(
-      //                   child: ListView.builder(
-      //                       itemCount:
-      //                           context.read<TripProvider>().trips.length,
-      //                       itemBuilder: (context, index) {
-      //                         final trip =
-      //                             context.watch<TripProvider>().trips[index];
-      //                         return Card(
-      //                           margin: const EdgeInsets.all(10.0),
-      //                           color: Theme.of(context).cardColor,
-      //                           child: ListTile(
-      //                             contentPadding: const EdgeInsets.all(16.0),
-      //                             title: Text(
-      //                               trip.title,
-      //                               style:
-      //                                   Theme.of(context).textTheme.titleLarge,
-      //                             ),
-      //                             subtitle: Text(
-      //                               trip.description,
-      //                               style:
-      //                                   Theme.of(context).textTheme.bodyMedium,
-      //                             ),
-      //                             onTap: () => context.goNamed('trip',
-      //                                 pathParameters: {'tripId': trip.id}),
-      //                           ),
-      //                         );
-      //                       }))
-      //             ],
-      //           ),
-      //         ),
-      //       );
-      //     })),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.goNamed('new_trip'),
         child: const Icon(Icons.add),

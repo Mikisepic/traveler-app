@@ -73,6 +73,7 @@ class _MapScreenState extends State<MapScreen> {
           context.read<MarkerProvider>().addMarker(
                 Marker(
                   id: const Uuid().v4(),
+                  title: 'Location ${random.nextInt(100)}',
                   latitude: randomLatitude,
                   longitude: randomLongitude,
                 ),

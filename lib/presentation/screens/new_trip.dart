@@ -69,9 +69,13 @@ class _NewTripScreenState extends State<NewTripScreen> {
                       ),
                     ),
                   ),
+                  // const Padding(
+                  //   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  //   child: PlaceDropwdown(),
+                  // ),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: PlaceDropwdown(),
+                    child: Search(),
                   ),
                   Padding(
                     padding:
@@ -85,6 +89,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
                           context.read<TripProvider>().addTrip(Trip(
                               id: const Uuid().v4(),
                               title: titleValue,
+                              isPrivate: isPrivate,
                               description: descriptionValue,
                               markers: []));
                         }

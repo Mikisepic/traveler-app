@@ -5,12 +5,14 @@ import 'marker.dart';
 class Trip {
   final String id;
   final String title;
+  final bool isPrivate;
   final String description;
   final List<Marker> markers;
 
   Trip(
       {required this.id,
       required this.title,
+      this.isPrivate = false,
       required this.description,
       required this.markers});
 }
@@ -30,13 +32,17 @@ class TripProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void editTrip(
-      String id, String title, String description, List<Marker> markers) {
+  void editTrip(String id, String title, String description, bool isPrivate,
+      List<Marker> markers) {
     final tripIndex = _trips.indexWhere((trip) => (trip.id == id));
 
     if (tripIndex != -1) {
       _trips[tripIndex] = Trip(
-          id: id, title: title, description: description, markers: markers);
+          id: id,
+          title: title,
+          description: description,
+          isPrivate: isPrivate | false,
+          markers: markers);
     }
     notifyListeners();
   }

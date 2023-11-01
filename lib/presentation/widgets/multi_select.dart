@@ -17,7 +17,6 @@ class _PlaceDropwdownState extends State<PlaceDropwdown> {
     return DropdownMenu<String>(
       initialSelection: context.read<MarkerProvider>().markers.first.title,
       onSelected: (String? value) {
-        // This is called when the user selects an item.
         setState(() {
           dropdownValue = value!;
         });

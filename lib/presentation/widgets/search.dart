@@ -34,18 +34,17 @@ class _SearchState extends State<Search> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             } else if (snapshot.hasData) {
-              List<String> suggestions = snapshot.data as List<String>;
+              _suggestions = snapshot.data as List<String>;
               return ListView.builder(
                 shrinkWrap: true,
-                itemCount: suggestions.length,
+                itemCount: _suggestions.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(suggestions[index]),
+                    title: Text(_suggestions[index]),
                     onTap: () {
-                      // Handle user selection from suggestions
-                      _textEditingController.text = suggestions[index];
+                      _textEditingController.text = _suggestions[index];
                       setState(() {
-                        // Clear the suggestions
+                        _suggestions.clear();
                       });
                     },
                   );

@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:traveler/models/models.dart';
+import 'package:traveler/services/services.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -14,21 +12,7 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   final TextEditingController _textEditingController = TextEditingController();
   List<Marker> _suggestions = [];
-
-  Future<List<Marker>> fetchSuggestions(String query) async {
-    final response = await http
-        .get((Uri.parse('https://jsonplaceholder.typicode.com/albums/')));
-
-    if (response.statusCode == 200) {
-      List<dynamic> body = jsonDecode(response.body);
-      List<Marker> markers =
-          body.map((dynamic item) => Marker.fromJson(item)).toList();
-
-      return markers;
-    }
-
-    throw "Unable to retrieve posts.";
-  }
+  final MarkerService markerService = MarkerService();
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +21,12 @@ class _SearchState extends State<Search> {
         TextField(
           controller: _textEditingController,
           onChanged: (query) async {
-            _suggestions = await fetchSuggestions(query);
+            _suggestions = await markerService
+                .fetchSuggestions(_textEditingController.text);
           },
         ),
         FutureBuilder(
-          future: fetchSuggestions(_textEditingController.text),
+          future: markerService.fetchSuggestions(_textEditingController.text),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();

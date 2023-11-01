@@ -12,6 +12,14 @@ class Marker {
     required this.latitude,
     required this.longitude,
   });
+
+  factory Marker.fromJson(Map<String, dynamic> json) {
+    return Marker(
+        id: json['id'] as String,
+        title: json['title'] as String,
+        latitude: json['latitude'] as double,
+        longitude: json['longitude'] as double);
+  }
 }
 
 class MarkerProvider with ChangeNotifier {

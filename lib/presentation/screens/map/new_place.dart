@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/widgets/widgets.dart';
+import 'package:traveler/providers/providers.dart';
 
 class NewPlaceScreen extends StatefulWidget {
   const NewPlaceScreen({super.key});

@@ -59,6 +59,7 @@ final router = GoRouter(
           ),
           StatefulShellBranch(navigatorKey: _shellNavigatorKeyProfile, routes: [
             GoRoute(
+              name: 'profile',
               path: '/profile',
               pageBuilder: (context, state) => const NoTransitionPage(
                   child: ProfileScreen(

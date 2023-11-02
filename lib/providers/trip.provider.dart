@@ -1,21 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'marker.dart';
-
-class Trip {
-  final String id;
-  final String title;
-  final bool isPrivate;
-  final String description;
-  final List<Marker> markers;
-
-  Trip(
-      {required this.id,
-      required this.title,
-      this.isPrivate = false,
-      required this.description,
-      required this.markers});
-}
+import 'package:traveler/models/models.dart';
 
 class TripProvider extends ChangeNotifier {
   final List<Trip> _trips = [];

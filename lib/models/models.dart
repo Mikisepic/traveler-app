@@ -1,3 +1,3 @@
-export 'marker.dart';
-export 'trip.dart';
-export 'user.dart';
+export 'marker.model.dart';
+export 'trip.model.dart';
+export 'user.model.dart';

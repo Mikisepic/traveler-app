@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:traveler/common/common.dart';
-import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/presentation.dart';
+import 'package:traveler/providers/providers.dart';
 
 class TravelerApp extends StatelessWidget {
   const TravelerApp({super.key});

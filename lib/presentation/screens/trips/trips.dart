@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:traveler/models/trip.dart';
 import 'package:traveler/presentation/widgets/wrap.dart';
+import 'package:traveler/providers/providers.dart';
 
 class TripsScreen extends StatefulWidget {
   const TripsScreen({super.key});

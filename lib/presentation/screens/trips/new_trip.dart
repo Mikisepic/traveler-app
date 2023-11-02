@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/widgets/widgets.dart';
+import 'package:traveler/providers/providers.dart';
 import 'package:uuid/uuid.dart';
 
 class NewTripScreen extends StatefulWidget {
@@ -87,6 +89,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
                               isPrivate: isPrivate,
                               description: descriptionValue,
                               markers: []));
+                          context.goNamed('trip_list');
                         }
                       },
                       child: const Text('Submit'),

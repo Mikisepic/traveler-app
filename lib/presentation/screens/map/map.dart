@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:traveler/models/marker.dart';
 import 'package:traveler/presentation/widgets/wrap.dart';
+import 'package:traveler/providers/providers.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});

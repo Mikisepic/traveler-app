@@ -15,16 +15,18 @@ class MarkerService {
   Future<List<MarkerSuggestion>> fetchSuggestions(String query) async {
     final url = Uri.parse(
         '$suggestURI?q=$query&access_token=$mapboxAccessToken&session_token=$sessionToken');
-    final response = await get(url);
+    final Response response = await get(url);
     if (response.statusCode == 200) {
-      Map<String, dynamic> body = jsonDecode(response.body);
+      Map<String, dynamic> body =
+          jsonDecode(response.body) as Map<String, dynamic>;
 
       MapboxMarkerSuggestion maboxMarkerSuggestions =
           MapboxMarkerSuggestion.fromJson(body);
 
       List<MarkerSuggestion> markerSuggestions = maboxMarkerSuggestions
           .suggestions
-          .map((item) => MarkerSuggestion.fromJson(item))
+          .map(
+              (item) => MarkerSuggestion.fromJson(item as Map<String, dynamic>))
           .toList();
 
       return markerSuggestions;

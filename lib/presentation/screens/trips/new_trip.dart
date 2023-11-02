@@ -73,16 +73,11 @@ class _NewTripScreenState extends State<NewTripScreen> {
                   //   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   //   child: PlaceDropwdown(),
                   // ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: Search(),
-                  ),
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                     child: ElevatedButton(
                       onPressed: () {
-                        // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
                           final titleValue = titleController.text;
                           final descriptionValue = descriptionController.text;

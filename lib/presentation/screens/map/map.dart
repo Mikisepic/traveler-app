@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:traveler/models/marker.dart';
 import 'package:traveler/presentation/widgets/wrap.dart';
-import 'package:uuid/uuid.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -66,19 +66,7 @@ class _MapScreenState extends State<MapScreen> {
       //       zoom: 1.0),
       // ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          final random = Random();
-          final randomLatitude = 40 + random.nextDouble() * 10;
-          final randomLongitude = -90 + random.nextDouble() * 20;
-          context.read<MarkerProvider>().addMarker(
-                Marker(
-                  id: const Uuid().v4(),
-                  title: 'Location ${random.nextInt(100)}',
-                  latitude: randomLatitude,
-                  longitude: randomLongitude,
-                ),
-              );
-        },
+        onPressed: () => context.goNamed('new_place'),
         child: const Icon(Icons.add),
       ),
     );

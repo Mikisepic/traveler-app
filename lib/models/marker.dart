@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class Marker {
   final String id;
@@ -27,8 +28,12 @@ class MarkerProvider with ChangeNotifier {
 
   List<Marker> get markers => _markers;
 
-  void addMarker(Marker marker) {
-    _markers.add(marker);
+  void addMarker(String title, double latitude, double longitude) {
+    _markers.add(Marker(
+        id: const Uuid().v4(),
+        title: title,
+        latitude: latitude,
+        longitude: longitude));
     notifyListeners();
   }
 

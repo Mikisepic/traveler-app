@@ -1,6 +1,7 @@
 export 'home.dart';
-export 'map.dart';
-export 'new_trip.dart';
+export 'map/map.dart';
+export 'map/new_place.dart';
 export 'profile.dart';
-export 'trip.dart';
-export 'trips.dart';
+export 'trips/new_trip.dart';
+export 'trips/trip.dart';
+export 'trips/trips.dart';

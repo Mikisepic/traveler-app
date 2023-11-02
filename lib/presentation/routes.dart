@@ -9,7 +9,7 @@ final _shellNavigatorKeyMap = GlobalKey<NavigatorState>();
 final _shellNavigatorKeyProfile = GlobalKey<NavigatorState>();
 
 final router = GoRouter(
-  initialLocation: '/map',
+  initialLocation: '/places',
   debugLogDiagnostics: true,
   navigatorKey: _rootNavigatorKey,
   routes: [
@@ -22,6 +22,7 @@ final router = GoRouter(
         branches: [
           StatefulShellBranch(navigatorKey: _shellNavigatorKeyTrips, routes: [
             GoRoute(
+                name: 'trip_list',
                 path: '/trips',
                 pageBuilder: (context, state) =>
                     const NoTransitionPage(child: TripsScreen()),
@@ -42,10 +43,18 @@ final router = GoRouter(
             navigatorKey: _shellNavigatorKeyMap,
             routes: [
               GoRoute(
-                path: '/map',
-                pageBuilder: (context, state) =>
-                    const NoTransitionPage(child: MapScreen()),
-              ),
+                  name: 'place_list',
+                  path: '/places',
+                  pageBuilder: (context, state) =>
+                      const NoTransitionPage(child: MapScreen()),
+                  routes: [
+                    GoRoute(
+                      name: 'new_place',
+                      path: 'places/new',
+                      builder: (context, state) => const NewPlaceScreen(),
+                    )
+                    // GoRoute(name: 'place', path: 'places/:locationId', builder: (context, state) => const PlaceDetailsScreen(),),
+                  ]),
             ],
           ),
           StatefulShellBranch(navigatorKey: _shellNavigatorKeyProfile, routes: [

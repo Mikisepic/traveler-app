@@ -81,7 +81,7 @@ class TestMap extends StatelessWidget {
 }
 
 Image imageSection = Image.asset(
-  'images/lake.jpg',
+  'assets/miami_beach.png',
   width: 600,
   height: 240,
   fit: BoxFit.cover,

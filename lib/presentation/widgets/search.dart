@@ -11,7 +11,7 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   final TextEditingController _textEditingController = TextEditingController();
-  List<Marker> _suggestions = [];
+  List<MarkerSuggestion> _suggestions = [];
   final MarkerService markerService = MarkerService();
 
   @override
@@ -31,15 +31,15 @@ class _SearchState extends State<Search> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             } else if (snapshot.hasData) {
-              _suggestions = snapshot.data as List<Marker>;
+              _suggestions = snapshot.data as List<MarkerSuggestion>;
               return ListView.builder(
                 shrinkWrap: true,
                 itemCount: _suggestions.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(_suggestions[index].title),
+                    title: Text(_suggestions[index].name),
                     onTap: () {
-                      _textEditingController.text = _suggestions[index].title;
+                      _textEditingController.text = _suggestions[index].name;
                       setState(() {
                         _suggestions.clear();
                       });

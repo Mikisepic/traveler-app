@@ -16,6 +16,7 @@ class MarkerService {
     final url = Uri.parse(
         '$suggestURI?q=$query&access_token=$mapboxAccessToken&session_token=$sessionToken');
     final Response response = await get(url);
+
     if (response.statusCode == 200) {
       Map<String, dynamic> body =
           jsonDecode(response.body) as Map<String, dynamic>;
@@ -32,6 +33,27 @@ class MarkerService {
       return markerSuggestions;
     }
 
-    throw "Unable to retrieve posts.";
+    throw "Unable to retrieve suggestions.";
+  }
+
+  Future<Marker> retrieveSuggestionDetails(String id) async {
+    final url = Uri.parse(
+        '$retrieveURI/$id?access_token=$mapboxAccessToken&session_token=$sessionToken');
+    final Response response = await get(url);
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> body =
+          jsonDecode(response.body) as Map<String, dynamic>;
+
+      MapboxMarkerFeatures mapboxMarkerFeatures =
+          MapboxMarkerFeatures.fromJson(body);
+
+      Marker marker = Marker.fromJson(
+          mapboxMarkerFeatures.features[0] as Map<String, dynamic>);
+
+      return marker;
+    }
+
+    throw "Unable to retrieve place.";
   }
 }

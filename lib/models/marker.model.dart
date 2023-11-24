@@ -13,10 +13,10 @@ class Marker {
 
   factory Marker.fromJson(Map<String, dynamic> json) {
     return Marker(
-        id: json['id'] as String,
-        title: json['name'] as String,
-        latitude: json['latitude'] as double,
-        longitude: json['longitude'] as double);
+        id: json['properties']['mapbox_id'] as String,
+        title: json['properties']['name'] as String,
+        latitude: json['properties']['coordinates']['latitude'] as double,
+        longitude: json['properties']['coordinates']['longitude'] as double);
   }
 }
 

@@ -40,6 +40,8 @@ class _SearchState extends State<Search> {
                     title: Text(_suggestions[index].name),
                     onTap: () {
                       _textEditingController.text = _suggestions[index].name;
+                      markerService.retrieveSuggestionDetails(
+                          _suggestions[index].id.toString());
                       setState(() {
                         _suggestions.clear();
                       });

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/screens/map/place.dart';
 import 'package:traveler/presentation/widgets/widgets.dart';
 import 'package:traveler/providers/providers.dart';
@@ -40,11 +41,31 @@ class _MapScreenState extends State<MapScreen> {
                       title: Text(marker.title),
                       subtitle: Text(
                           'Latitude: ${marker.latitude}, Longitude: ${marker.longitude}'),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          provider.removeMarker(marker.id);
-                        },
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: (marker.isFavorite
+                                ? const Icon(Icons.star)
+                                : const Icon(Icons.star_border)),
+                            color: Colors.red[500],
+                            onPressed: () {
+                              provider.editMarker(Marker(
+                                  id: marker.id,
+                                  mapboxId: marker.mapboxId,
+                                  title: marker.title,
+                                  latitude: marker.latitude,
+                                  longitude: marker.longitude,
+                                  isFavorite: !marker.isFavorite));
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              provider.removeMarker(marker.id);
+                            },
+                          )
+                        ],
                       ),
                       onTap: () => showDialog<String>(
                         context: context,

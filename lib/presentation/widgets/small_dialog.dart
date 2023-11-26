@@ -15,7 +15,7 @@ class SmallDialog extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             body,
-            const SizedBox(height: 15),
+            const SizedBox(height: 20),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);

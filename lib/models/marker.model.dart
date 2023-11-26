@@ -4,14 +4,15 @@ class Marker {
   final String title;
   final double latitude;
   final double longitude;
+  final bool isFavorite;
 
-  Marker({
-    required this.id,
-    required this.mapboxId,
-    required this.title,
-    required this.latitude,
-    required this.longitude,
-  });
+  Marker(
+      {required this.id,
+      required this.mapboxId,
+      required this.title,
+      required this.latitude,
+      required this.longitude,
+      this.isFavorite = false});
 }
 
 class MapboxMarker {

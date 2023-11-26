@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:traveler/models/models.dart';
 import 'package:traveler/services/services.dart';
 
@@ -11,49 +12,39 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   final TextEditingController _textEditingController = TextEditingController();
-  List<MarkerSuggestion> _suggestions = [];
   final MarkerService markerService = MarkerService();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        TextField(
+        TypeAheadField<MarkerSuggestion>(
+          suggestionsCallback: (search) async {
+            return await markerService.fetchSuggestions(search);
+          },
           controller: _textEditingController,
-          onChanged: (query) async {
-            _suggestions = await markerService
-                .fetchSuggestions(_textEditingController.text);
+          builder: (context, controller, focusNode) {
+            return TextField(
+                controller: controller,
+                focusNode: focusNode,
+                autofocus: true,
+                decoration: const InputDecoration(
+                  border: UnderlineInputBorder(),
+                  hintText: 'Title',
+                ));
           },
-        ),
-        FutureBuilder(
-          future: markerService.fetchSuggestions(_textEditingController.text),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.hasData) {
-              _suggestions = snapshot.data as List<MarkerSuggestion>;
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: _suggestions.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(_suggestions[index].name),
-                    onTap: () {
-                      _textEditingController.text = _suggestions[index].name;
-                      markerService.retrieveSuggestionDetails(
-                          _suggestions[index].id.toString());
-                      setState(() {
-                        _suggestions.clear();
-                      });
-                    },
-                  );
-                },
-              );
-            } else {
-              return Container();
-            }
+          itemBuilder: (context, item) {
+            return ListTile(
+              title: Text(item.name),
+            );
           },
-        ),
+          onSelected: (MarkerSuggestion value) {
+            _textEditingController.text = value.name;
+            Future<Marker> marker =
+                markerService.retrieveSuggestionDetails(value.id);
+            print(marker);
+          },
+        )
       ],
     );
   }

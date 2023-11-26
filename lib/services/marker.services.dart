@@ -33,7 +33,7 @@ class MarkerService {
       return markerSuggestions;
     }
 
-    throw "Unable to retrieve suggestions";
+    throw Exception(response.reasonPhrase);
   }
 
   Future<Marker> retrieveSuggestionDetails(String id) async {
@@ -54,6 +54,6 @@ class MarkerService {
       return marker;
     }
 
-    throw "Unable to retrieve place";
+    throw Exception(response.reasonPhrase);
   }
 }

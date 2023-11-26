@@ -52,6 +52,7 @@ class _MapScreenState extends State<MapScreen> {
                           body: Place(
                             marker: marker,
                             onEditComplete: (marker) {
+                              context.read<MarkerProvider>().editMarker(marker);
                               Navigator.pop(context);
                             },
                           ),

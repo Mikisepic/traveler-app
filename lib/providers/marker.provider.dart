@@ -23,16 +23,16 @@ class MarkerProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void editMarker(
-      String id, String title, double newLatitude, double newLongitude) {
-    final markerIndex = _markers.indexWhere((marker) => marker.id == id);
+  void editMarker(Marker updatedMarker) {
+    final markerIndex =
+        _markers.indexWhere((marker) => marker.id == updatedMarker.id);
     if (markerIndex != -1) {
       _markers[markerIndex] = Marker(
-        id: id,
+        id: updatedMarker.id,
         mapboxId: _markers[markerIndex].mapboxId,
-        title: title,
-        latitude: newLatitude,
-        longitude: newLongitude,
+        title: updatedMarker.title,
+        latitude: updatedMarker.latitude,
+        longitude: updatedMarker.longitude,
       );
       notifyListeners();
     }

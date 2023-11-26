@@ -13,7 +13,7 @@ class Place extends StatefulWidget {
 
 class _PlaceState extends State<Place> {
   final _formKey = GlobalKey<FormState>();
-  final titleController = TextEditingController();
+  late var titleController = TextEditingController(text: widget.marker.title);
   late String mapboxId = widget.marker.mapboxId;
   late double latitude = widget.marker.latitude;
   late double longitude = widget.marker.longitude;
@@ -31,7 +31,6 @@ class _PlaceState extends State<Place> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: TextFormField(
-                  initialValue: widget.marker.title,
                   controller: titleController,
                   autofocus: true,
                   decoration: const InputDecoration(

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +14,8 @@ class NewPlaceScreen extends StatefulWidget {
 class _NewPlaceScreenState extends State<NewPlaceScreen> {
   final _formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
+  double latitude = 0;
+  double longitude = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +46,22 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
                       },
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: Search(),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    child: Search(
+                      onSearchComplete: (lat, lng) {
+                        setState(() {
+                          latitude = lat;
+                          longitude = lng;
+                        });
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    child: Text('$latitude, $longitude'),
                   ),
                   Padding(
                     padding:
@@ -58,14 +71,10 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
                           final titleValue = titleController.text;
-                          final random = Random();
-                          final randomLatitude = 40 + random.nextDouble() * 10;
-                          final randomLongitude =
-                              -90 + random.nextDouble() * 20;
                           context.read<MarkerProvider>().addMarker(
                                 titleValue,
-                                randomLatitude,
-                                randomLongitude,
+                                latitude,
+                                longitude,
                               );
                           context.goNamed('place_list');
                         }

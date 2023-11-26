@@ -4,7 +4,9 @@ import 'package:traveler/models/models.dart';
 import 'package:traveler/services/services.dart';
 
 class Search extends StatefulWidget {
-  const Search({super.key});
+  final Function(double lat, double lng) onSearchComplete;
+
+  const Search({super.key, required this.onSearchComplete});
 
   @override
   State<Search> createState() => _SearchState();
@@ -30,7 +32,7 @@ class _SearchState extends State<Search> {
                 autofocus: true,
                 decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
-                  hintText: 'Title',
+                  hintText: 'Search',
                 ));
           },
           itemBuilder: (context, item) {
@@ -42,7 +44,8 @@ class _SearchState extends State<Search> {
             _textEditingController.text = value.name;
             Future<Marker> marker =
                 markerService.retrieveSuggestionDetails(value.id);
-            print(marker);
+            marker.then((value) =>
+                widget.onSearchComplete(value.latitude, value.longitude));
           },
         )
       ],

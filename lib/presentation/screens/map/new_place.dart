@@ -14,6 +14,7 @@ class NewPlaceScreen extends StatefulWidget {
 class _NewPlaceScreenState extends State<NewPlaceScreen> {
   final _formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
+  String mapboxId = '';
   double latitude = 0;
   double longitude = 0;
 
@@ -50,10 +51,11 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                     child: Search(
-                      onSearchComplete: (lat, lng) {
+                      onSearchComplete: (mapboxMarker) {
                         setState(() {
-                          latitude = lat;
-                          longitude = lng;
+                          mapboxId = mapboxMarker.mapboxId;
+                          latitude = mapboxMarker.latitude;
+                          longitude = mapboxMarker.longitude;
                         });
                       },
                     ),
@@ -68,11 +70,11 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                     child: ElevatedButton(
                       onPressed: () {
-                        // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
                           final titleValue = titleController.text;
                           context.read<MarkerProvider>().addMarker(
                                 titleValue,
+                                mapboxId,
                                 latitude,
                                 longitude,
                               );

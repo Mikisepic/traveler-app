@@ -17,7 +17,7 @@ class TripProvider extends ChangeNotifier {
   }
 
   void editTrip(String id, String title, String description, bool isPrivate,
-      List<Marker> markers) {
+      List<MapboxMarker> markers) {
     final tripIndex = _trips.indexWhere((trip) => (trip.id == id));
 
     if (tripIndex != -1) {

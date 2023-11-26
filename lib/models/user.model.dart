@@ -6,7 +6,7 @@ class User {
   final String lastName;
   final String email;
   final List<Trip> trips;
-  final List<Marker> markers;
+  final List<MapboxMarker> markers;
   final String about;
 
   User(

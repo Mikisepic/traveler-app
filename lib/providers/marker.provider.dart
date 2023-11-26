@@ -7,9 +7,11 @@ class MarkerProvider with ChangeNotifier {
 
   List<Marker> get markers => _markers;
 
-  void addMarker(String title, double latitude, double longitude) {
+  void addMarker(
+      String title, String mapboxId, double latitude, double longitude) {
     _markers.add(Marker(
         id: const Uuid().v4(),
+        mapboxId: mapboxId,
         title: title,
         latitude: latitude,
         longitude: longitude));
@@ -27,6 +29,7 @@ class MarkerProvider with ChangeNotifier {
     if (markerIndex != -1) {
       _markers[markerIndex] = Marker(
         id: id,
+        mapboxId: _markers[markerIndex].mapboxId,
         title: title,
         latitude: newLatitude,
         longitude: newLongitude,

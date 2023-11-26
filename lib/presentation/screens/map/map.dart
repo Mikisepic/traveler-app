@@ -3,7 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:traveler/presentation/widgets/wrap.dart';
+import 'package:traveler/presentation/screens/map/place.dart';
+import 'package:traveler/presentation/widgets/widgets.dart';
 import 'package:traveler/providers/providers.dart';
 
 class MapScreen extends StatefulWidget {
@@ -36,7 +37,7 @@ class _MapScreenState extends State<MapScreen> {
                     final marker = provider.markers[index];
 
                     return ListTile(
-                      title: Text('Marker ${marker.id}'),
+                      title: Text(marker.title),
                       subtitle: Text(
                           'Latitude: ${marker.latitude}, Longitude: ${marker.longitude}'),
                       trailing: IconButton(
@@ -44,6 +45,17 @@ class _MapScreenState extends State<MapScreen> {
                         onPressed: () {
                           provider.removeMarker(marker.id);
                         },
+                      ),
+                      onTap: () => showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => SmallDialog(
+                          body: Place(
+                            marker: marker,
+                            onEditComplete: (marker) {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
                       ),
                     );
                   },

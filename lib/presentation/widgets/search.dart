@@ -4,7 +4,7 @@ import 'package:traveler/models/models.dart';
 import 'package:traveler/services/services.dart';
 
 class Search extends StatefulWidget {
-  final Function(double lat, double lng) onSearchComplete;
+  final Function(MapboxMarker mapboxMarker) onSearchComplete;
 
   const Search({super.key, required this.onSearchComplete});
 
@@ -42,10 +42,9 @@ class _SearchState extends State<Search> {
           },
           onSelected: (MarkerSuggestion value) {
             _textEditingController.text = value.name;
-            Future<Marker> marker =
-                markerService.retrieveSuggestionDetails(value.id);
-            marker.then((value) =>
-                widget.onSearchComplete(value.latitude, value.longitude));
+            Future<MapboxMarker> marker =
+                markerService.retrieveSuggestionDetails(value.mapboxId);
+            marker.then((value) => widget.onSearchComplete(value));
           },
         )
       ],

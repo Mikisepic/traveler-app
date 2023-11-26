@@ -5,7 +5,7 @@ class Trip {
   final String title;
   final bool isPrivate;
   final String description;
-  final List<Marker> markers;
+  final List<MapboxMarker> markers;
 
   Trip(
       {required this.id,

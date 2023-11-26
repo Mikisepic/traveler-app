@@ -36,7 +36,7 @@ class MarkerService {
     throw Exception(response.reasonPhrase);
   }
 
-  Future<Marker> retrieveSuggestionDetails(String id) async {
+  Future<MapboxMarker> retrieveSuggestionDetails(String id) async {
     final url = Uri.parse(
         '$retrieveURI/$id?access_token=$mapboxAccessToken&session_token=$sessionToken');
     final Response response = await get(url);
@@ -48,7 +48,7 @@ class MarkerService {
       MapboxMarkerFeatures mapboxMarkerFeatures =
           MapboxMarkerFeatures.fromJson(body);
 
-      Marker marker = Marker.fromJson(
+      MapboxMarker marker = MapboxMarker.fromJson(
           mapboxMarkerFeatures.features[0] as Map<String, dynamic>);
 
       return marker;

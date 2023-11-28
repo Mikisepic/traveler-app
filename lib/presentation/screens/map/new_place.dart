@@ -21,7 +21,7 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
   @override
   Widget build(BuildContext context) {
     Widget titleField = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextFormField(
         controller: titleController,
         autofocus: true,
@@ -39,8 +39,9 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
     );
 
     Widget searchField = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: Search(
+        initialValue: '',
         onSearchComplete: (mapboxMarker) {
           setState(() {
             mapboxId = mapboxMarker.mapboxId;
@@ -52,18 +53,21 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
     );
 
     Widget searchFieldPayload = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: Text('$latitude, $longitude'),
     );
 
     Widget submitButton = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: ElevatedButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
             final titleValue = titleController.text;
+            final userId = Provider.of<UserProvider>(context).user.id;
+
             context.read<MarkerProvider>().addMarker(
                   titleValue,
+                  userId,
                   mapboxId,
                   latitude,
                   longitude,
@@ -82,7 +86,6 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
           child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   titleField,
                   searchField,

@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:traveler/models/models.dart';
+import 'package:uuid/uuid.dart';
 
 class UserProvider extends ChangeNotifier {
   User _user = User(
-      firstName: '',
-      lastName: '',
-      email: '',
-      trips: [],
-      markers: [],
-      about: '');
+    id: const Uuid().v4(),
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@example.com',
+    trips: [],
+    markers: [],
+    about:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+  );
 
   User get user => _user;
 
@@ -20,6 +24,7 @@ class UserProvider extends ChangeNotifier {
   void updateUserDetails(String newFirstName, String newLastName,
       String newEmail, String newAbout) {
     _user = User(
+        id: _user.id,
         firstName: newFirstName,
         lastName: newLastName,
         email: newEmail,

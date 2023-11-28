@@ -7,14 +7,16 @@ class MarkerProvider with ChangeNotifier {
 
   List<Marker> get markers => _markers;
 
-  void addMarker(
-      String title, String mapboxId, double latitude, double longitude) {
+  void addMarker(String title, String userId, String mapboxId, double latitude,
+      double longitude) {
     _markers.add(Marker(
-        id: const Uuid().v4(),
-        mapboxId: mapboxId,
-        title: title,
-        latitude: latitude,
-        longitude: longitude));
+      id: const Uuid().v4(),
+      userId: userId,
+      mapboxId: mapboxId,
+      title: title,
+      latitude: latitude,
+      longitude: longitude,
+    ));
     notifyListeners();
   }
 
@@ -26,9 +28,11 @@ class MarkerProvider with ChangeNotifier {
   void editMarker(Marker updatedMarker) {
     final markerIndex =
         _markers.indexWhere((marker) => marker.id == updatedMarker.id);
+
     if (markerIndex != -1) {
       _markers[markerIndex] = Marker(
           id: updatedMarker.id,
+          userId: _markers[markerIndex].mapboxId,
           mapboxId: _markers[markerIndex].mapboxId,
           title: updatedMarker.title,
           latitude: updatedMarker.latitude,

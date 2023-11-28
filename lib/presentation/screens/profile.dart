@@ -1,22 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:traveler/presentation/components/compoennts.dart';
+import 'package:traveler/providers/providers.dart';
 
 class ProfileScreen extends StatefulWidget {
-  final String firstName;
-  final String lastName;
-  final String email;
-  final List<String> trips;
-  final List<String> addedLocations;
-  final String about;
-
   const ProfileScreen({
     super.key,
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    required this.trips,
-    required this.addedLocations,
-    required this.about,
   });
 
   @override
@@ -30,56 +19,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
       label: 'Profile',
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(40),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildRow([
-              buildCard(
-                context: context,
-                title: 'First Name',
-                content: widget.firstName,
-              ),
-              buildCard(
-                context: context,
-                title: 'Last Name',
-                content: widget.lastName,
-              ),
-              buildCard(
-                context: context,
-                title: 'Email',
-                content: widget.email,
-              ),
-            ]),
-            const SizedBox(height: 20.0),
-            _buildRow([
-              buildCard(
-                context: context,
-                title: 'Trips',
-                items: widget.trips,
-              ),
-              buildCard(
+        child: Consumer<UserProvider>(builder: (context, provider, child) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildRow([
+                buildCard(
                   context: context,
-                  title: 'Added Locations',
-                  items: widget.addedLocations),
-            ]),
-            const SizedBox(height: 20.0),
-            _buildRow([
-              buildCard(
-                context: context,
-                title: 'About',
-                content: widget.about,
-              ),
-            ]),
-          ],
-        ),
+                  title: 'First Name',
+                  content: provider.user.firstName,
+                ),
+                buildCard(
+                  context: context,
+                  title: 'Last Name',
+                  content: provider.user.lastName,
+                ),
+              ]),
+              _buildRow([
+                buildCard(
+                  context: context,
+                  title: 'Trips',
+                  items: provider.user.trips.map((e) => e.title).toList(),
+                ),
+                buildCard(
+                    context: context,
+                    title: 'Markers',
+                    items: provider.user.markers.map((e) => e.name).toList()),
+              ]),
+              _buildRow([
+                buildCard(
+                  context: context,
+                  title: 'Email',
+                  content: provider.user.email,
+                ),
+                buildCard(
+                  context: context,
+                  title: 'About',
+                  content: provider.user.about,
+                ),
+              ]),
+            ],
+          );
+        }),
       ),
     );
   }
 
   Widget _buildRow(List<Widget> children) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: children,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: children,
+      ),
     );
   }
 }

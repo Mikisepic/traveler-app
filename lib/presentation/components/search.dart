@@ -5,16 +5,19 @@ import 'package:traveler/services/services.dart';
 
 class Search extends StatefulWidget {
   final Function(MapboxMarker mapboxMarker) onSearchComplete;
+  final String initialValue;
 
-  const Search({super.key, required this.onSearchComplete});
+  const Search(
+      {super.key, required this.onSearchComplete, required this.initialValue});
 
   @override
   State<Search> createState() => _SearchState();
 }
 
 class _SearchState extends State<Search> {
-  final TextEditingController _textEditingController = TextEditingController();
   final MarkerService markerService = MarkerService();
+  late final _textEditingController =
+      TextEditingController(text: widget.initialValue);
 
   @override
   Widget build(BuildContext context) {

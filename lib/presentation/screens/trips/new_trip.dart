@@ -22,7 +22,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
   @override
   Widget build(BuildContext context) {
     Widget titleField = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextFormField(
         controller: titleController,
         autofocus: true,
@@ -40,7 +40,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
     );
 
     Widget descriptionField = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextFormField(
         controller: descriptionController,
         decoration: const InputDecoration(
@@ -51,10 +51,9 @@ class _NewTripScreenState extends State<NewTripScreen> {
     );
 
     Widget isPrivateField = Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+        padding: const EdgeInsets.symmetric(vertical: 20),
         child: Switch(
           value: isPrivate,
-          activeColor: Colors.red,
           onChanged: (bool value) {
             setState(() {
               isPrivate = value;
@@ -63,7 +62,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
         ));
 
     Widget submitButton = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: ElevatedButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
@@ -87,7 +86,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
         body: Form(
           key: _formKey,
           child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.all(40),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[

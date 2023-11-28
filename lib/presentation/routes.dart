@@ -53,7 +53,6 @@ final router = GoRouter(
                       path: 'places/new',
                       builder: (context, state) => const NewPlaceScreen(),
                     )
-                    // GoRoute(name: 'place', path: 'places/:locationId', builder: (context, state) => const PlaceDetailsScreen(),),
                   ]),
             ],
           ),
@@ -61,16 +60,8 @@ final router = GoRouter(
             GoRoute(
               name: 'profile',
               path: '/profile',
-              pageBuilder: (context, state) => const NoTransitionPage(
-                  child: ProfileScreen(
-                firstName: 'John',
-                lastName: 'Doe',
-                email: 'john.doe@example.com',
-                trips: ['Trip 1', 'Trip 2'],
-                addedLocations: ['Location A', 'Location B'],
-                about:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-              )),
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: ProfileScreen()),
             ),
           ]),
         ]),

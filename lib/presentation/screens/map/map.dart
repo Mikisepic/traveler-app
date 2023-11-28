@@ -33,13 +33,12 @@ class _MapScreenState extends State<MapScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
-                icon: (marker.isFavorite
-                    ? const Icon(Icons.star)
-                    : const Icon(Icons.star_border)),
+                icon: Icon(marker.isFavorite ? Icons.star : Icons.star_border),
                 color: Colors.red[500],
                 onPressed: () {
                   provider.editMarker(Marker(
                       id: marker.id,
+                      userId: marker.userId,
                       mapboxId: marker.mapboxId,
                       title: marker.title,
                       latitude: marker.latitude,

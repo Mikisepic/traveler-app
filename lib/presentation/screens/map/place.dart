@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:traveler/models/models.dart';
+import 'package:traveler/presentation/components/compoennts.dart';
 
 class Place extends StatefulWidget {
   final Marker marker;
@@ -22,7 +23,7 @@ class _PlaceState extends State<Place> {
   @override
   Widget build(BuildContext context) {
     Widget titleField = Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: Row(
         children: [
           Expanded(
@@ -41,9 +42,7 @@ class _PlaceState extends State<Place> {
             },
           )),
           IconButton(
-            icon: (isFavorite
-                ? const Icon(Icons.star)
-                : const Icon(Icons.star_border)),
+            icon: Icon(isFavorite ? Icons.star : Icons.star_border),
             color: Colors.red[500],
             onPressed: () {
               setState(() {
@@ -55,14 +54,34 @@ class _PlaceState extends State<Place> {
       ),
     );
 
+    Widget searchField = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Search(
+        initialValue: '',
+        onSearchComplete: (mapboxMarker) {
+          setState(() {
+            mapboxId = mapboxMarker.mapboxId;
+            latitude = mapboxMarker.latitude;
+            longitude = mapboxMarker.longitude;
+          });
+        },
+      ),
+    );
+
+    Widget searchFieldPayload = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Text('$latitude, $longitude'),
+    );
+
     Widget submitButton = Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+        padding: const EdgeInsets.symmetric(vertical: 20),
         child: ElevatedButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               final titleValue = titleController.text;
               widget.onEditComplete(Marker(
                   id: widget.marker.id,
+                  userId: widget.marker.userId,
                   mapboxId: mapboxId,
                   title: titleValue,
                   latitude: latitude,
@@ -77,7 +96,12 @@ class _PlaceState extends State<Place> {
       key: _formKey,
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[titleField, submitButton]),
+          children: <Widget>[
+            titleField,
+            searchField,
+            searchFieldPayload,
+            submitButton
+          ]),
     );
   }
 }

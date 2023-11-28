@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/components/compoennts.dart';
 import 'package:traveler/providers/providers.dart';
+import 'package:uuid/uuid.dart';
 
 class NewPlaceScreen extends StatefulWidget {
   const NewPlaceScreen({super.key});
@@ -65,13 +67,14 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
             final titleValue = titleController.text;
             final userId = Provider.of<UserProvider>(context).user.id;
 
-            context.read<MarkerProvider>().addMarker(
-                  titleValue,
-                  userId,
-                  mapboxId,
-                  latitude,
-                  longitude,
-                );
+            context.read<MarkerProvider>().create(Marker(
+                  id: const Uuid().v4(),
+                  title: titleValue,
+                  userId: userId,
+                  mapboxId: mapboxId,
+                  latitude: latitude,
+                  longitude: longitude,
+                ));
             context.goNamed('place_list');
           }
         },

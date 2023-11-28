@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -16,8 +14,6 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  var random = Random();
-
   // MapboxMap? mapboxMap;
   // _onMapCreated(MapboxMap mapboxMap) {
   //   mapboxMap = mapboxMap;
@@ -36,7 +32,7 @@ class _MapScreenState extends State<MapScreen> {
                 icon: Icon(marker.isFavorite ? Icons.star : Icons.star_border),
                 color: Colors.red[500],
                 onPressed: () {
-                  provider.editMarker(Marker(
+                  provider.update(Marker(
                       id: marker.id,
                       userId: marker.userId,
                       mapboxId: marker.mapboxId,
@@ -49,7 +45,7 @@ class _MapScreenState extends State<MapScreen> {
               IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {
-                  provider.removeMarker(marker.id);
+                  provider.delete(marker.id);
                 },
               )
             ],
@@ -58,9 +54,9 @@ class _MapScreenState extends State<MapScreen> {
             context: context,
             builder: (BuildContext context) => SmallDialog(
               body: Place(
-                marker: marker,
+                id: marker.id,
                 onEditComplete: (marker) {
-                  context.read<MarkerProvider>().editMarker(marker);
+                  context.read<MarkerProvider>().update(marker);
                   Navigator.pop(context);
                 },
               ),

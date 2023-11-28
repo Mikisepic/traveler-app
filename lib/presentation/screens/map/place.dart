@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/components/compoennts.dart';
+import 'package:traveler/providers/providers.dart';
 
 class Place extends StatefulWidget {
-  final Marker marker;
+  final String id;
   final Function(Marker updatedMarker) onEditComplete;
 
-  const Place({super.key, required this.marker, required this.onEditComplete});
+  const Place({super.key, required this.id, required this.onEditComplete});
 
   @override
   State<Place> createState() => _PlaceState();
@@ -14,14 +16,16 @@ class Place extends StatefulWidget {
 
 class _PlaceState extends State<Place> {
   final _formKey = GlobalKey<FormState>();
-  late var titleController = TextEditingController(text: widget.marker.title);
-  late String mapboxId = widget.marker.mapboxId;
-  late double latitude = widget.marker.latitude;
-  late double longitude = widget.marker.longitude;
-  late bool isFavorite = widget.marker.isFavorite;
 
   @override
   Widget build(BuildContext context) {
+    final marker = context.read<MarkerProvider>().fetchOne(widget.id);
+    late var titleController = TextEditingController(text: marker.title);
+    late String mapboxId = marker.mapboxId;
+    late double latitude = marker.latitude;
+    late double longitude = marker.longitude;
+    late bool isFavorite = marker.isFavorite;
+
     Widget titleField = Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Row(
@@ -80,8 +84,8 @@ class _PlaceState extends State<Place> {
             if (_formKey.currentState!.validate()) {
               final titleValue = titleController.text;
               widget.onEditComplete(Marker(
-                  id: widget.marker.id,
-                  userId: widget.marker.userId,
+                  id: marker.id,
+                  userId: marker.userId,
                   mapboxId: mapboxId,
                   title: titleValue,
                   latitude: latitude,

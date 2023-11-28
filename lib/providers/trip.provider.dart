@@ -6,28 +6,27 @@ class TripProvider extends ChangeNotifier {
 
   List<Trip> get trips => _trips;
 
-  void addTrip(Trip trip) {
+  Trip fetchOne(String id) {
+    final index = _trips.indexWhere((element) => element.id == id);
+    return _trips[index];
+  }
+
+  void create(Trip trip) {
     _trips.add(trip);
     notifyListeners();
   }
 
-  void removeOne(String id) {
-    _trips.removeWhere((trip) => trip.id == id);
-    notifyListeners();
+  void update(Trip trip) {
+    final index = _trips.indexWhere((trip) => (trip.id == trip.id));
+
+    if (index != -1) {
+      _trips[index] = trip;
+      notifyListeners();
+    }
   }
 
-  void editTrip(String id, String title, String description, bool isPrivate,
-      List<MapboxMarker> markers) {
-    final tripIndex = _trips.indexWhere((trip) => (trip.id == id));
-
-    if (tripIndex != -1) {
-      _trips[tripIndex] = Trip(
-          id: id,
-          title: title,
-          description: description,
-          isPrivate: isPrivate | false,
-          markers: markers);
-    }
+  void delete(String id) {
+    _trips.removeWhere((trip) => trip.id == id);
     notifyListeners();
   }
 }

@@ -68,7 +68,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
           if (_formKey.currentState!.validate()) {
             final titleValue = titleController.text;
             final descriptionValue = descriptionController.text;
-            context.read<TripProvider>().addTrip(Trip(
+            context.read<TripProvider>().create(Trip(
                 id: const Uuid().v4(),
                 title: titleValue,
                 isPrivate: isPrivate,

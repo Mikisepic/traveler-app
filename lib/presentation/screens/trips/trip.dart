@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:traveler/presentation/widgets/wrap.dart';
+import 'package:traveler/presentation/components/wrap.dart';
 
 class TripDetailsScreen extends StatefulWidget {
   final String id;

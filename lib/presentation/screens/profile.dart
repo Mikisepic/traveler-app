@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:traveler/presentation/widgets/widgets.dart';
+import 'package:traveler/presentation/components/compoennts.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String firstName;

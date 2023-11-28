@@ -27,19 +27,6 @@ class HomeScreen extends StatelessWidget {
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: _goBranch,
       );
-      // if (constraints.maxWidth < 450) {
-      //   return ScaffoldWithNavigationBar(
-      //     body: navigationShell,
-      //     selectedIndex: navigationShell.currentIndex,
-      //     onDestinationSelected: _goBranch,
-      //   );
-      // } else {
-      //   return ScaffoldWithNavigationRail(
-      //     body: navigationShell,
-      //     selectedIndex: navigationShell.currentIndex,
-      //     onDestinationSelected: _goBranch,
-      //   );
-      // }
     });
   }
 }
@@ -70,46 +57,6 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
           BottomNavigationBarItem(label: 'Profile', icon: Icon(Icons.person)),
         ],
         onTap: onDestinationSelected,
-      ),
-    );
-  }
-}
-
-class ScaffoldWithNavigationRail extends StatelessWidget {
-  const ScaffoldWithNavigationRail({
-    super.key,
-    required this.body,
-    required this.selectedIndex,
-    required this.onDestinationSelected,
-  });
-  final Widget body;
-  final int selectedIndex;
-  final ValueChanged<int> onDestinationSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Row(
-        children: [
-          NavigationRail(
-            selectedIndex: selectedIndex,
-            onDestinationSelected: onDestinationSelected,
-            labelType: NavigationRailLabelType.none,
-            destinations: const <NavigationRailDestination>[
-              NavigationRailDestination(
-                  label: Text('Trips'), icon: Icon(Icons.directions)),
-              NavigationRailDestination(
-                  label: Text('Map'), icon: Icon(Icons.map)),
-              NavigationRailDestination(
-                  label: Text('Profile'), icon: Icon(Icons.person)),
-            ],
-          ),
-          const VerticalDivider(thickness: 1, width: 1),
-          // This is the main content.
-          Expanded(
-            child: body,
-          ),
-        ],
       ),
     );
   }

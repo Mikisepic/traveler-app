@@ -14,13 +14,74 @@ class NewTripScreen extends StatefulWidget {
 }
 
 class _NewTripScreenState extends State<NewTripScreen> {
+  final _formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
   bool isPrivate = false;
 
   @override
   Widget build(BuildContext context) {
+    Widget titleField = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      child: TextFormField(
+        controller: titleController,
+        autofocus: true,
+        decoration: const InputDecoration(
+          border: UnderlineInputBorder(),
+          hintText: 'Title',
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Title is required';
+          }
+          return null;
+        },
+      ),
+    );
+
+    Widget descriptionField = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      child: TextFormField(
+        controller: descriptionController,
+        decoration: const InputDecoration(
+          border: UnderlineInputBorder(),
+          labelText: 'Description',
+        ),
+      ),
+    );
+
+    Widget isPrivateField = Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+        child: Switch(
+          value: isPrivate,
+          activeColor: Colors.red,
+          onChanged: (bool value) {
+            setState(() {
+              isPrivate = value;
+            });
+          },
+        ));
+
+    Widget submitButton = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      child: ElevatedButton(
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            final titleValue = titleController.text;
+            final descriptionValue = descriptionController.text;
+            context.read<TripProvider>().addTrip(Trip(
+                id: const Uuid().v4(),
+                title: titleValue,
+                isPrivate: isPrivate,
+                description: descriptionValue,
+                markers: []));
+            context.goNamed('trip_list');
+          }
+        },
+        child: const Text('Submit'),
+      ),
+    );
+
     return WrapScaffold(
         label: 'New Trip',
         body: Form(
@@ -30,71 +91,10 @@ class _NewTripScreenState extends State<NewTripScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: TextFormField(
-                      controller: titleController,
-                      autofocus: true,
-                      decoration: const InputDecoration(
-                        border: UnderlineInputBorder(),
-                        hintText: 'Title',
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Title is required';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 16),
-                      child: Switch(
-                        value: isPrivate,
-                        activeColor: Colors.red,
-                        onChanged: (bool value) {
-                          setState(() {
-                            isPrivate = value;
-                          });
-                        },
-                      )),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: TextFormField(
-                      controller: descriptionController,
-                      decoration: const InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: 'Description',
-                      ),
-                    ),
-                  ),
-                  // const Padding(
-                  //   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  //   child: PlaceDropwdown(),
-                  // ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          final titleValue = titleController.text;
-                          final descriptionValue = descriptionController.text;
-                          context.read<TripProvider>().addTrip(Trip(
-                              id: const Uuid().v4(),
-                              title: titleValue,
-                              isPrivate: isPrivate,
-                              description: descriptionValue,
-                              markers: []));
-                          context.goNamed('trip_list');
-                        }
-                      },
-                      child: const Text('Submit'),
-                    ),
-                  ),
+                  titleField,
+                  descriptionField,
+                  isPrivateField,
+                  submitButton,
                 ],
               )),
         ));

@@ -25,6 +25,50 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Widget listTile(Marker marker, MarkerProvider provider) => ListTile(
+          title: Text(marker.title),
+          subtitle: Text(
+              'Latitude: ${marker.latitude}, Longitude: ${marker.longitude}'),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                icon: (marker.isFavorite
+                    ? const Icon(Icons.star)
+                    : const Icon(Icons.star_border)),
+                color: Colors.red[500],
+                onPressed: () {
+                  provider.editMarker(Marker(
+                      id: marker.id,
+                      mapboxId: marker.mapboxId,
+                      title: marker.title,
+                      latitude: marker.latitude,
+                      longitude: marker.longitude,
+                      isFavorite: !marker.isFavorite));
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () {
+                  provider.removeMarker(marker.id);
+                },
+              )
+            ],
+          ),
+          onTap: () => showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => SmallDialog(
+              body: Place(
+                marker: marker,
+                onEditComplete: (marker) {
+                  context.read<MarkerProvider>().editMarker(marker);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ),
+        );
+
     return WrapScaffold(
       label: 'Map',
       body: Column(
@@ -34,53 +78,8 @@ class _MapScreenState extends State<MapScreen> {
               builder: (context, provider, child) {
                 return ListView.builder(
                   itemCount: provider.markers.length,
-                  itemBuilder: (context, index) {
-                    final marker = provider.markers[index];
-
-                    return ListTile(
-                      title: Text(marker.title),
-                      subtitle: Text(
-                          'Latitude: ${marker.latitude}, Longitude: ${marker.longitude}'),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: (marker.isFavorite
-                                ? const Icon(Icons.star)
-                                : const Icon(Icons.star_border)),
-                            color: Colors.red[500],
-                            onPressed: () {
-                              provider.editMarker(Marker(
-                                  id: marker.id,
-                                  mapboxId: marker.mapboxId,
-                                  title: marker.title,
-                                  latitude: marker.latitude,
-                                  longitude: marker.longitude,
-                                  isFavorite: !marker.isFavorite));
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              provider.removeMarker(marker.id);
-                            },
-                          )
-                        ],
-                      ),
-                      onTap: () => showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => SmallDialog(
-                          body: Place(
-                            marker: marker,
-                            onEditComplete: (marker) {
-                              context.read<MarkerProvider>().editMarker(marker);
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+                  itemBuilder: (context, index) =>
+                      listTile(provider.markers[index], provider),
                 );
               },
             ),

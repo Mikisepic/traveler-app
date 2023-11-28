@@ -20,6 +20,61 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Widget titleField = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      child: TextFormField(
+        controller: titleController,
+        autofocus: true,
+        decoration: const InputDecoration(
+          border: UnderlineInputBorder(),
+          hintText: 'Title',
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Title is required';
+          }
+          return null;
+        },
+      ),
+    );
+
+    Widget searchField = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      child: Search(
+        onSearchComplete: (mapboxMarker) {
+          setState(() {
+            mapboxId = mapboxMarker.mapboxId;
+            latitude = mapboxMarker.latitude;
+            longitude = mapboxMarker.longitude;
+          });
+        },
+      ),
+    );
+
+    Widget searchFieldPayload = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      child: Text('$latitude, $longitude'),
+    );
+
+    Widget submitButton = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      child: ElevatedButton(
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            final titleValue = titleController.text;
+            context.read<MarkerProvider>().addMarker(
+                  titleValue,
+                  mapboxId,
+                  latitude,
+                  longitude,
+                );
+            context.goNamed('place_list');
+          }
+        },
+        child: const Text('Submit'),
+      ),
+    );
+
     return WrapScaffold(
         label: 'New Place',
         body: Form(
@@ -29,61 +84,10 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: TextFormField(
-                      controller: titleController,
-                      autofocus: true,
-                      decoration: const InputDecoration(
-                        border: UnderlineInputBorder(),
-                        hintText: 'Title',
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Title is required';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: Search(
-                      onSearchComplete: (mapboxMarker) {
-                        setState(() {
-                          mapboxId = mapboxMarker.mapboxId;
-                          latitude = mapboxMarker.latitude;
-                          longitude = mapboxMarker.longitude;
-                        });
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: Text('$latitude, $longitude'),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          final titleValue = titleController.text;
-                          context.read<MarkerProvider>().addMarker(
-                                titleValue,
-                                mapboxId,
-                                latitude,
-                                longitude,
-                              );
-                          context.goNamed('place_list');
-                        }
-                      },
-                      child: const Text('Submit'),
-                    ),
-                  ),
+                  titleField,
+                  searchField,
+                  searchFieldPayload,
+                  submitButton
                 ],
               )),
         ));

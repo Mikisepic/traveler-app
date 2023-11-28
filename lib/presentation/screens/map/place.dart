@@ -21,63 +21,63 @@ class _PlaceState extends State<Place> {
 
   @override
   Widget build(BuildContext context) {
+    Widget titleField = Container(
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        children: [
+          Expanded(
+              child: TextFormField(
+            controller: titleController,
+            autofocus: true,
+            decoration: const InputDecoration(
+              border: UnderlineInputBorder(),
+              hintText: 'Title',
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Title is required';
+              }
+              return null;
+            },
+          )),
+          IconButton(
+            icon: (isFavorite
+                ? const Icon(Icons.star)
+                : const Icon(Icons.star_border)),
+            color: Colors.red[500],
+            onPressed: () {
+              setState(() {
+                isFavorite = !isFavorite;
+              });
+            },
+          ),
+        ],
+      ),
+    );
+
+    Widget submitButton = Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+        child: ElevatedButton(
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              final titleValue = titleController.text;
+              widget.onEditComplete(Marker(
+                  id: widget.marker.id,
+                  mapboxId: mapboxId,
+                  title: titleValue,
+                  latitude: latitude,
+                  longitude: longitude,
+                  isFavorite: isFavorite));
+            }
+          },
+          child: const Text('Submit'),
+        ));
+
     return Form(
       key: _formKey,
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                children: [
-                  Expanded(
-                      child: TextFormField(
-                    controller: titleController,
-                    autofocus: true,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      hintText: 'Title',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Title is required';
-                      }
-                      return null;
-                    },
-                  )),
-                  IconButton(
-                    icon: (isFavorite
-                        ? const Icon(Icons.star)
-                        : const Icon(Icons.star_border)),
-                    color: Colors.red[500],
-                    onPressed: () {
-                      setState(() {
-                        isFavorite = !isFavorite;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      final titleValue = titleController.text;
-                      widget.onEditComplete(Marker(
-                          id: widget.marker.id,
-                          mapboxId: mapboxId,
-                          title: titleValue,
-                          latitude: latitude,
-                          longitude: longitude,
-                          isFavorite: isFavorite));
-                    }
-                  },
-                  child: const Text('Submit'),
-                )),
-          ]),
+          children: <Widget>[titleField, submitButton]),
     );
   }
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "768491054932",
+    "project_id": "traveller-380414",
+    "storage_bucket": "traveller-380414.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768491054932:android:11465b8f242fa9a3698ac1",
+        "android_client_info": {
+          "package_name": "com.example.traveler"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeHzr0FhlauM8V6LXY06VToTLfvD45b68"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

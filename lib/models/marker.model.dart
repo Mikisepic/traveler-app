@@ -1,6 +1,5 @@
 class Marker {
   final String id;
-  final String userId;
   final String mapboxId;
   final String title;
   final double latitude;
@@ -9,7 +8,6 @@ class Marker {
 
   Marker(
       {required this.id,
-      required this.userId,
       required this.mapboxId,
       required this.title,
       required this.latitude,

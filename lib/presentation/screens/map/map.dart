@@ -34,7 +34,6 @@ class _MapScreenState extends State<MapScreen> {
                 onPressed: () {
                   provider.update(Marker(
                       id: marker.id,
-                      userId: marker.userId,
                       mapboxId: marker.mapboxId,
                       title: marker.title,
                       latitude: marker.latitude,

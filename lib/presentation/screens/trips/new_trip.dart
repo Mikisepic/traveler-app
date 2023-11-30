@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/components/compoennts.dart';
@@ -18,6 +19,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   bool isPrivate = false;
+  List<Marker> _selectedMarkers = [];
 
   @override
   Widget build(BuildContext context) {
@@ -45,20 +47,50 @@ class _NewTripScreenState extends State<NewTripScreen> {
         controller: descriptionController,
         decoration: const InputDecoration(
           border: UnderlineInputBorder(),
-          labelText: 'Description',
+          hintText: 'Description',
+        ),
+      ),
+    );
+
+    Widget multiSelectField = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: MultiSelectDialogField(
+        items: context
+            .read<MarkerProvider>()
+            .markers
+            .map((e) => MultiSelectItem(e, e.title))
+            .toList(),
+        listType: MultiSelectListType.CHIP,
+        searchable: true,
+        onConfirm: (values) {
+          _selectedMarkers = values as List<Marker>;
+        },
+        chipDisplay: MultiSelectChipDisplay(
+          onTap: (value) {
+            setState(() {
+              _selectedMarkers.remove(value);
+            });
+          },
         ),
       ),
     );
 
     Widget isPrivateField = Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Switch(
-          value: isPrivate,
-          onChanged: (bool value) {
-            setState(() {
-              isPrivate = value;
-            });
-          },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            const Text('Is Private'),
+            Switch(
+              value: isPrivate,
+              onChanged: (bool value) {
+                setState(() {
+                  isPrivate = value;
+                });
+              },
+            )
+          ],
         ));
 
     Widget submitButton = Padding(
@@ -87,11 +119,11 @@ class _NewTripScreenState extends State<NewTripScreen> {
           key: _formKey,
           child: Padding(
               padding: const EdgeInsets.all(40),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
                 children: <Widget>[
                   titleField,
                   descriptionField,
+                  multiSelectField,
                   isPrivateField,
                   submitButton,
                 ],

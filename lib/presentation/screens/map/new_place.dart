@@ -66,7 +66,15 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
           if (_formKey.currentState!.validate()) {
             final titleValue = titleController.text;
 
-            context.read<MarkerProvider>().create(Marker(
+            // context.read<MarkerProvider>().create(Marker(
+            //       id: const Uuid().v4(),
+            //       title: titleValue,
+            //       mapboxId: mapboxId,
+            //       latitude: latitude,
+            //       longitude: longitude,
+            //     ));
+
+            context.read<ApplicationProvider>().addMarker(Marker(
                   id: const Uuid().v4(),
                   title: titleValue,
                   mapboxId: mapboxId,

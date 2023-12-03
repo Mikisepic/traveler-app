@@ -1,18 +1,21 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:traveler/presentation/components/compoennts.dart';
 import 'package:traveler/providers/providers.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({
+import 'authentication.dart';
+
+class UserInfoScreen extends StatefulWidget {
+  const UserInfoScreen({
     super.key,
   });
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<UserInfoScreen> createState() => _UserInfoScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _UserInfoScreenState extends State<UserInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return WrapScaffold(
@@ -23,6 +26,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Consumer<ApplicationProvider>(
+                builder: (context, appState, _) => AuthFunc(
+                    loggedIn: appState.loggedIn,
+                    signOut: () {
+                      FirebaseAuth.instance.signOut();
+                    }),
+              ),
               _buildRow([
                 buildCard(
                   context: context,

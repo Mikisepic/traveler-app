@@ -8,5 +8,6 @@ import 'app.dart';
 void main() async {
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const TravelerApp());
 }

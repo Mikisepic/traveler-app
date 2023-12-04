@@ -28,7 +28,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             children: [
               Consumer<AuthenticationProvider>(
                 builder: (context, appState, _) => Authentication(
-                    loggedIn: appState.loggedIn,
+                    isAuthenticated: appState.isAuthenticated,
                     signOut: () {
                       FirebaseAuth.instance.signOut();
                     }),

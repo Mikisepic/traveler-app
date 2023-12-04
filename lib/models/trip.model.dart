@@ -1,10 +1,8 @@
-import 'marker.model.dart';
-
 class Trip {
   final String id;
   final String title;
   final String description;
-  final List<MapboxMarker> markers;
+  final List<dynamic> markers;
   final bool isPrivate;
 
   Trip({

@@ -15,7 +15,10 @@ class TripDetailsScreen extends StatefulWidget {
 class _TripDetailsScreenState extends State<TripDetailsScreen> {
   @override
   Widget build(BuildContext context) {
-    final trip = context.read<TripProvider>().fetchOne(widget.id);
+    final trip = context.read<TripProvider>().trips[context
+        .read<TripProvider>()
+        .trips
+        .indexWhere((element) => element.id == widget.id)];
     final titleController = TextEditingController(text: trip.title);
 
     Widget titleField = Padding(

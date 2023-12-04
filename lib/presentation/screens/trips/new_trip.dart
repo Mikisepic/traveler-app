@@ -54,7 +54,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
 
     Widget multiSelectField = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      child: MultiSelectDialogField(
+      child: MultiSelectDialogField<Marker>(
         items: context
             .read<MarkerProvider>()
             .markers
@@ -63,7 +63,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
         listType: MultiSelectListType.CHIP,
         searchable: true,
         onConfirm: (values) {
-          _selectedMarkers = values as List<Marker>;
+          _selectedMarkers = values;
         },
         chipDisplay: MultiSelectChipDisplay(
           onTap: (value) {
@@ -100,12 +100,14 @@ class _NewTripScreenState extends State<NewTripScreen> {
           if (_formKey.currentState!.validate()) {
             final titleValue = titleController.text;
             final descriptionValue = descriptionController.text;
-            context.read<AuthenticationProvider>().addTrip(Trip(
-                id: const Uuid().v4(),
-                title: titleValue,
-                isPrivate: isPrivate,
-                description: descriptionValue,
-                markers: []));
+            context.read<TripProvider>().create(
+                Trip(
+                    id: const Uuid().v4(),
+                    title: titleValue,
+                    isPrivate: isPrivate,
+                    description: descriptionValue,
+                    markers: _selectedMarkers),
+                context.read<AuthenticationProvider>().isAuthenticated);
             context.goNamed('trip_list');
           }
         },

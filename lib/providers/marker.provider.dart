@@ -21,22 +21,21 @@ class MarkerProvider with ChangeNotifier {
       if (user != null) {
         _markersSubscription = FirebaseFirestore.instance
             .collection('markers')
-            .orderBy('timestamp', descending: true)
+            .orderBy('updated_at', descending: true)
             .snapshots()
             .listen((snapshot) {
           _markers = [];
           for (final document in snapshot.docs) {
             _markers.add(
               Marker(
-                  id: document.data()['id'] as String,
-                  mapboxId: document.data()['mapboxId'] as String,
-                  title: document.data()['title'] as String,
-                  latitude:
-                      (document.data()['coordinates'] as GeoPoint).latitude,
-                  longitude:
-                      (document.data()['coordinates'] as GeoPoint).longitude,
-                  isFavorite: document.data()['isFavorite'] as bool,
-                  documentId: document.id),
+                id: document.id,
+                mapboxId: document.data()['mapboxId'] as String,
+                title: document.data()['title'] as String,
+                latitude: (document.data()['coordinates'] as GeoPoint).latitude,
+                longitude:
+                    (document.data()['coordinates'] as GeoPoint).longitude,
+                isFavorite: document.data()['isFavorite'] as bool,
+              ),
             );
           }
           notifyListeners();
@@ -73,10 +72,7 @@ class MarkerProvider with ChangeNotifier {
 
   void update(Marker marker) {
     final index = _markers.indexWhere((marker) => marker.id == marker.id);
-    FirebaseFirestore.instance
-        .collection('markers')
-        .doc(marker.documentId)
-        .set({
+    FirebaseFirestore.instance.collection('markers').doc(marker.id).set({
       'title': marker.title,
       'mapboxId': marker.mapboxId,
       'isFavorite': marker.isFavorite,

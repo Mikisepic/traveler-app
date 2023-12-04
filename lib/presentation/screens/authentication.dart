@@ -5,11 +5,11 @@ import 'package:traveler/presentation/components/compoennts.dart';
 class Authentication extends StatelessWidget {
   const Authentication({
     super.key,
-    required this.loggedIn,
+    required this.isAuthenticated,
     required this.signOut,
   });
 
-  final bool loggedIn;
+  final bool isAuthenticated;
   final void Function() signOut;
 
   @override
@@ -20,14 +20,14 @@ class Authentication extends StatelessWidget {
           padding: const EdgeInsets.only(left: 24, bottom: 8),
           child: StyledButton(
               onPressed: () {
-                !loggedIn ? context.push('/sign-in') : signOut();
+                !isAuthenticated ? context.push('/sign-in') : signOut();
               },
-              child: !loggedIn
+              child: !isAuthenticated
                   ? const Text('Authenticate')
                   : const Text('Logout')),
         ),
         Visibility(
-            visible: loggedIn,
+            visible: isAuthenticated,
             child: Padding(
               padding: const EdgeInsets.only(left: 24, bottom: 8),
               child: StyledButton(

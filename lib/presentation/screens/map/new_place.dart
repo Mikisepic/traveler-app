@@ -74,7 +74,7 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
                   latitude: latitude,
                   longitude: longitude,
                 ),
-                context.read<AuthenticationProvider>().loggedIn);
+                context.read<AuthenticationProvider>().isAuthenticated);
 
             context.goNamed('place_list');
           }

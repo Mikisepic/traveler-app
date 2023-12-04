@@ -5,16 +5,15 @@ class Marker {
   final double latitude;
   final double longitude;
   final bool isFavorite;
-  final String documentId;
 
-  Marker(
-      {required this.id,
-      required this.mapboxId,
-      required this.title,
-      required this.latitude,
-      required this.longitude,
-      this.isFavorite = false,
-      this.documentId = ''});
+  Marker({
+    this.id = '',
+    required this.mapboxId,
+    required this.title,
+    required this.latitude,
+    required this.longitude,
+    this.isFavorite = false,
+  });
 }
 
 class MapboxMarker {

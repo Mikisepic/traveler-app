@@ -44,7 +44,7 @@ class _MapScreenState extends State<MapScreen> {
               IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {
-                  provider.delete(marker.id);
+                  provider.delete(marker.documentId);
                 },
               )
             ],

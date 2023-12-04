@@ -1,7 +1,7 @@
 import 'marker.model.dart';
 import 'trip.model.dart';
 
-class User {
+class UserInfo {
   final String id;
   final String firstName;
   final String lastName;
@@ -10,7 +10,7 @@ class User {
   final List<Trip> trips;
   final List<MapboxMarker> markers;
 
-  User({
+  UserInfo({
     required this.id,
     required this.firstName,
     required this.lastName,

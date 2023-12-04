@@ -26,8 +26,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Consumer<ApplicationProvider>(
-                builder: (context, appState, _) => AuthFunc(
+              Consumer<AuthenticationProvider>(
+                builder: (context, appState, _) => Authentication(
                     loggedIn: appState.loggedIn,
                     signOut: () {
                       FirebaseAuth.instance.signOut();

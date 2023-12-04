@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
@@ -7,13 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:traveler/firebase_options.dart';
 import 'package:traveler/models/models.dart';
 
-class ApplicationProvider extends ChangeNotifier {
-  ApplicationProvider() {
+class AuthenticationProvider extends ChangeNotifier {
+  AuthenticationProvider() {
     init();
   }
 
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
+  User? get user => FirebaseAuth.instance.currentUser;
 
   Future<void> init() async {
     await Firebase.initializeApp(
@@ -33,21 +36,6 @@ class ApplicationProvider extends ChangeNotifier {
     });
   }
 
-  Future<DocumentReference> addMarker(Marker marker) {
-    if (!_loggedIn) {
-      throw Exception('Must be logged in');
-    }
-
-    return FirebaseFirestore.instance.collection('markers').add({
-      'id': marker.id,
-      'userId': FirebaseAuth.instance.currentUser!.uid,
-      'title': marker.title,
-      'mapboxId': marker.mapboxId,
-      'isFavorite': marker.isFavorite,
-      'coordinates': GeoPoint(marker.latitude, marker.longitude),
-    });
-  }
-
   Future<DocumentReference> addTrip(Trip trip) {
     if (!_loggedIn) {
       throw Exception('Must be logged in');
@@ -61,6 +49,7 @@ class ApplicationProvider extends ChangeNotifier {
       'title': trip.title,
       'isPrivate': trip.isPrivate,
       // 'markers': markersCollection.doc()
+      'timestamp': DateTime.now().millisecondsSinceEpoch
     });
   }
 }

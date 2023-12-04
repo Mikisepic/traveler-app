@@ -5,6 +5,7 @@ class Marker {
   final double latitude;
   final double longitude;
   final bool isFavorite;
+  final String documentId;
 
   Marker(
       {required this.id,
@@ -12,7 +13,8 @@ class Marker {
       required this.title,
       required this.latitude,
       required this.longitude,
-      this.isFavorite = false});
+      this.isFavorite = false,
+      this.documentId = ''});
 }
 
 class MapboxMarker {

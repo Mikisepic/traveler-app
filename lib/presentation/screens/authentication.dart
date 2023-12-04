@@ -1,12 +1,9 @@
-// Copyright 2022 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:traveler/presentation/components/compoennts.dart';
 
-class AuthFunc extends StatelessWidget {
-  const AuthFunc({
+class Authentication extends StatelessWidget {
+  const Authentication({
     super.key,
     required this.loggedIn,
     required this.signOut,
@@ -25,7 +22,9 @@ class AuthFunc extends StatelessWidget {
               onPressed: () {
                 !loggedIn ? context.push('/sign-in') : signOut();
               },
-              child: !loggedIn ? const Text('RSVP') : const Text('Logout')),
+              child: !loggedIn
+                  ? const Text('Authenticate')
+                  : const Text('Logout')),
         ),
         Visibility(
             visible: loggedIn,
@@ -40,18 +39,4 @@ class AuthFunc extends StatelessWidget {
       ],
     );
   }
-}
-
-class StyledButton extends StatelessWidget {
-  const StyledButton({required this.child, required this.onPressed, super.key});
-  final Widget child;
-  final void Function() onPressed;
-
-  @override
-  Widget build(BuildContext context) => OutlinedButton(
-        style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: Colors.deepPurple)),
-        onPressed: onPressed,
-        child: child,
-      );
 }

@@ -20,19 +20,6 @@ class Marker {
   });
 }
 
-@JsonSerializable()
-class MarkerCoordinates {
-  final double latitude;
-  final double longitude;
-
-  MarkerCoordinates({required this.latitude, required this.longitude});
-
-  factory MarkerCoordinates.fromJson(Map<String, dynamic> json) =>
-      _$MarkerCoordinatesFromJson(json);
-
-  Map<String, dynamic> toJson() => _$MarkerCoordinatesToJson(this);
-}
-
 @JsonSerializable(fieldRename: FieldRename.snake)
 class MarkerRetrieval {
   final String mapboxId;
@@ -62,4 +49,17 @@ class MarkerSuggestion {
       _$MarkerSuggestionFromJson(json);
 
   Map<String, dynamic> toJson() => _$MarkerSuggestionToJson(this);
+}
+
+@JsonSerializable()
+class MarkerCoordinates {
+  final double latitude;
+  final double longitude;
+
+  MarkerCoordinates({required this.latitude, required this.longitude});
+
+  factory MarkerCoordinates.fromJson(Map<String, dynamic> json) =>
+      _$MarkerCoordinatesFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MarkerCoordinatesToJson(this);
 }

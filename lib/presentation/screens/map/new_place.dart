@@ -47,8 +47,8 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
         onSearchComplete: (mapboxMarker) {
           setState(() {
             mapboxId = mapboxMarker.mapboxId;
-            latitude = mapboxMarker.latitude;
-            longitude = mapboxMarker.longitude;
+            latitude = mapboxMarker.coordinates.latitude;
+            longitude = mapboxMarker.coordinates.longitude;
           });
         },
       ),

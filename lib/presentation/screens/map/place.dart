@@ -65,8 +65,8 @@ class _PlaceState extends State<Place> {
         onSearchComplete: (mapboxMarker) {
           setState(() {
             mapboxId = mapboxMarker.mapboxId;
-            latitude = mapboxMarker.latitude;
-            longitude = mapboxMarker.longitude;
+            latitude = mapboxMarker.coordinates.latitude;
+            longitude = mapboxMarker.coordinates.longitude;
           });
         },
       ),

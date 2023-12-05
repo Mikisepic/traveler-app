@@ -8,7 +8,7 @@ class UserInfo {
   final String email;
   final String about;
   final List<Trip> trips;
-  final List<MapboxMarker> markers;
+  final List<MarkerRetrieval> markers;
 
   UserInfo({
     required this.id,

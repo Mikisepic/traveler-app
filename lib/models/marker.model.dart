@@ -1,3 +1,7 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'marker.model.g.dart';
+
 class Marker {
   final String id;
   final String mapboxId;
@@ -16,36 +20,46 @@ class Marker {
   });
 }
 
-class MapboxMarker {
-  final String mapboxId;
-  final String name;
+@JsonSerializable()
+class MarkerCoordinates {
   final double latitude;
   final double longitude;
 
-  MapboxMarker({
-    required this.mapboxId,
-    required this.name,
-    required this.latitude,
-    required this.longitude,
-  });
+  MarkerCoordinates({required this.latitude, required this.longitude});
 
-  factory MapboxMarker.fromJson(Map<String, dynamic> json) {
-    return MapboxMarker(
-        mapboxId: json['properties']['mapbox_id'] as String,
-        name: json['properties']['name'] as String,
-        latitude: json['properties']['coordinates']['latitude'] as double,
-        longitude: json['properties']['coordinates']['longitude'] as double);
-  }
+  factory MarkerCoordinates.fromJson(Map<String, dynamic> json) =>
+      _$MarkerCoordinatesFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MarkerCoordinatesToJson(this);
 }
 
-class MarkerSuggestion {
+@JsonSerializable(fieldRename: FieldRename.snake)
+class MarkerRetrieval {
   final String mapboxId;
   final String name;
+  final MarkerCoordinates coordinates;
+
+  MarkerRetrieval({
+    required this.mapboxId,
+    required this.name,
+    required this.coordinates,
+  });
+
+  factory MarkerRetrieval.fromJson(Map<String, dynamic> json) =>
+      _$MarkerRetrievalFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MarkerRetrievalToJson(this);
+}
+
+@JsonSerializable(fieldRename: FieldRename.snake)
+class MarkerSuggestion {
+  final String name;
+  final String mapboxId;
 
   MarkerSuggestion({required this.mapboxId, required this.name});
 
-  factory MarkerSuggestion.fromJson(Map<String, dynamic> json) {
-    return MarkerSuggestion(
-        mapboxId: json['mapbox_id'] as String, name: json['name'] as String);
-  }
+  factory MarkerSuggestion.fromJson(Map<String, dynamic> json) =>
+      _$MarkerSuggestionFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MarkerSuggestionToJson(this);
 }

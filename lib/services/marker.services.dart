@@ -18,40 +18,27 @@ class MarkerService {
     final Response response = await get(url);
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> body =
-          jsonDecode(response.body) as Map<String, dynamic>;
+      final data = jsonDecode(response.body)['suggestions'] as List<dynamic>;
 
-      MapboxMarkerSuggestion maboxMarkerSuggestions =
-          MapboxMarkerSuggestion.fromJson(body);
-
-      List<MarkerSuggestion> markerSuggestions = maboxMarkerSuggestions
-          .suggestions
+      return data
           .map(
-              (item) => MarkerSuggestion.fromJson(item as Map<String, dynamic>))
+              (json) => MarkerSuggestion.fromJson(json as Map<String, dynamic>))
           .toList();
-
-      return markerSuggestions;
     }
 
     throw Exception(response.reasonPhrase);
   }
 
-  Future<MapboxMarker> retrieveSuggestionDetails(String id) async {
+  Future<MarkerRetrieval> retrieveSuggestionDetails(String id) async {
     final url = Uri.parse(
         '$retrieveURI/$id?access_token=$mapboxAccessToken&session_token=$sessionToken');
     final Response response = await get(url);
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> body =
-          jsonDecode(response.body) as Map<String, dynamic>;
+      final data = jsonDecode(response.body)['features'] as List<dynamic>;
 
-      MapboxMarkerFeatures mapboxMarkerFeatures =
-          MapboxMarkerFeatures.fromJson(body);
-
-      MapboxMarker marker = MapboxMarker.fromJson(
-          mapboxMarkerFeatures.features[0] as Map<String, dynamic>);
-
-      return marker;
+      return MarkerRetrieval.fromJson(
+          data[0]['properties'] as Map<String, dynamic>);
     }
 
     throw Exception(response.reasonPhrase);

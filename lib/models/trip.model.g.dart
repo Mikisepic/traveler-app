@@ -48,19 +48,17 @@ Map<String, dynamic> _$OptimizationWaypointToJson(
 
 OptimizationTrip _$OptimizationTripFromJson(Map<String, dynamic> json) =>
     OptimizationTrip(
-      name: json['name'] as String,
       geometry: OptimizationGeometry.fromJson(
           json['geometry'] as Map<String, dynamic>),
       legs: (json['legs'] as List<dynamic>)
           .map((e) => OptimizationTripLeg.fromJson(e as Map<String, dynamic>))
           .toList(),
-      duration: json['duration'] as int,
+      duration: (json['duration'] as num).toDouble(),
       distance: (json['distance'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$OptimizationTripToJson(OptimizationTrip instance) =>
     <String, dynamic>{
-      'name': instance.name,
       'geometry': instance.geometry,
       'legs': instance.legs,
       'duration': instance.duration,
@@ -107,13 +105,10 @@ Map<String, dynamic> _$OptimizationTripLegToJson(
 OptimizationTripLegStep _$OptimizationTripLegStepFromJson(
         Map<String, dynamic> json) =>
     OptimizationTripLegStep(
-      geometry: (json['geometry'] as List<dynamic>)
-          .map((e) => OptimizationGeometry.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      maneuver: (json['maneuver'] as List<dynamic>)
-          .map((e) =>
-              OptimizationTripLegManeuver.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      geometry: OptimizationGeometry.fromJson(
+          json['geometry'] as Map<String, dynamic>),
+      maneuver: OptimizationTripLegManeuver.fromJson(
+          json['maneuver'] as Map<String, dynamic>),
       mode: json['mode'] as String,
       drivingSide: json['driving_side'] as String,
       name: json['name'] as String,

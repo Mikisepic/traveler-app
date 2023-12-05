@@ -15,7 +15,7 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  final MarkerService markerService = MarkerService();
+  final MapboxService mapboxService = MapboxService();
   late final _textEditingController =
       TextEditingController(text: widget.initialValue);
 
@@ -25,7 +25,7 @@ class _SearchState extends State<Search> {
       children: <Widget>[
         TypeAheadField<MarkerSuggestion>(
           suggestionsCallback: (search) async {
-            return await markerService.fetchSuggestions(search);
+            return await mapboxService.fetchSuggestions(search);
           },
           controller: _textEditingController,
           builder: (context, controller, focusNode) {
@@ -46,8 +46,17 @@ class _SearchState extends State<Search> {
           onSelected: (MarkerSuggestion value) {
             _textEditingController.text = value.name;
             Future<MarkerRetrieval> marker =
-                markerService.retrieveSuggestionDetails(value.mapboxId);
+                mapboxService.retrieveSuggestionDetails(value.mapboxId);
+
+            Future<TripOptimization> tripOptimization =
+                mapboxService.fetchTripOptimization('driving', [
+              MarkerCoordinates(latitude: 37.78, longitude: -122.42),
+              MarkerCoordinates(latitude: 37.91, longitude: -122.45),
+              MarkerCoordinates(latitude: 37.73, longitude: -122.48),
+            ]);
+
             marker.then((value) => widget.onSearchComplete(value));
+            tripOptimization.then((value) => print(value.toJson()));
           },
         )
       ],

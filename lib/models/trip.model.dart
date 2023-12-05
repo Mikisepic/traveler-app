@@ -56,15 +56,13 @@ class OptimizationWaypoint {
 
 @JsonSerializable()
 class OptimizationTrip {
-  final String name;
   final OptimizationGeometry geometry;
   final List<OptimizationTripLeg> legs;
-  final int duration;
+  final double duration;
   final double distance;
 
   OptimizationTrip(
-      {required this.name,
-      required this.geometry,
+      {required this.geometry,
       required this.legs,
       required this.duration,
       required this.distance});
@@ -110,8 +108,8 @@ class OptimizationTripLeg {
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class OptimizationTripLegStep {
-  final List<OptimizationGeometry> geometry;
-  final List<OptimizationTripLegManeuver> maneuver;
+  final OptimizationGeometry geometry;
+  final OptimizationTripLegManeuver maneuver;
   final String mode;
   final String drivingSide;
   final String name;

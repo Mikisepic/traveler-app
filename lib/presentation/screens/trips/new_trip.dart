@@ -52,7 +52,25 @@ class _NewTripScreenState extends State<NewTripScreen> {
       ),
     );
 
-    Widget multiSelectField = Padding(
+    Widget isPrivateField = Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            const Text('Is Private'),
+            Switch(
+              value: isPrivate,
+              onChanged: (bool value) {
+                setState(() {
+                  isPrivate = value;
+                });
+              },
+            )
+          ],
+        ));
+
+    Widget markersField = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: MultiSelectDialogField<Marker>(
         items: context
@@ -75,23 +93,28 @@ class _NewTripScreenState extends State<NewTripScreen> {
       ),
     );
 
-    Widget isPrivateField = Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            const Text('Is Private'),
-            Switch(
-              value: isPrivate,
-              onChanged: (bool value) {
-                setState(() {
-                  isPrivate = value;
-                });
-              },
-            )
-          ],
-        ));
+    Widget contributorsField = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: MultiSelectDialogField<Marker>(
+        items: context
+            .read<MarkerProvider>()
+            .markers
+            .map((e) => MultiSelectItem(e, e.title))
+            .toList(),
+        listType: MultiSelectListType.CHIP,
+        searchable: true,
+        onConfirm: (values) {
+          _selectedMarkers = values;
+        },
+        chipDisplay: MultiSelectChipDisplay(
+          onTap: (value) {
+            setState(() {
+              _selectedMarkers.remove(value);
+            });
+          },
+        ),
+      ),
+    );
 
     Widget submitButton = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -125,8 +148,9 @@ class _NewTripScreenState extends State<NewTripScreen> {
                 children: <Widget>[
                   titleField,
                   descriptionField,
-                  multiSelectField,
                   isPrivateField,
+                  markersField,
+                  contributorsField,
                   submitButton,
                 ],
               )),

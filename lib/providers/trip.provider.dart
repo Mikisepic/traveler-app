@@ -33,6 +33,7 @@ class TripProvider extends ChangeNotifier {
                 title: document.data()['title'] as String,
                 description: document.data()['description'] as String,
                 isPrivate: document.data()['isPrivate'] as bool,
+                contributors: document.data()['contributors'] as List<String>,
                 markers: document.data()['markers'] as List<dynamic>,
               ),
             );
@@ -59,24 +60,34 @@ class TripProvider extends ChangeNotifier {
       'userId': FirebaseAuth.instance.currentUser!.uid,
       'title': trip.title,
       'description': trip.description,
-      'isPrivate': trip.isPrivate,
       'markers': markers,
+      'contributors': trip.contributors as List<DocumentReference>,
+      'isPrivate': trip.isPrivate,
       'created_at': DateTime.now().millisecondsSinceEpoch,
       'updated_at': DateTime.now().millisecondsSinceEpoch
     });
   }
 
   void update(Trip trip) {
-    final index = _trips.indexWhere((trip) => (trip.id == trip.id));
+    List<DocumentReference> markers = (trip.markers as List<Marker>)
+        .map((e) => FirebaseFirestore.instance.collection('markers').doc(e.id))
+        .toList();
 
-    if (index != -1) {
-      _trips[index] = trip;
-      notifyListeners();
-    }
+    List<DocumentReference> contributors = (trip.contributors)
+        .map((e) => FirebaseFirestore.instance.collection('users').doc(e))
+        .toList();
+
+    FirebaseFirestore.instance.collection('trips').doc(trip.id).set({
+      'title': trip.title,
+      'description': trip.description,
+      'isPrivate': trip.isPrivate,
+      'markers': markers,
+      'contributors': contributors,
+      'updated_at': DateTime.now().millisecondsSinceEpoch
+    });
   }
 
-  void delete(String id) {
-    _trips.removeWhere((trip) => trip.id == id);
-    notifyListeners();
+  Future<void> delete(String id) {
+    return FirebaseFirestore.instance.collection('trips').doc(id).delete();
   }
 }

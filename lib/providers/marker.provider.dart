@@ -71,7 +71,6 @@ class MarkerProvider with ChangeNotifier {
   }
 
   void update(Marker marker) {
-    final index = _markers.indexWhere((marker) => marker.id == marker.id);
     FirebaseFirestore.instance.collection('markers').doc(marker.id).set({
       'title': marker.title,
       'mapboxId': marker.mapboxId,
@@ -79,11 +78,6 @@ class MarkerProvider with ChangeNotifier {
       'coordinates': GeoPoint(marker.latitude, marker.longitude),
       'updated_at': DateTime.now().millisecondsSinceEpoch
     });
-
-    if (index != -1) {
-      _markers[index] = marker;
-      notifyListeners();
-    }
   }
 
   Future<void> delete(String id) {

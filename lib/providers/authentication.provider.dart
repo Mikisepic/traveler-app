@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
@@ -32,5 +33,23 @@ class AuthenticationProvider extends ChangeNotifier {
       }
       notifyListeners();
     });
+  }
+
+  void registerUserInFirestore(String uid, String? email) async {
+    await FirebaseFirestore.instance.collection('users').doc(uid).set({
+      'userId': uid,
+      'email': email,
+      'created_at': DateTime.now().millisecondsSinceEpoch,
+      'updated_at': DateTime.now().millisecondsSinceEpoch
+    });
+  }
+
+  void deleteUserFromFirestore() async {
+    if (user != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user!.uid)
+          .delete();
+    }
   }
 }

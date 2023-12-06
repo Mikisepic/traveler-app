@@ -1,6 +1,8 @@
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:traveler/providers/providers.dart';
 
 import './screens/screens.dart';
 
@@ -91,6 +93,9 @@ final router = GoRouter(
               }
               if (state is UserCreated) {
                 user.updateDisplayName(user.email!.split('@')[0]);
+                context
+                    .read<AuthenticationProvider>()
+                    .registerUserInFirestore(user.uid, user.email);
               }
               if (!user.emailVerified) {
                 user.sendEmailVerification();
@@ -126,6 +131,9 @@ final router = GoRouter(
             SignedOutAction((context) {
               context.goNamed('user_info');
             }),
+            AccountDeletedAction((context, user) {
+              context.read<AuthenticationProvider>().deleteUserFromFirestore();
+            })
           ],
         );
       },

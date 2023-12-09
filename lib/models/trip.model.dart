@@ -8,7 +8,7 @@ class Trip {
   final String description;
   final bool isPrivate;
   final List<dynamic> markers;
-  final List<String> contributors;
+  final List<dynamic> contributors;
 
   Trip({
     required this.id,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:traveler/models/models.dart';
-import 'package:traveler/presentation/components/compoennts.dart';
+import 'package:traveler/presentation/components/components.dart';
 import 'package:traveler/presentation/screens/map/place.dart';
 import 'package:traveler/providers/providers.dart';
 
@@ -70,11 +70,13 @@ class _MapScreenState extends State<MapScreen> {
           Expanded(
             child: Consumer<MarkerProvider>(
               builder: (context, provider, child) {
-                return ListView.builder(
-                  itemCount: provider.markers.length,
-                  itemBuilder: (context, index) =>
-                      listTile(provider.markers[index], provider),
-                );
+                return provider.loading
+                    ? const CircularProgressIndicator()
+                    : ListView.builder(
+                        itemCount: provider.markers.length,
+                        itemBuilder: (context, index) =>
+                            listTile(provider.markers[index], provider),
+                      );
               },
             ),
           ),

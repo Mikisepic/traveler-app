@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:traveler/models/models.dart';
-import 'package:traveler/presentation/components/compoennts.dart';
+import 'package:traveler/presentation/components/components.dart';
 import 'package:traveler/providers/providers.dart';
 import 'package:uuid/uuid.dart';
 

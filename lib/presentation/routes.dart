@@ -72,6 +72,9 @@ final router = GoRouter(
       path: '/sign-in',
       builder: (context, state) {
         return SignInScreen(
+          providers: [
+            EmailAuthProvider(),
+          ],
           actions: [
             ForgotPasswordAction(((context, email) {
               final uri = Uri(
@@ -131,9 +134,6 @@ final router = GoRouter(
             SignedOutAction((context) {
               context.goNamed('user_info');
             }),
-            AccountDeletedAction((context, user) {
-              context.read<AuthenticationProvider>().deleteUserFromFirestore();
-            })
           ],
         );
       },

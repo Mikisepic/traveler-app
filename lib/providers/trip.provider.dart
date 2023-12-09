@@ -33,7 +33,7 @@ class TripProvider extends ChangeNotifier {
                 title: document.data()['title'] as String,
                 description: document.data()['description'] as String,
                 isPrivate: document.data()['isPrivate'] as bool,
-                contributors: document.data()['contributors'] as List<String>,
+                contributors: document.data()['contributors'] as List<dynamic>,
                 markers: document.data()['markers'] as List<dynamic>,
               ),
             );
@@ -74,7 +74,8 @@ class TripProvider extends ChangeNotifier {
         .toList();
 
     List<DocumentReference> contributors = (trip.contributors)
-        .map((e) => FirebaseFirestore.instance.collection('users').doc(e))
+        .map((e) =>
+            FirebaseFirestore.instance.collection('users').doc(e as String))
         .toList();
 
     FirebaseFirestore.instance.collection('trips').doc(trip.id).set({

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:traveler/models/models.dart';
-import 'package:traveler/presentation/components/compoennts.dart';
+import 'package:traveler/presentation/components/components.dart';
 import 'package:traveler/providers/providers.dart';
 
 class Place extends StatefulWidget {

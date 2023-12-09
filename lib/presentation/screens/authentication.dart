@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:traveler/presentation/components/compoennts.dart';
+import 'package:traveler/presentation/components/components.dart';
 
 class Authentication extends StatelessWidget {
   const Authentication({

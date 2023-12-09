@@ -7,24 +7,33 @@ import 'package:traveler/models/models.dart';
 
 class MarkerProvider with ChangeNotifier {
   StreamSubscription<QuerySnapshot>? _markersSubscription;
+  bool _loading = false;
+  bool get loading => _loading;
   List<Marker> _markers = [];
   List<Marker> get markers => _markers;
 
-  MarkerProvider() {
+  final FirebaseFirestore firebaseFirestore;
+  final FirebaseAuth firebaseAuth;
+
+  MarkerProvider(
+      {required this.firebaseFirestore, required this.firebaseAuth}) {
     init();
   }
 
   Future<void> init() async {
-    FirebaseAuth.instance.userChanges().listen((user) {
+    firebaseAuth.userChanges().listen((user) {
       _markersSubscription?.cancel();
 
       if (user != null) {
-        _markersSubscription = FirebaseFirestore.instance
+        _markersSubscription = firebaseFirestore
             .collection('markers')
+            .where('userId', isEqualTo: user.uid)
             .orderBy('updated_at', descending: true)
+            .limit(10)
             .snapshots()
             .listen((snapshot) {
           _markers = [];
+          _loading = true;
           for (final document in snapshot.docs) {
             _markers.add(
               Marker(
@@ -38,6 +47,7 @@ class MarkerProvider with ChangeNotifier {
               ),
             );
           }
+          _loading = false;
           notifyListeners();
         });
       } else {
@@ -73,6 +83,7 @@ class MarkerProvider with ChangeNotifier {
   void update(Marker marker) {
     FirebaseFirestore.instance.collection('markers').doc(marker.id).set({
       'title': marker.title,
+      'userId': FirebaseAuth.instance.currentUser!.uid,
       'mapboxId': marker.mapboxId,
       'isFavorite': marker.isFavorite,
       'coordinates': GeoPoint(marker.latitude, marker.longitude),

@@ -3,29 +3,28 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:traveler/firebase_options.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
-  AuthenticationProvider() {
+  final FirebaseFirestore firebaseFirestore;
+  final FirebaseAuth firebaseAuth;
+
+  AuthenticationProvider(
+      {required this.firebaseAuth, required this.firebaseFirestore}) {
     init();
   }
 
   bool _isAuthenticated = false;
   bool get isAuthenticated => _isAuthenticated;
-  User? get user => FirebaseAuth.instance.currentUser;
+  User? get user => firebaseAuth.currentUser;
 
   Future<void> init() async {
-    await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
-
     FirebaseUIAuth.configureProviders([
       EmailAuthProvider(),
     ]);
 
-    FirebaseAuth.instance.userChanges().listen((user) {
+    firebaseAuth.userChanges().listen((user) {
       if (user != null) {
         _isAuthenticated = true;
       } else {
@@ -36,7 +35,7 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
   void registerUserInFirestore(String uid, String? email) async {
-    await FirebaseFirestore.instance.collection('users').doc(uid).set({
+    await firebaseFirestore.collection('users').doc(uid).set({
       'userId': uid,
       'email': email,
       'created_at': DateTime.now().millisecondsSinceEpoch,
@@ -46,10 +45,7 @@ class AuthenticationProvider extends ChangeNotifier {
 
   void deleteUserFromFirestore() async {
     if (user != null) {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user!.uid)
-          .delete();
+      await firebaseFirestore.collection('users').doc(user!.uid).delete();
     }
   }
 }

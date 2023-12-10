@@ -13,7 +13,7 @@ class Trip {
   Trip({
     required this.id,
     required this.title,
-    required this.description,
+    this.description = '',
     this.isPrivate = false,
     this.markers = const [],
     this.contributors = const [],

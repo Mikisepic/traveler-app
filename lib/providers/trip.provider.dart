@@ -7,8 +7,15 @@ import 'package:traveler/models/models.dart';
 
 class TripProvider extends ChangeNotifier {
   StreamSubscription<QuerySnapshot>? _tripsSubscription;
+  bool _loading = false;
+  bool get loading => _loading;
   List<Trip> _trips = [];
   List<Trip> get trips => _trips;
+  final Trip _trip = Trip(
+    id: '',
+    title: '',
+  );
+  Trip get trip => _trip;
 
   TripProvider() {
     init();
@@ -25,7 +32,7 @@ class TripProvider extends ChangeNotifier {
             .snapshots()
             .listen((snapshot) {
           _trips = [];
-
+          _loading = true;
           for (final document in snapshot.docs) {
             _trips.add(
               Trip(
@@ -38,6 +45,7 @@ class TripProvider extends ChangeNotifier {
               ),
             );
           }
+          _loading = false;
           notifyListeners();
         });
       } else {
@@ -47,21 +55,22 @@ class TripProvider extends ChangeNotifier {
     });
   }
 
+  Trip fetchDialogData(String id) {
+    final index = _trips.indexWhere((element) => element.id == id);
+    return _trips[index];
+  }
+
   Future<DocumentReference> create(Trip trip, bool isAuthenticated) {
     if (!isAuthenticated) {
       throw Exception('Must be logged in');
     }
 
-    List<DocumentReference> markers = (trip.markers as List<Marker>)
-        .map((e) => FirebaseFirestore.instance.collection('markers').doc(e.id))
-        .toList();
-
     return FirebaseFirestore.instance.collection('trips').add({
       'userId': FirebaseAuth.instance.currentUser!.uid,
       'title': trip.title,
       'description': trip.description,
-      'markers': markers,
-      'contributors': trip.contributors as List<DocumentReference>,
+      'markers': trip.markers.map((e) => e.id),
+      'contributors': [FirebaseAuth.instance.currentUser!.uid],
       'isPrivate': trip.isPrivate,
       'created_at': DateTime.now().millisecondsSinceEpoch,
       'updated_at': DateTime.now().millisecondsSinceEpoch
@@ -69,21 +78,12 @@ class TripProvider extends ChangeNotifier {
   }
 
   void update(Trip trip) {
-    List<DocumentReference> markers = (trip.markers as List<Marker>)
-        .map((e) => FirebaseFirestore.instance.collection('markers').doc(e.id))
-        .toList();
-
-    List<DocumentReference> contributors = (trip.contributors)
-        .map((e) =>
-            FirebaseFirestore.instance.collection('users').doc(e as String))
-        .toList();
-
-    FirebaseFirestore.instance.collection('trips').doc(trip.id).set({
+    FirebaseFirestore.instance.collection('trips').doc(trip.id).update({
       'title': trip.title,
       'description': trip.description,
       'isPrivate': trip.isPrivate,
-      'markers': markers,
-      'contributors': contributors,
+      'markers': trip.markers,
+      'contributors': trip.contributors,
       'updated_at': DateTime.now().millisecondsSinceEpoch
     });
   }

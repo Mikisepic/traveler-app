@@ -19,7 +19,7 @@ class _PlaceState extends State<Place> {
 
   @override
   Widget build(BuildContext context) {
-    final marker = context.read<MarkerProvider>().fetchOne(widget.id);
+    final marker = context.read<MarkerProvider>().fetchDialogData(widget.id);
     late var titleController = TextEditingController(text: marker.title);
     late String mapboxId = marker.mapboxId;
     late double latitude = marker.latitude;

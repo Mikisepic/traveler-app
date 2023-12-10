@@ -11,6 +11,8 @@ class MarkerProvider with ChangeNotifier {
   bool get loading => _loading;
   List<Marker> _markers = [];
   List<Marker> get markers => _markers;
+  Marker? _marker;
+  Marker? get marker => _marker;
 
   final FirebaseFirestore firebaseFirestore;
   final FirebaseAuth firebaseAuth;
@@ -57,7 +59,24 @@ class MarkerProvider with ChangeNotifier {
     });
   }
 
-  Marker fetchOne(String id) {
+  fetchOne(String id) async {
+    final reference = firebaseFirestore
+        .collection('markers')
+        .doc(id)
+        .withConverter(
+            fromFirestore: Marker.fromFirestore,
+            toFirestore: (Marker marker, _) => marker.toFirestore());
+
+    var docSnap = await reference.get();
+    final marker = docSnap.data();
+
+    if (marker != null) {
+      _marker = marker;
+      notifyListeners();
+    }
+  }
+
+  Marker fetchDialogData(String id) {
     final index = _markers.indexWhere((element) => element.id == id);
     return _markers[index];
   }
@@ -81,7 +100,7 @@ class MarkerProvider with ChangeNotifier {
   }
 
   void update(Marker marker) {
-    FirebaseFirestore.instance.collection('markers').doc(marker.id).set({
+    FirebaseFirestore.instance.collection('markers').doc(marker.id).update({
       'title': marker.title,
       'userId': FirebaseAuth.instance.currentUser!.uid,
       'mapboxId': marker.mapboxId,

@@ -15,11 +15,10 @@ class TripDetailsScreen extends StatefulWidget {
 class _TripDetailsScreenState extends State<TripDetailsScreen> {
   @override
   Widget build(BuildContext context) {
-    final trip = context.read<TripProvider>().trips[context
-        .read<TripProvider>()
-        .trips
-        .indexWhere((element) => element.id == widget.id)];
+    final trip = context.read<TripProvider>().fetchDialogData(widget.id);
+
     final titleController = TextEditingController(text: trip.title);
+    final descriptionController = TextEditingController(text: trip.description);
 
     Widget titleField = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -44,12 +43,29 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
       ),
     );
 
+    Widget descriptionField = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Row(
+        children: [
+          Expanded(
+              child: TextFormField(
+            controller: descriptionController,
+            autofocus: true,
+            decoration: const InputDecoration(
+              border: UnderlineInputBorder(),
+              hintText: 'Title',
+            ),
+          )),
+        ],
+      ),
+    );
+
     return WrapScaffold(
       label: widget.id,
       body: Padding(
           padding: const EdgeInsets.all(40.0),
           child: Column(
-            children: <Widget>[titleField],
+            children: <Widget>[titleField, descriptionField],
           )),
     );
   }

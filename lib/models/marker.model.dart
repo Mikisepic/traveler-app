@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'marker.model.g.dart';
@@ -18,6 +19,32 @@ class Marker {
     required this.longitude,
     this.isFavorite = false,
   });
+
+  factory Marker.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final data = snapshot.data();
+    return Marker(
+      id: data?['id'] as String,
+      mapboxId: data?['mapboxId'] as String,
+      title: data?['title'] as String,
+      latitude: (data?['coordinates'] as GeoPoint).latitude,
+      longitude: (data?['coordinates'] as GeoPoint).longitude,
+      isFavorite: data?['isFavorite'] as bool,
+    );
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      "name": id,
+      "state": mapboxId,
+      "country": title,
+      "capital": latitude,
+      "population": longitude,
+      "regions": isFavorite,
+    };
+  }
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake)

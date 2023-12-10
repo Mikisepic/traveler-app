@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:traveler/models/models.dart';
 
 part 'trip.model.g.dart';
 
@@ -8,8 +7,8 @@ class Trip {
   final String title;
   final String description;
   final bool isPrivate;
-  final List<Marker> markers;
-  final List<dynamic> contributors;
+  final List<String> markers;
+  final List<String> contributors;
 
   Trip({
     required this.id,

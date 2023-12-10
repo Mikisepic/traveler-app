@@ -1,13 +1,17 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:traveler/models/models.dart';
 import 'package:uuid/uuid.dart';
 
 class UserProvider extends ChangeNotifier {
-  List<UserInfo> _users = [];
-  List<UserInfo> get users => _users;
+  List<UserProfileMetadata> _users = [];
+  List<UserProfileMetadata> get users => _users;
+  StreamSubscription<QuerySnapshot>? _usersSubscription;
 
-  UserInfo _user = UserInfo(
+  UserProfileMetadata _user = UserProfileMetadata(
     id: const Uuid().v4(),
     firstName: 'John',
     lastName: 'Doe',
@@ -17,39 +21,41 @@ class UserProvider extends ChangeNotifier {
     about:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   );
-  UserInfo get user => _user;
+  UserProfileMetadata get user => _user;
 
-  Future<UserInfo> doStuff(String id) async {
-    final reference = FirebaseFirestore.instance
-        .collection('users')
-        .doc(id)
-        .withConverter(
-            fromFirestore: UserInfo.fromFirestore,
-            toFirestore: (UserInfo user, _) => user.toFirestore());
-
-    var docSnap = await reference.get();
-    return docSnap.data()!;
+  UserProvider() {
+    init();
   }
 
-  fetchUsers() async {
-    var querySnapshot =
-        await FirebaseFirestore.instance.collection('users').get();
+  init() {
+    FirebaseAuth.instance.userChanges().listen((user) {
+      _usersSubscription?.cancel();
 
-    List<UserInfo> usrs = [];
-
-    await Future.wait(
-      querySnapshot.docs.map((docSnapshot) async {
-        var value = await doStuff(docSnapshot.id);
-        usrs.add(value);
-      }),
-    );
-    _users = usrs;
-    notifyListeners();
+      if (user != null) {
+        _usersSubscription = FirebaseFirestore.instance
+            .collection('users')
+            .orderBy('updated_at', descending: true)
+            .snapshots()
+            .listen((snapshot) {
+          _users = [];
+          for (final document in snapshot.docs) {
+            _users.add(UserProfileMetadata(
+              id: document.id,
+              email: document.data()['email'] as String,
+            ));
+          }
+          notifyListeners();
+        });
+      } else {
+        _users = [];
+      }
+      notifyListeners();
+    });
   }
 
   void updateUserDetails(String newFirstName, String newLastName,
       String newEmail, String newAbout) {
-    _user = UserInfo(
+    _user = UserProfileMetadata(
         id: _user.id,
         firstName: newFirstName,
         lastName: newLastName,

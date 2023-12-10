@@ -25,8 +25,8 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
     TextEditingController descriptionController =
         TextEditingController(text: trip.description);
     bool isPrivate = trip.isPrivate;
-    List<Marker> selectedMarkers = [];
-    List<UserInfo> selectedContributors = [];
+    List<String> selectedMarkers = [];
+    List<String> selectedContributors = [];
 
     Widget titleField = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -88,17 +88,16 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
 
     Widget markersField = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      child: MultiSelectDialogField<Marker>(
+      child: MultiSelectDialogField<String>(
         items: context
             .read<MarkerProvider>()
             .markers
-            .map((e) => MultiSelectItem(e, e.title))
+            .map((e) => MultiSelectItem(e.id, e.title))
             .toList(),
         listType: MultiSelectListType.CHIP,
         searchable: true,
         initialValue: trip.markers,
         onConfirm: (values) {
-          print(values);
           selectedMarkers = values;
         },
         chipDisplay: MultiSelectChipDisplay(
@@ -118,15 +117,15 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
           if (formKey.currentState!.validate()) {
             final titleValue = titleController.text;
             final descriptionValue = descriptionController.text;
-            context.read<TripProvider>().create(
-                Trip(
-                    id: widget.id,
-                    title: titleValue,
-                    description: descriptionValue,
-                    isPrivate: isPrivate,
-                    markers: selectedMarkers,
-                    contributors: selectedContributors),
-                context.read<AuthenticationProvider>().isAuthenticated);
+            context.read<TripProvider>().update(
+                  Trip(
+                      id: widget.id,
+                      title: titleValue,
+                      description: descriptionValue,
+                      isPrivate: isPrivate,
+                      markers: selectedMarkers,
+                      contributors: selectedContributors),
+                );
             context.goNamed('trip_list');
           }
         },
@@ -146,7 +145,6 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                   descriptionField,
                   isPrivateField,
                   markersField,
-                  Text('${trip.markers}'),
                   submitButton
                 ],
               ))),

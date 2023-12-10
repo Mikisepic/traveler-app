@@ -11,17 +11,12 @@ class TripProvider extends ChangeNotifier {
   bool get loading => _loading;
   List<Trip> _trips = [];
   List<Trip> get trips => _trips;
-  final Trip _trip = Trip(
-    id: '',
-    title: '',
-  );
-  Trip get trip => _trip;
 
   TripProvider() {
     init();
   }
 
-  Future<void> init() async {
+  init() async {
     FirebaseAuth.instance.userChanges().listen((user) {
       _tripsSubscription?.cancel();
 
@@ -39,14 +34,11 @@ class TripProvider extends ChangeNotifier {
               title: document.data()['title'] as String,
               description: document.data()['description'] as String,
               isPrivate: document.data()['isPrivate'] as bool,
-              contributors: document.data()['contributors'] as List<dynamic>,
               markers: (document.data()['markers'] as List<dynamic>)
-                  .map((e) => Marker(
-                      id: e['id'] as String,
-                      title: e['title'] as String,
-                      mapboxId: '',
-                      latitude: 0,
-                      longitude: 0))
+                  .map((e) => e.toString())
+                  .toList(),
+              contributors: (document.data()['contributors'] as List<dynamic>)
+                  .map((e) => e.toString())
                   .toList(),
             ));
           }
@@ -65,25 +57,29 @@ class TripProvider extends ChangeNotifier {
     return _trips[index];
   }
 
-  Future<DocumentReference> create(Trip trip, bool isAuthenticated) {
+  create(Trip trip, bool isAuthenticated) {
     if (!isAuthenticated) {
       throw Exception('Must be logged in');
     }
 
-    return FirebaseFirestore.instance.collection('trips').add({
+    FirebaseFirestore.instance.collection('trips').add({
       'userId': FirebaseAuth.instance.currentUser!.uid,
       'title': trip.title,
       'description': trip.description,
-      'markers': trip.markers.map((e) => e.id),
+      'markers': trip.markers,
       'contributors': trip.isPrivate
           ? [FirebaseAuth.instance.currentUser!.uid]
-          : [
-              FirebaseAuth.instance.currentUser!.uid,
-              ...trip.contributors.map((e) => e.id)
-            ],
+          : [FirebaseAuth.instance.currentUser!.uid, ...trip.contributors],
       'isPrivate': trip.isPrivate,
       'created_at': DateTime.now().millisecondsSinceEpoch,
       'updated_at': DateTime.now().millisecondsSinceEpoch
+    });
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({
+      'trips': FieldValue.arrayUnion([trip.id])
     });
   }
 
@@ -98,7 +94,14 @@ class TripProvider extends ChangeNotifier {
     });
   }
 
-  Future<void> delete(String id) {
-    return FirebaseFirestore.instance.collection('trips').doc(id).delete();
+  delete(String id) {
+    FirebaseFirestore.instance.collection('trips').doc(id).delete();
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({
+      'trips': FieldValue.arrayRemove([id])
+    });
   }
 }

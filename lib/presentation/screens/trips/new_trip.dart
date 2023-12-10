@@ -19,8 +19,8 @@ class _NewTripScreenState extends State<NewTripScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   bool isPrivate = false;
-  List<Marker> selectedMarkers = [];
-  List<UserInfo> selectedContributors = [];
+  List<String> selectedMarkers = [];
+  List<String> selectedContributors = [];
 
   @override
   Widget build(BuildContext context) {
@@ -73,11 +73,11 @@ class _NewTripScreenState extends State<NewTripScreen> {
 
     Widget markersField = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      child: MultiSelectDialogField<Marker>(
+      child: MultiSelectDialogField<String>(
         items: context
             .read<MarkerProvider>()
             .markers
-            .map((e) => MultiSelectItem(e, e.title))
+            .map((e) => MultiSelectItem(e.id, e.title))
             .toList(),
         listType: MultiSelectListType.CHIP,
         searchable: true,
@@ -96,11 +96,11 @@ class _NewTripScreenState extends State<NewTripScreen> {
 
     Widget contributorsField = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      child: MultiSelectDialogField<UserInfo>(
+      child: MultiSelectDialogField<String>(
         items: context
             .read<UserProvider>()
             .users
-            .map((e) => MultiSelectItem(e, e.id))
+            .map((e) => MultiSelectItem(e.id, e.email))
             .toList(),
         listType: MultiSelectListType.CHIP,
         searchable: true,
@@ -130,7 +130,8 @@ class _NewTripScreenState extends State<NewTripScreen> {
                     title: titleValue,
                     isPrivate: isPrivate,
                     description: descriptionValue,
-                    markers: selectedMarkers),
+                    markers: selectedMarkers,
+                    contributors: selectedContributors),
                 context.read<AuthenticationProvider>().isAuthenticated);
             context.goNamed('trip_list');
           }
@@ -138,8 +139,6 @@ class _NewTripScreenState extends State<NewTripScreen> {
         child: const Text('Submit'),
       ),
     );
-
-    context.read<UserProvider>().fetchUsers();
 
     return WrapScaffold(
         label: 'New Trip',

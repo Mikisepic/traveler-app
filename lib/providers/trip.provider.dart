@@ -34,16 +34,21 @@ class TripProvider extends ChangeNotifier {
           _trips = [];
           _loading = true;
           for (final document in snapshot.docs) {
-            _trips.add(
-              Trip(
-                id: document.id,
-                title: document.data()['title'] as String,
-                description: document.data()['description'] as String,
-                isPrivate: document.data()['isPrivate'] as bool,
-                contributors: document.data()['contributors'] as List<dynamic>,
-                markers: document.data()['markers'] as List<dynamic>,
-              ),
-            );
+            _trips.add(Trip(
+              id: document.id,
+              title: document.data()['title'] as String,
+              description: document.data()['description'] as String,
+              isPrivate: document.data()['isPrivate'] as bool,
+              contributors: document.data()['contributors'] as List<dynamic>,
+              markers: (document.data()['markers'] as List<dynamic>)
+                  .map((e) => Marker(
+                      id: e['id'] as String,
+                      title: e['title'] as String,
+                      mapboxId: '',
+                      latitude: 0,
+                      longitude: 0))
+                  .toList(),
+            ));
           }
           _loading = false;
           notifyListeners();

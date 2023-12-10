@@ -84,7 +84,7 @@ class _PlaceState extends State<Place> {
             if (_formKey.currentState!.validate()) {
               final titleValue = titleController.text;
               widget.onEditComplete(Marker(
-                  id: marker.id,
+                  id: widget.id,
                   mapboxId: mapboxId,
                   title: titleValue,
                   latitude: latitude,

@@ -11,8 +11,6 @@ class MarkerProvider with ChangeNotifier {
   bool get loading => _loading;
   List<Marker> _markers = [];
   List<Marker> get markers => _markers;
-  Marker? _marker;
-  Marker? get marker => _marker;
 
   final FirebaseFirestore firebaseFirestore;
   final FirebaseAuth firebaseAuth;
@@ -59,7 +57,7 @@ class MarkerProvider with ChangeNotifier {
     });
   }
 
-  fetchOne(String id) async {
+  Future<Marker?> fetchOne(String id) async {
     final reference = firebaseFirestore
         .collection('markers')
         .doc(id)
@@ -71,9 +69,9 @@ class MarkerProvider with ChangeNotifier {
     final marker = docSnap.data();
 
     if (marker != null) {
-      _marker = marker;
-      notifyListeners();
+      return marker;
     }
+    return null;
   }
 
   Marker fetchDialogData(String id) {
@@ -81,12 +79,12 @@ class MarkerProvider with ChangeNotifier {
     return _markers[index];
   }
 
-  Future<DocumentReference> create(Marker marker, bool isAuthenticated) {
+  create(Marker marker, bool isAuthenticated) {
     if (!isAuthenticated) {
       throw Exception('Must be logged in');
     }
 
-    return FirebaseFirestore.instance.collection('markers').add({
+    FirebaseFirestore.instance.collection('markers').add({
       'id': marker.id,
       'userId': FirebaseAuth.instance.currentUser!.uid,
       'username': FirebaseAuth.instance.currentUser!.displayName,
@@ -96,6 +94,13 @@ class MarkerProvider with ChangeNotifier {
       'coordinates': GeoPoint(marker.latitude, marker.longitude),
       'created_at': DateTime.now().millisecondsSinceEpoch,
       'updated_at': DateTime.now().millisecondsSinceEpoch
+    });
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({
+      'markers': FieldValue.arrayUnion([marker.id])
     });
   }
 
@@ -110,7 +115,13 @@ class MarkerProvider with ChangeNotifier {
     });
   }
 
-  Future<void> delete(String id) {
-    return FirebaseFirestore.instance.collection('markers').doc(id).delete();
+  delete(String id) {
+    FirebaseFirestore.instance.collection('markers').doc(id).delete();
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({
+      'markers': FieldValue.arrayRemove([id])
+    });
   }
 }

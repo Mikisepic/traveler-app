@@ -15,12 +15,12 @@ class NewTripScreen extends StatefulWidget {
 }
 
 class _NewTripScreenState extends State<NewTripScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final titleController = TextEditingController();
-  final descriptionController = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   bool isPrivate = false;
-  List<Marker> _selectedMarkers = [];
-  List<UserInfo> _selectedUsers = [];
+  List<Marker> selectedMarkers = [];
+  List<UserInfo> selectedContributors = [];
 
   @override
   Widget build(BuildContext context) {
@@ -82,51 +82,46 @@ class _NewTripScreenState extends State<NewTripScreen> {
         listType: MultiSelectListType.CHIP,
         searchable: true,
         onConfirm: (values) {
-          _selectedMarkers = values;
+          selectedMarkers = values;
         },
         chipDisplay: MultiSelectChipDisplay(
           onTap: (value) {
             setState(() {
-              _selectedMarkers.remove(value);
+              selectedMarkers.remove(value);
             });
           },
         ),
       ),
     );
 
-    Widget contributorsField = Consumer<UserProvider>(
-      builder: (context, provider, child) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: MultiSelectDialogField<UserInfo>(
-            items: context
-                .read<UserProvider>()
-                .users
-                .map((e) => MultiSelectItem(e, e.email))
-                .toList(),
-            listType: MultiSelectListType.CHIP,
-            searchable: true,
-            onConfirm: (values) {
-              _selectedUsers = values;
-            },
-            chipDisplay: MultiSelectChipDisplay(
-              onTap: (value) {
-                setState(() {
-                  _selectedUsers
-                      .removeWhere((element) => element.id == value.id);
-                });
-              },
-            ),
-          ),
-        );
-      },
+    Widget contributorsField = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: MultiSelectDialogField<UserInfo>(
+        items: context
+            .read<UserProvider>()
+            .users
+            .map((e) => MultiSelectItem(e, e.id))
+            .toList(),
+        listType: MultiSelectListType.CHIP,
+        searchable: true,
+        onConfirm: (values) {
+          selectedContributors = values;
+        },
+        chipDisplay: MultiSelectChipDisplay(
+          onTap: (value) {
+            setState(() {
+              selectedContributors.remove(value);
+            });
+          },
+        ),
+      ),
     );
 
     Widget submitButton = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: ElevatedButton(
         onPressed: () {
-          if (_formKey.currentState!.validate()) {
+          if (formKey.currentState!.validate()) {
             final titleValue = titleController.text;
             final descriptionValue = descriptionController.text;
             context.read<TripProvider>().create(
@@ -135,7 +130,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
                     title: titleValue,
                     isPrivate: isPrivate,
                     description: descriptionValue,
-                    markers: _selectedMarkers),
+                    markers: selectedMarkers),
                 context.read<AuthenticationProvider>().isAuthenticated);
             context.goNamed('trip_list');
           }
@@ -149,7 +144,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
     return WrapScaffold(
         label: 'New Trip',
         body: Form(
-          key: _formKey,
+          key: formKey,
           child: Padding(
               padding: const EdgeInsets.all(40),
               child: ListView(

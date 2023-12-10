@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/components/wrap.dart';
 import 'package:traveler/providers/providers.dart';
 
@@ -15,10 +18,15 @@ class TripDetailsScreen extends StatefulWidget {
 class _TripDetailsScreenState extends State<TripDetailsScreen> {
   @override
   Widget build(BuildContext context) {
-    final trip = context.read<TripProvider>().fetchDialogData(widget.id);
-
-    final titleController = TextEditingController(text: trip.title);
-    final descriptionController = TextEditingController(text: trip.description);
+    GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    Trip trip = context.read<TripProvider>().fetchDialogData(widget.id);
+    TextEditingController titleController =
+        TextEditingController(text: trip.title);
+    TextEditingController descriptionController =
+        TextEditingController(text: trip.description);
+    bool isPrivate = trip.isPrivate;
+    List<Marker> selectedMarkers = [];
+    List<UserInfo> selectedContributors = [];
 
     Widget titleField = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -60,13 +68,88 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
       ),
     );
 
+    Widget isPrivateField = Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            const Text('Is Private'),
+            Switch(
+              value: isPrivate,
+              onChanged: (bool value) {
+                setState(() {
+                  isPrivate = value;
+                });
+              },
+            )
+          ],
+        ));
+
+    Widget markersField = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: MultiSelectDialogField<Marker>(
+        items: context
+            .read<MarkerProvider>()
+            .markers
+            .map((e) => MultiSelectItem(e, e.title))
+            .toList(),
+        listType: MultiSelectListType.CHIP,
+        searchable: true,
+        initialValue: trip.markers,
+        onConfirm: (values) {
+          print(values);
+          selectedMarkers = values;
+        },
+        chipDisplay: MultiSelectChipDisplay(
+          onTap: (value) {
+            setState(() {
+              selectedMarkers.remove(value);
+            });
+          },
+        ),
+      ),
+    );
+
+    Widget submitButton = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: ElevatedButton(
+        onPressed: () {
+          if (formKey.currentState!.validate()) {
+            final titleValue = titleController.text;
+            final descriptionValue = descriptionController.text;
+            context.read<TripProvider>().create(
+                Trip(
+                    id: widget.id,
+                    title: titleValue,
+                    description: descriptionValue,
+                    isPrivate: isPrivate,
+                    markers: selectedMarkers,
+                    contributors: selectedContributors),
+                context.read<AuthenticationProvider>().isAuthenticated);
+            context.goNamed('trip_list');
+          }
+        },
+        child: const Text('Submit'),
+      ),
+    );
+
     return WrapScaffold(
-      label: widget.id,
-      body: Padding(
-          padding: const EdgeInsets.all(40.0),
-          child: Column(
-            children: <Widget>[titleField, descriptionField],
-          )),
+      label: trip.title,
+      body: Form(
+          key: formKey,
+          child: Padding(
+              padding: const EdgeInsets.all(40.0),
+              child: ListView(
+                children: <Widget>[
+                  titleField,
+                  descriptionField,
+                  isPrivateField,
+                  markersField,
+                  Text('${trip.markers}'),
+                  submitButton
+                ],
+              ))),
     );
   }
 }

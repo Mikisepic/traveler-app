@@ -96,9 +96,8 @@ final router = GoRouter(
               }
               if (state is UserCreated) {
                 user.updateDisplayName(user.email!.split('@')[0]);
-                context
-                    .read<AuthenticationProvider>()
-                    .registerUserInFirestore(user.uid, user.email);
+                context.read<AuthenticationProvider>().registerUserInFirestore(
+                    user.uid, user.email, user.displayName);
               }
               if (!user.emailVerified) {
                 user.sendEmailVerification();

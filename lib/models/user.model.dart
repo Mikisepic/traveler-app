@@ -14,12 +14,12 @@ class UserInfo {
 
   UserInfo({
     required this.id,
-    required this.firstName,
-    required this.lastName,
+    this.firstName = '',
+    this.lastName = '',
     required this.email,
-    required this.about,
-    required this.trips,
-    required this.markers,
+    this.about = '',
+    this.trips = const [],
+    this.markers = const [],
   });
 
   factory UserInfo.fromFirestore(
@@ -28,25 +28,15 @@ class UserInfo {
   ) {
     final data = snapshot.data();
     return UserInfo(
-      id: data?['id'] as String,
-      firstName: data?['firstName'] as String,
-      lastName: data?['lastName'] as String,
+      id: data?['userId'] as String,
       email: data?['email'] as String,
-      about: data?['about'] as String,
-      trips: data?['trips'] as List<Trip>,
-      markers: data?['markers'] as List<Marker>,
     );
   }
 
   Map<String, dynamic> toFirestore() {
     return {
-      "name": id,
-      "firstName": firstName,
-      "lastName": lastName,
+      "userId": id,
       "email": email,
-      "about": about,
-      "trips": trips,
-      "markers": markers,
     };
   }
 }

@@ -20,6 +20,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
   final descriptionController = TextEditingController();
   bool isPrivate = false;
   List<Marker> _selectedMarkers = [];
+  List<UserInfo> _selectedUsers = [];
 
   @override
   Widget build(BuildContext context) {
@@ -93,27 +94,32 @@ class _NewTripScreenState extends State<NewTripScreen> {
       ),
     );
 
-    Widget contributorsField = Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: MultiSelectDialogField<Marker>(
-        items: context
-            .read<MarkerProvider>()
-            .markers
-            .map((e) => MultiSelectItem(e, e.title))
-            .toList(),
-        listType: MultiSelectListType.CHIP,
-        searchable: true,
-        onConfirm: (values) {
-          _selectedMarkers = values;
-        },
-        chipDisplay: MultiSelectChipDisplay(
-          onTap: (value) {
-            setState(() {
-              _selectedMarkers.remove(value);
-            });
-          },
-        ),
-      ),
+    Widget contributorsField = Consumer<UserProvider>(
+      builder: (context, provider, child) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: MultiSelectDialogField<UserInfo>(
+            items: context
+                .read<UserProvider>()
+                .users
+                .map((e) => MultiSelectItem(e, e.email))
+                .toList(),
+            listType: MultiSelectListType.CHIP,
+            searchable: true,
+            onConfirm: (values) {
+              _selectedUsers = values;
+            },
+            chipDisplay: MultiSelectChipDisplay(
+              onTap: (value) {
+                setState(() {
+                  _selectedUsers
+                      .removeWhere((element) => element.id == value.id);
+                });
+              },
+            ),
+          ),
+        );
+      },
     );
 
     Widget submitButton = Padding(

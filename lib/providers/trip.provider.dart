@@ -70,7 +70,12 @@ class TripProvider extends ChangeNotifier {
       'title': trip.title,
       'description': trip.description,
       'markers': trip.markers.map((e) => e.id),
-      'contributors': [FirebaseAuth.instance.currentUser!.uid],
+      'contributors': trip.isPrivate
+          ? [FirebaseAuth.instance.currentUser!.uid]
+          : [
+              FirebaseAuth.instance.currentUser!.uid,
+              ...trip.contributors.map((e) => e.id)
+            ],
       'isPrivate': trip.isPrivate,
       'created_at': DateTime.now().millisecondsSinceEpoch,
       'updated_at': DateTime.now().millisecondsSinceEpoch

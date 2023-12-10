@@ -4,8 +4,9 @@ import 'package:traveler/models/models.dart';
 import 'package:uuid/uuid.dart';
 
 class UserProvider extends ChangeNotifier {
-  final List<UserInfo> _users = [];
+  List<UserInfo> _users = [];
   List<UserInfo> get users => _users;
+
   UserInfo _user = UserInfo(
     id: const Uuid().v4(),
     firstName: 'John',
@@ -18,41 +19,31 @@ class UserProvider extends ChangeNotifier {
   );
   UserInfo get user => _user;
 
-  fetchUsers() {
-    FirebaseFirestore.instance.collection('users').get().then((querySnapshot) {
-      for (var docSnapshot in querySnapshot.docs) {
-        print(docSnapshot.data());
+  Future<UserInfo> doStuff(String id) async {
+    final reference = FirebaseFirestore.instance
+        .collection('users')
+        .doc(id)
+        .withConverter(
+            fromFirestore: UserInfo.fromFirestore,
+            toFirestore: (UserInfo user, _) => user.toFirestore());
 
-        // final reference = FirebaseFirestore.instance
-        // .collection('users').doc(docSnapshot.id).withConverter(
-        //     fromFirestore: UserInfo.fromFirestore,
-        //     toFirestore: (UserInfo user, _) => user.toFirestore());
-      }
-    });
-
-    // if (user != null) {
-    //   _users = users;
-    //   notifyListeners();
-    // }
+    var docSnap = await reference.get();
+    return docSnap.data()!;
   }
 
-  // fetchOne(String id) async {
-  //   final reference = FirebaseFirestore.instance
-  //       .collection('users').doc(id).withConverter(
-  //           fromFirestore: UserInfo.fromFirestore,
-  //           toFirestore: (UserInfo user, _) => user.toFirestore());
+  fetchUsers() async {
+    var querySnapshot =
+        await FirebaseFirestore.instance.collection('users').get();
 
-  //   var docSnap = await reference.get();
-  //   final user = docSnap.data();
+    List<UserInfo> usrs = [];
 
-  //   if (user != null) {
-  //     _marker = marker;
-  //     notifyListeners();
-  //   }
-  // }
-
-  void setUser(UserInfo newUser) {
-    _user = newUser;
+    await Future.wait(
+      querySnapshot.docs.map((docSnapshot) async {
+        var value = await doStuff(docSnapshot.id);
+        usrs.add(value);
+      }),
+    );
+    _users = usrs;
     notifyListeners();
   }
 

@@ -34,10 +34,12 @@ class AuthenticationProvider extends ChangeNotifier {
     });
   }
 
-  void registerUserInFirestore(String uid, String? email) async {
+  void registerUserInFirestore(
+      String uid, String? email, String? displayName) async {
     await firebaseFirestore.collection('users').doc(uid).set({
       'userId': uid,
       'email': email,
+      'displayName': displayName,
       'created_at': DateTime.now().millisecondsSinceEpoch,
       'updated_at': DateTime.now().millisecondsSinceEpoch
     });

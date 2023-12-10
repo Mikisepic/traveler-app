@@ -138,6 +138,8 @@ class _NewTripScreenState extends State<NewTripScreen> {
       ),
     );
 
+    context.read<UserProvider>().fetchUsers();
+
     return WrapScaffold(
         label: 'New Trip',
         body: Form(

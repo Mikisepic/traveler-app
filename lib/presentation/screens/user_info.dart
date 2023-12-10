@@ -54,7 +54,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                 buildCard(
                     context: context,
                     title: 'Markers',
-                    items: provider.user.markers.map((e) => e.name).toList()),
+                    items: provider.user.markers.map((e) => e.title).toList()),
               ]),
               _buildRow([
                 buildCard(

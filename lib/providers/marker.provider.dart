@@ -20,7 +20,7 @@ class MarkerProvider with ChangeNotifier {
     init();
   }
 
-  Future<void> init() async {
+  init() async {
     firebaseAuth.userChanges().listen((user) {
       _markersSubscription?.cancel();
 
@@ -84,7 +84,7 @@ class MarkerProvider with ChangeNotifier {
       throw Exception('Must be logged in');
     }
 
-    FirebaseFirestore.instance.collection('markers').add({
+    final doc = FirebaseFirestore.instance.collection('markers').add({
       'id': marker.id,
       'userId': FirebaseAuth.instance.currentUser!.uid,
       'username': FirebaseAuth.instance.currentUser!.displayName,
@@ -96,15 +96,15 @@ class MarkerProvider with ChangeNotifier {
       'updated_at': DateTime.now().millisecondsSinceEpoch
     });
 
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .update({
-      'markers': FieldValue.arrayUnion([marker.id])
-    });
+    doc.then((value) => FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update({
+          'markers': FieldValue.arrayUnion([value.id])
+        }));
   }
 
-  void update(Marker marker) {
+  update(Marker marker) {
     FirebaseFirestore.instance.collection('markers').doc(marker.id).update({
       'title': marker.title,
       'userId': FirebaseAuth.instance.currentUser!.uid,

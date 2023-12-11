@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
@@ -19,7 +17,7 @@ class AuthenticationProvider extends ChangeNotifier {
   bool get isAuthenticated => _isAuthenticated;
   User? get user => firebaseAuth.currentUser;
 
-  Future<void> init() async {
+  init() async {
     FirebaseUIAuth.configureProviders([
       EmailAuthProvider(),
     ]);
@@ -40,6 +38,8 @@ class AuthenticationProvider extends ChangeNotifier {
       'userId': uid,
       'email': email,
       'displayName': displayName,
+      'markers': [],
+      'trips': [],
       'created_at': DateTime.now().millisecondsSinceEpoch,
       'updated_at': DateTime.now().millisecondsSinceEpoch
     });

@@ -64,7 +64,7 @@ class TripProvider extends ChangeNotifier {
       throw Exception('Must be logged in');
     }
 
-    FirebaseFirestore.instance.collection('trips').add({
+    final doc = FirebaseFirestore.instance.collection('trips').add({
       'userId': FirebaseAuth.instance.currentUser!.uid,
       'title': trip.title,
       'description': trip.description,
@@ -77,12 +77,12 @@ class TripProvider extends ChangeNotifier {
       'updated_at': DateTime.now().millisecondsSinceEpoch
     });
 
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .update({
-      'trips': FieldValue.arrayUnion([trip.id])
-    });
+    doc.then((value) => FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update({
+          'trips': FieldValue.arrayUnion([value.id])
+        }));
   }
 
   void update(Trip trip) {
@@ -98,7 +98,6 @@ class TripProvider extends ChangeNotifier {
 
   delete(String id) {
     FirebaseFirestore.instance.collection('trips').doc(id).delete();
-
     FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)

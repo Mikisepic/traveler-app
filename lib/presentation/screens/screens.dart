@@ -1,3 +1,4 @@
+export 'explore/explore_list.dart';
 export 'home.dart';
 export 'map/map.dart';
 export 'map/new_place.dart';

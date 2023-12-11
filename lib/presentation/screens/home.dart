@@ -54,6 +54,7 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
         items: const [
           BottomNavigationBarItem(label: 'Trips', icon: Icon(Icons.directions)),
           BottomNavigationBarItem(label: 'Map', icon: Icon(Icons.map)),
+          BottomNavigationBarItem(label: 'Explore', icon: Icon(Icons.explore)),
           BottomNavigationBarItem(label: 'Profile', icon: Icon(Icons.person)),
         ],
         onTap: onDestinationSelected,

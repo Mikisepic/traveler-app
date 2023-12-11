@@ -19,8 +19,8 @@ class _NewTripScreenState extends State<NewTripScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   bool isPrivate = false;
-  List<String> selectedMarkers = [];
-  List<String> selectedContributors = [];
+  List<Marker> selectedMarkers = [];
+  List<UserProfileMetadata> selectedContributors = [];
 
   @override
   Widget build(BuildContext context) {
@@ -73,11 +73,11 @@ class _NewTripScreenState extends State<NewTripScreen> {
 
     Widget markersField = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      child: MultiSelectDialogField<String>(
+      child: MultiSelectDialogField<Marker>(
         items: context
             .read<MarkerProvider>()
             .markers
-            .map((e) => MultiSelectItem(e.id, e.title))
+            .map((e) => MultiSelectItem(e, e.title))
             .toList(),
         listType: MultiSelectListType.CHIP,
         searchable: true,
@@ -96,11 +96,11 @@ class _NewTripScreenState extends State<NewTripScreen> {
 
     Widget contributorsField = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      child: MultiSelectDialogField<String>(
+      child: MultiSelectDialogField<UserProfileMetadata>(
         items: context
             .read<UserProvider>()
             .users
-            .map((e) => MultiSelectItem(e.id, e.email))
+            .map((e) => MultiSelectItem(e, e.id))
             .toList(),
         listType: MultiSelectListType.CHIP,
         searchable: true,
@@ -130,8 +130,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
                     title: titleValue,
                     isPrivate: isPrivate,
                     description: descriptionValue,
-                    markers: selectedMarkers,
-                    contributors: selectedContributors),
+                    markers: selectedMarkers),
                 context.read<AuthenticationProvider>().isAuthenticated);
             context.goNamed('trip_list');
           }

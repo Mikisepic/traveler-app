@@ -7,8 +7,6 @@ import 'package:traveler/models/models.dart';
 
 class TripProvider extends ChangeNotifier {
   StreamSubscription<QuerySnapshot>? _tripsSubscription;
-  bool _loading = false;
-  bool get loading => _loading;
   List<Trip> _trips = [];
   List<Trip> get trips => _trips;
 
@@ -27,22 +25,26 @@ class TripProvider extends ChangeNotifier {
             .snapshots()
             .listen((snapshot) {
           _trips = [];
-          _loading = true;
           for (final document in snapshot.docs) {
             _trips.add(Trip(
               id: document.id,
               title: document.data()['title'] as String,
               description: document.data()['description'] as String,
               isPrivate: document.data()['isPrivate'] as bool,
-              markers: (document.data()['markers'] as List<dynamic>)
-                  .map((e) => e.toString())
-                  .toList(),
               contributors: (document.data()['contributors'] as List<dynamic>)
-                  .map((e) => e.toString())
+                  .map((e) => UserProfileMetadata(
+                      id: e['id'] as String, email: e['email'] as String))
+                  .toList(),
+              markers: (document.data()['markers'] as List<dynamic>)
+                  .map((e) => Marker(
+                      id: e['id'] as String,
+                      title: e['title'] as String,
+                      mapboxId: e['mapboxId'] as String,
+                      latitude: (e['coordinates'] as GeoPoint).latitude,
+                      longitude: (e['coordinates'] as GeoPoint).longitude))
                   .toList(),
             ));
           }
-          _loading = false;
           notifyListeners();
         });
       } else {

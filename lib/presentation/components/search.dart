@@ -48,14 +48,6 @@ class _SearchState extends State<Search> {
             Future<MarkerRetrieval> marker =
                 mapboxService.retrieveSuggestionDetails(value.mapboxId);
 
-            // Future<TripOptimization> tripOptimization =
-            //     mapboxService.fetchTripOptimization('driving', [
-            //   MarkerCoordinates(latitude: 37.78, longitude: -122.42),
-            //   MarkerCoordinates(latitude: 37.91, longitude: -122.45),
-            //   MarkerCoordinates(latitude: 37.73, longitude: -122.48),
-            // ]);
-            // tripOptimization.then((value) => print(value.toJson()));
-
             marker.then((value) => widget.onSearchComplete(value));
           },
         )

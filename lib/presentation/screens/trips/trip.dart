@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/components/wrap.dart';
 import 'package:traveler/providers/providers.dart';
+import 'package:traveler/services/mapbox.services.dart';
 
 class TripDetailsScreen extends StatefulWidget {
   final String id;
@@ -18,6 +19,7 @@ class TripDetailsScreen extends StatefulWidget {
 class _TripDetailsScreenState extends State<TripDetailsScreen> {
   @override
   Widget build(BuildContext context) {
+    final MapboxService mapboxService = MapboxService();
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
     Trip trip = context.read<TripProvider>().fetchDialogData(widget.id);
     TextEditingController titleController =
@@ -25,8 +27,8 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
     TextEditingController descriptionController =
         TextEditingController(text: trip.description);
     bool isPrivate = trip.isPrivate;
-    List<String> selectedMarkers = [];
-    List<String> selectedContributors = [];
+    List<Marker> selectedMarkers = [];
+    List<UserProfileMetadata> selectedContributors = [];
 
     Widget titleField = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -88,11 +90,11 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
 
     Widget markersField = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      child: MultiSelectDialogField<String>(
+      child: MultiSelectDialogField<Marker>(
         items: context
             .read<MarkerProvider>()
             .markers
-            .map((e) => MultiSelectItem(e.id, e.title))
+            .map((e) => MultiSelectItem(e, e.title))
             .toList(),
         listType: MultiSelectListType.CHIP,
         searchable: true,
@@ -107,6 +109,23 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
             });
           },
         ),
+      ),
+    );
+
+    Widget optimizeRouteButton = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: ElevatedButton(
+        onPressed: () {
+          Future<TripOptimization> tripOptimization =
+              mapboxService.fetchTripOptimization(
+                  'driving',
+                  trip.markers
+                      .map((e) => MarkerCoordinates(
+                          latitude: e.latitude, longitude: e.longitude))
+                      .toList());
+          tripOptimization.then((value) => print(value.toJson()));
+        },
+        child: const Text('Optimize Route'),
       ),
     );
 
@@ -145,6 +164,7 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                   descriptionField,
                   isPrivateField,
                   markersField,
+                  optimizeRouteButton,
                   submitButton
                 ],
               ))),

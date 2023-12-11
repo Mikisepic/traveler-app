@@ -42,11 +42,28 @@ class _MapScreenState extends State<MapScreen> {
                 },
               ),
               IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () {
-                  provider.delete(marker.id);
-                },
-              )
+                  icon: const Icon(Icons.delete),
+                  onPressed: () => showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                              title: Text('Delete ${marker.title}?'),
+                              content: const Text(
+                                  'Are you sure you want to delete?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    provider.delete(marker.id);
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Yes'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('No'),
+                                ),
+                              ])))
             ],
           ),
           onTap: () => showDialog<String>(

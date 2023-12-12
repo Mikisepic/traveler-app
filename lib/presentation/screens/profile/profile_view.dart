@@ -4,18 +4,18 @@ import 'package:provider/provider.dart';
 import 'package:traveler/presentation/components/components.dart';
 import 'package:traveler/providers/providers.dart';
 
-import 'authentication.dart';
+import 'profile_authentication.dart';
 
-class UserInfoScreen extends StatefulWidget {
-  const UserInfoScreen({
+class ProfileViewScreen extends StatefulWidget {
+  const ProfileViewScreen({
     super.key,
   });
 
   @override
-  State<UserInfoScreen> createState() => _UserInfoScreenState();
+  State<ProfileViewScreen> createState() => _ProfileViewScreenState();
 }
 
-class _UserInfoScreenState extends State<UserInfoScreen> {
+class _ProfileViewScreenState extends State<ProfileViewScreen> {
   @override
   Widget build(BuildContext context) {
     return WrapScaffold(

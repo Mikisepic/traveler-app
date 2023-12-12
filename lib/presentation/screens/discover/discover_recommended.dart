@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class DiscoverRecommendedScreen extends StatefulWidget {
-  const DiscoverRecommendedScreen({super.key});
+  final List<String> categories;
+
+  const DiscoverRecommendedScreen({super.key, required this.categories});
 
   @override
   State<DiscoverRecommendedScreen> createState() =>

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:traveler/presentation/components/components.dart';
 import 'package:traveler/presentation/screens/discover/discover_explore.dart';
 import 'package:traveler/presentation/screens/discover/discover_recommended.dart';
@@ -13,10 +14,16 @@ class ExploreListScreen extends StatefulWidget {
 class _ExploreListScreenState extends State<ExploreListScreen>
     with TickerProviderStateMixin {
   late final TabController _tabController;
+  LocationData? currentLocation;
+  List<String> selectedCategories = ['activity'];
 
   @override
   void initState() {
     super.initState();
+    getLocationData().then((value) {
+      currentLocation = value;
+    });
+
     _tabController = TabController(length: 2, vsync: this);
   }
 
@@ -24,6 +31,33 @@ class _ExploreListScreenState extends State<ExploreListScreen>
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  Future<LocationData?> getLocationData() async {
+    var location = Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return null;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return null;
+      }
+    }
+
+    locationData = await location.getLocation();
+    return locationData;
   }
 
   @override
@@ -42,9 +76,9 @@ class _ExploreListScreenState extends State<ExploreListScreen>
       ]),
       body: TabBarView(
         controller: _tabController,
-        children: const <Widget>[
-          DiscoverExploreScreen(),
-          DiscoverRecommendedScreen()
+        children: <Widget>[
+          DiscoverExploreScreen(locationData: currentLocation),
+          DiscoverRecommendedScreen(categories: selectedCategories)
         ],
       ),
     );

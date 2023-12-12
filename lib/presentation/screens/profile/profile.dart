@@ -1,2 +1,2 @@
-export 'authentication.dart';
-export 'user_info.dart';
+export 'profile_authentication.dart';
+export 'profile_view.dart';

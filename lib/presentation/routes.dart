@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:traveler/presentation/screens/discover/discover.dart';
 import 'package:traveler/presentation/screens/place/place.dart';
+import 'package:traveler/presentation/screens/profile/profile.dart';
 import 'package:traveler/presentation/screens/trip/trip.dart';
 import 'package:traveler/providers/providers.dart';
 
@@ -78,7 +79,7 @@ final router = GoRouter(
               name: 'user_info',
               path: '/user_info',
               pageBuilder: (context, state) =>
-                  const NoTransitionPage(child: UserInfoScreen()),
+                  const NoTransitionPage(child: ProfileViewScreen()),
             ),
           ]),
         ]),

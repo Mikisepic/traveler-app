@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/components/wrap.dart';
 import 'package:traveler/providers/providers.dart';
-import 'package:traveler/services/mapbox.services.dart';
+import 'package:traveler/services/mapbox.service.dart';
 
 class TripViewScreen extends StatefulWidget {
   final String id;

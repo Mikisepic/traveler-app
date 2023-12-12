@@ -27,12 +27,14 @@ class _ExploreListScreenState extends State<ExploreListScreen>
   @override
   Widget build(BuildContext context) {
     return WrapScaffold(
-      label: 'Explore',
+      label: 'Discover',
       bottomAppBar: TabBar(controller: _tabController, tabs: const <Widget>[
         Tab(
+          icon: Icon(Icons.person),
           text: 'For me',
         ),
         Tab(
+          icon: Icon(Icons.search),
           text: 'Explore',
         ),
       ]),

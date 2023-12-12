@@ -1,1 +1,2 @@
-export 'mapbox.services.dart';
+export 'geoapify.service.dart';
+export 'mapbox.service.dart';

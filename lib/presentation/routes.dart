@@ -12,7 +12,7 @@ import './screens/screens.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKeyTrips = GlobalKey<NavigatorState>();
 final _shellNavigatorKeyMap = GlobalKey<NavigatorState>();
-final _shellNavigatorKeyExploration = GlobalKey<NavigatorState>();
+final _shellNavigatorKeyDiscover = GlobalKey<NavigatorState>();
 final _shellNavigatorKeyProfile = GlobalKey<NavigatorState>();
 
 final router = GoRouter(
@@ -47,14 +47,14 @@ final router = GoRouter(
                 ]),
           ]),
           StatefulShellBranch(
-              navigatorKey: _shellNavigatorKeyExploration,
+              navigatorKey: _shellNavigatorKeyDiscover,
               routes: [
                 GoRoute(
-                  name: 'explore_list',
-                  path: '/explore_list',
-                  pageBuilder: (context, state) =>
-                      const NoTransitionPage(child: ExploreListScreen()),
-                ),
+                    name: 'discover_list',
+                    path: '/discover_list',
+                    pageBuilder: (context, state) =>
+                        const NoTransitionPage(child: ExploreListScreen()),
+                    routes: const []),
               ]),
           StatefulShellBranch(
             navigatorKey: _shellNavigatorKeyMap,

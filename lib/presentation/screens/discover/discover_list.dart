@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:traveler/presentation/components/components.dart';
+import 'package:traveler/presentation/screens/discover/discover_explore.dart';
+import 'package:traveler/presentation/screens/discover/discover_recommended.dart';
 
 class ExploreListScreen extends StatefulWidget {
   const ExploreListScreen({super.key});
@@ -41,12 +43,8 @@ class _ExploreListScreenState extends State<ExploreListScreen>
       body: TabBarView(
         controller: _tabController,
         children: const <Widget>[
-          Center(
-            child: Text("It's cloudy here"),
-          ),
-          Center(
-            child: Text("It's rainy here"),
-          ),
+          DiscoverExploreScreen(),
+          DiscoverRecommendedScreen()
         ],
       ),
     );

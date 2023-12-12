@@ -4,17 +4,18 @@ import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/components/components.dart';
 import 'package:traveler/providers/providers.dart';
 
-class Place extends StatefulWidget {
+class PlaceViewScreen extends StatefulWidget {
   final String id;
   final Function(Marker updatedMarker) onEditComplete;
 
-  const Place({super.key, required this.id, required this.onEditComplete});
+  const PlaceViewScreen(
+      {super.key, required this.id, required this.onEditComplete});
 
   @override
-  State<Place> createState() => _PlaceState();
+  State<PlaceViewScreen> createState() => _PlaceViewScreenState();
 }
 
-class _PlaceState extends State<Place> {
+class _PlaceViewScreenState extends State<PlaceViewScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override

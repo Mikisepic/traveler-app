@@ -3,17 +3,17 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/components/components.dart';
-import 'package:traveler/presentation/screens/map/place.dart';
+import 'package:traveler/presentation/screens/place/place_view.dart';
 import 'package:traveler/providers/providers.dart';
 
-class MapScreen extends StatefulWidget {
-  const MapScreen({super.key});
+class PlaceListScreen extends StatefulWidget {
+  const PlaceListScreen({super.key});
 
   @override
-  State<MapScreen> createState() => _MapScreenState();
+  State<PlaceListScreen> createState() => _PlaceListScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> {
+class _PlaceListScreenState extends State<PlaceListScreen> {
   // MapboxMap? mapboxMap;
   // _onMapCreated(MapboxMap mapboxMap) {
   //   mapboxMap = mapboxMap;
@@ -69,7 +69,7 @@ class _MapScreenState extends State<MapScreen> {
           onTap: () => showDialog<String>(
             context: context,
             builder: (BuildContext context) => SmallDialog(
-              body: Place(
+              body: PlaceViewScreen(
                 id: marker.id,
                 onEditComplete: (marker) {
                   context.read<MarkerProvider>().update(marker);

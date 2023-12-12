@@ -5,14 +5,14 @@ import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/components/wrap.dart';
 import 'package:traveler/providers/providers.dart';
 
-class TripsScreen extends StatefulWidget {
-  const TripsScreen({super.key});
+class TripListScreen extends StatefulWidget {
+  const TripListScreen({super.key});
 
   @override
-  State<TripsScreen> createState() => _TripsScreenState();
+  State<TripListScreen> createState() => _TripListScreenState();
 }
 
-class _TripsScreenState extends State<TripsScreen> {
+class _TripListScreenState extends State<TripListScreen> {
   @override
   Widget build(BuildContext context) {
     Widget card(Trip trip, TripProvider provider) => Card(

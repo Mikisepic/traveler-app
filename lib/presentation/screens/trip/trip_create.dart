@@ -7,14 +7,14 @@ import 'package:traveler/presentation/components/components.dart';
 import 'package:traveler/providers/providers.dart';
 import 'package:uuid/uuid.dart';
 
-class NewTripScreen extends StatefulWidget {
-  const NewTripScreen({super.key});
+class TripCreateScreen extends StatefulWidget {
+  const TripCreateScreen({super.key});
 
   @override
-  State<NewTripScreen> createState() => _NewTripScreenState();
+  State<TripCreateScreen> createState() => _TripCreateScreenState();
 }
 
-class _NewTripScreenState extends State<NewTripScreen> {
+class _TripCreateScreenState extends State<TripCreateScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();

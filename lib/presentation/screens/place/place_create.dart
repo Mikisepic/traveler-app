@@ -6,14 +6,14 @@ import 'package:traveler/presentation/components/components.dart';
 import 'package:traveler/providers/providers.dart';
 import 'package:uuid/uuid.dart';
 
-class NewPlaceScreen extends StatefulWidget {
-  const NewPlaceScreen({super.key});
+class PlaceCreateScreen extends StatefulWidget {
+  const PlaceCreateScreen({super.key});
 
   @override
-  State<NewPlaceScreen> createState() => _NewPlaceScreenState();
+  State<PlaceCreateScreen> createState() => _PlaceCreateScreenState();
 }
 
-class _NewPlaceScreenState extends State<NewPlaceScreen> {
+class _PlaceCreateScreenState extends State<PlaceCreateScreen> {
   final _formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
   String mapboxId = '';
@@ -84,7 +84,7 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
     );
 
     return WrapScaffold(
-        label: 'New Place',
+        label: 'New PlaceViewScreen',
         body: Form(
           key: _formKey,
           child: Padding(

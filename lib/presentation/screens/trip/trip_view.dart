@@ -7,16 +7,16 @@ import 'package:traveler/presentation/components/wrap.dart';
 import 'package:traveler/providers/providers.dart';
 import 'package:traveler/services/mapbox.services.dart';
 
-class TripDetailsScreen extends StatefulWidget {
+class TripViewScreen extends StatefulWidget {
   final String id;
 
-  const TripDetailsScreen({super.key, required this.id});
+  const TripViewScreen({super.key, required this.id});
 
   @override
-  State<TripDetailsScreen> createState() => _TripDetailsScreenState();
+  State<TripViewScreen> createState() => _TripViewScreenState();
 }
 
-class _TripDetailsScreenState extends State<TripDetailsScreen> {
+class _TripViewScreenState extends State<TripViewScreen> {
   @override
   Widget build(BuildContext context) {
     final MapboxService mapboxService = MapboxService();

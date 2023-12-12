@@ -2,6 +2,9 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:traveler/presentation/screens/discover/discover.dart';
+import 'package:traveler/presentation/screens/place/place.dart';
+import 'package:traveler/presentation/screens/trip/trip.dart';
 import 'package:traveler/providers/providers.dart';
 
 import './screens/screens.dart';
@@ -29,17 +32,17 @@ final router = GoRouter(
                 name: 'trip_list',
                 path: '/trips',
                 pageBuilder: (context, state) =>
-                    const NoTransitionPage(child: TripsScreen()),
+                    const NoTransitionPage(child: TripListScreen()),
                 routes: [
                   GoRoute(
                       name: 'new_trip',
                       path: 'trips/new',
-                      builder: (context, state) => const NewTripScreen()),
+                      builder: (context, state) => const TripCreateScreen()),
                   GoRoute(
                     name: 'trip',
                     path: 'trips/:tripId',
                     builder: (context, state) =>
-                        TripDetailsScreen(id: state.pathParameters['tripId']!),
+                        TripViewScreen(id: state.pathParameters['tripId']!),
                   ),
                 ]),
           ]),
@@ -60,12 +63,12 @@ final router = GoRouter(
                   name: 'place_list',
                   path: '/places',
                   pageBuilder: (context, state) =>
-                      const NoTransitionPage(child: MapScreen()),
+                      const NoTransitionPage(child: PlaceListScreen()),
                   routes: [
                     GoRoute(
                       name: 'new_place',
                       path: 'places/new',
-                      builder: (context, state) => const NewPlaceScreen(),
+                      builder: (context, state) => const PlaceListScreen(),
                     )
                   ]),
             ],

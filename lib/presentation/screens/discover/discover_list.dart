@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/components/components.dart';
 import 'package:traveler/presentation/screens/discover/discover_explore.dart';
 import 'package:traveler/presentation/screens/discover/discover_recommended.dart';
+import 'package:traveler/services/services.dart';
 
 class ExploreListScreen extends StatefulWidget {
   const ExploreListScreen({super.key});
@@ -13,6 +15,8 @@ class ExploreListScreen extends StatefulWidget {
 
 class _ExploreListScreenState extends State<ExploreListScreen>
     with TickerProviderStateMixin {
+  GeoapifyService geoapifyService = GeoapifyService();
+  List<DiscoveryPlace> _discoveryPlaces = [];
   late final TabController _tabController;
   LocationData? currentLocation;
   List<String> selectedCategories = ['activity'];
@@ -22,6 +26,16 @@ class _ExploreListScreenState extends State<ExploreListScreen>
     super.initState();
     getLocationData().then((value) {
       currentLocation = value;
+      print(value);
+    });
+
+    Future<List<DiscoveryPlace>> discoveryPlaces = geoapifyService
+        .fetchPlaceSuggestions(currentLocation?.latitude ?? 54.6905948,
+            currentLocation?.longitude ?? 25.2818487, ['activity']);
+
+    discoveryPlaces.then((value) {
+      _discoveryPlaces = value;
+      print(value);
     });
 
     _tabController = TabController(length: 2, vsync: this);
@@ -77,7 +91,10 @@ class _ExploreListScreenState extends State<ExploreListScreen>
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
-          DiscoverExploreScreen(locationData: currentLocation),
+          DiscoverExploreScreen(
+            locationData: currentLocation,
+            places: _discoveryPlaces,
+          ),
           DiscoverRecommendedScreen(categories: selectedCategories)
         ],
       ),

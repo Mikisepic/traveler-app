@@ -10,12 +10,17 @@ class DiscoverExploreScreen extends StatefulWidget {
   final LocationData? locationData;
   final List<DiscoveryPlace> places;
   final List<String> selectedCategories;
+  final Function(List<String> categoryList) onCategoriesSelect;
+  final Function(String category) onCategoryRemove;
 
-  const DiscoverExploreScreen(
-      {super.key,
-      required this.locationData,
-      required this.places,
-      required this.selectedCategories});
+  const DiscoverExploreScreen({
+    super.key,
+    required this.locationData,
+    required this.places,
+    required this.selectedCategories,
+    required this.onCategoriesSelect,
+    required this.onCategoryRemove,
+  });
 
   @override
   State<DiscoverExploreScreen> createState() => _DiscoverExploreScreenState();
@@ -31,14 +36,11 @@ class _DiscoverExploreScreenState extends State<DiscoverExploreScreen> {
         listType: MultiSelectListType.CHIP,
         searchable: true,
         onConfirm: (values) {
-          print(values);
+          widget.onCategoriesSelect(values);
         },
         chipDisplay: MultiSelectChipDisplay(
           onTap: (value) {
-            print(value);
-            // setState(() {
-            //   selectedMarkers.remove(value);
-            // });
+            widget.onCategoryRemove(value);
           },
         ),
       ),

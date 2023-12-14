@@ -90,10 +90,33 @@ class _ExploreListScreenState extends State<ExploreListScreen>
         controller: _tabController,
         children: <Widget>[
           DiscoverExploreScreen(
-              locationData: currentLocation,
-              places: _discoveryPlaces,
-              selectedCategories: selectedCategories),
-          DiscoverRecommendedScreen(selectedCategories: selectedCategories)
+            locationData: currentLocation,
+            places: _discoveryPlaces,
+            selectedCategories: selectedCategories,
+            onCategoriesSelect: (categoryList) {
+              setState(() {
+                selectedCategories = categoryList;
+              });
+            },
+            onCategoryRemove: (category) {
+              setState(() {
+                selectedCategories.remove(category);
+              });
+            },
+          ),
+          DiscoverRecommendedScreen(
+            selectedCategories: selectedCategories,
+            onCategoriesSelect: (categoryList) {
+              setState(() {
+                selectedCategories = categoryList;
+              });
+            },
+            onCategoryRemove: (category) {
+              setState(() {
+                selectedCategories.remove(category);
+              });
+            },
+          )
         ],
       ),
     );

@@ -4,9 +4,15 @@ import 'package:traveler/presentation/components/components.dart';
 
 class DiscoverRecommendedScreen extends StatefulWidget {
   final List<String> selectedCategories;
+  final Function(List<String> categoryList) onCategoriesSelect;
+  final Function(String category) onCategoryRemove;
 
-  const DiscoverRecommendedScreen(
-      {super.key, required this.selectedCategories});
+  const DiscoverRecommendedScreen({
+    super.key,
+    required this.selectedCategories,
+    required this.onCategoriesSelect,
+    required this.onCategoryRemove,
+  });
 
   @override
   State<DiscoverRecommendedScreen> createState() =>
@@ -21,7 +27,11 @@ class _DiscoverRecommendedScreenState extends State<DiscoverRecommendedScreen> {
         Search(
           initialValue: '',
           onSearchComplete: (mapboxMarker) {
-            print(mapboxMarker);
+            setState(() {
+              // mapboxId = mapboxMarker.mapboxId;
+              // latitude = mapboxMarker.coordinates.latitude;
+              // longitude = mapboxMarker.coordinates.longitude;
+            });
           },
         ),
         MultiSelectDialogField<String>(
@@ -30,14 +40,11 @@ class _DiscoverRecommendedScreenState extends State<DiscoverRecommendedScreen> {
           listType: MultiSelectListType.CHIP,
           searchable: true,
           onConfirm: (values) {
-            print(values);
+            widget.onCategoriesSelect(values);
           },
           chipDisplay: MultiSelectChipDisplay(
             onTap: (value) {
-              print(value);
-              // setState(() {
-              //   selectedMarkers.remove(value);
-              // });
+              widget.onCategoryRemove(value);
             },
           ),
         ),

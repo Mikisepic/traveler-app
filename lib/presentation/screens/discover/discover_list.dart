@@ -28,13 +28,8 @@ class _ExploreListScreenState extends State<ExploreListScreen>
       currentLocation = value;
     });
 
-    Future<List<DiscoveryPlace>> discoveryPlaces = geoapifyService
-        .fetchPlaceSuggestions(currentLocation?.latitude ?? 54.6905948,
-            currentLocation?.longitude ?? 25.2818487, ['activity']);
-
-    discoveryPlaces.then((value) {
-      _discoveryPlaces = value;
-    });
+    fetchDiscoveryPlace(currentLocation?.latitude ?? 54.6905948,
+        currentLocation?.longitude ?? 25.2818487, selectedCategories);
 
     _tabController = TabController(length: 2, vsync: this);
   }
@@ -72,6 +67,17 @@ class _ExploreListScreenState extends State<ExploreListScreen>
     return locationData;
   }
 
+  fetchDiscoveryPlace(double lat, double lng, List<String> categories) {
+    Future<List<DiscoveryPlace>> discoveryPlaces =
+        geoapifyService.fetchPlaceSuggestions(lat, lng, categories);
+
+    discoveryPlaces.then((value) {
+      setState(() {
+        _discoveryPlaces = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return WrapScaffold(
@@ -106,6 +112,10 @@ class _ExploreListScreenState extends State<ExploreListScreen>
           ),
           DiscoverRecommendedScreen(
             selectedCategories: selectedCategories,
+            onMarkerSelected: (mapboxMarker) {
+              fetchDiscoveryPlace(mapboxMarker.coordinates.latitude,
+                  mapboxMarker.coordinates.longitude, selectedCategories);
+            },
             onCategoriesSelect: (categoryList) {
               setState(() {
                 selectedCategories = categoryList;

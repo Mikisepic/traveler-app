@@ -26,7 +26,6 @@ class _ExploreListScreenState extends State<ExploreListScreen>
     super.initState();
     getLocationData().then((value) {
       currentLocation = value;
-      print(value);
     });
 
     Future<List<DiscoveryPlace>> discoveryPlaces = geoapifyService
@@ -35,7 +34,6 @@ class _ExploreListScreenState extends State<ExploreListScreen>
 
     discoveryPlaces.then((value) {
       _discoveryPlaces = value;
-      print(value);
     });
 
     _tabController = TabController(length: 2, vsync: this);
@@ -92,10 +90,10 @@ class _ExploreListScreenState extends State<ExploreListScreen>
         controller: _tabController,
         children: <Widget>[
           DiscoverExploreScreen(
-            locationData: currentLocation,
-            places: _discoveryPlaces,
-          ),
-          DiscoverRecommendedScreen(categories: selectedCategories)
+              locationData: currentLocation,
+              places: _discoveryPlaces,
+              selectedCategories: selectedCategories),
+          DiscoverRecommendedScreen(selectedCategories: selectedCategories)
         ],
       ),
     );

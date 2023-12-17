@@ -5,19 +5,15 @@ import 'trip.model.dart';
 
 class UserProfileMetadata {
   final String id;
-  final String firstName;
-  final String lastName;
+  final String displayName;
   final String email;
-  final String about;
   final List<Trip> trips;
   final List<Marker> markers;
 
   UserProfileMetadata({
     required this.id,
-    this.firstName = '',
-    this.lastName = '',
+    this.displayName = '',
     required this.email,
-    this.about = '',
     this.trips = const [],
     this.markers = const [],
   });

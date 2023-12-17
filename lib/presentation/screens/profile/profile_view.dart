@@ -22,7 +22,8 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
       label: 'Profile',
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(40),
-        child: Consumer<UserProvider>(builder: (context, provider, child) {
+        child: Consumer<AuthenticationProvider>(
+            builder: (context, provider, child) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -36,37 +37,31 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
               _buildRow([
                 buildCard(
                   context: context,
-                  title: 'First Name',
-                  content: provider.user.firstName,
+                  title: 'Display Name',
+                  content: provider.userMetadata?.displayName ?? 'No Data',
                 ),
                 buildCard(
                   context: context,
-                  title: 'Last Name',
-                  content: provider.user.lastName,
+                  title: 'Email',
+                  content: provider.userMetadata?.email ?? 'No Data',
                 ),
               ]),
               _buildRow([
                 buildCard(
                   context: context,
                   title: 'Trips',
-                  items: provider.user.trips.map((e) => e.title).toList(),
+                  items: provider.userMetadata?.trips
+                          .map((e) => e.title)
+                          .toList() ??
+                      ['No Data'],
                 ),
                 buildCard(
                     context: context,
                     title: 'Markers',
-                    items: provider.user.markers.map((e) => e.title).toList()),
-              ]),
-              _buildRow([
-                buildCard(
-                  context: context,
-                  title: 'Email',
-                  content: provider.user.email,
-                ),
-                buildCard(
-                  context: context,
-                  title: 'About',
-                  content: provider.user.about,
-                ),
+                    items: provider.userMetadata?.markers
+                            .map((e) => e.title)
+                            .toList() ??
+                        ['No Data']),
               ]),
             ],
           );
@@ -77,7 +72,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
 
   Widget _buildRow(List<Widget> children) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,

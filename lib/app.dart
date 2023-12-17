@@ -25,7 +25,6 @@ class TravelerApp extends StatelessWidget {
                   firebaseFirestore: firebaseFirestore,
                   firebaseAuth: firebaseAuth)),
           ChangeNotifierProvider(create: (_) => TripProvider()),
-          ChangeNotifierProvider(create: (_) => UserProvider())
         ],
         child: MaterialApp.router(
           title: 'Traveller',

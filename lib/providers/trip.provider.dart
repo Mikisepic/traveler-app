@@ -81,7 +81,8 @@ class TripProvider extends ChangeNotifier {
             .collection('users')
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .update({
-          'trips': FieldValue.arrayUnion([value.id])
+          'trips': FieldValue.arrayUnion([value.id]),
+          'updated_at': DateTime.now().millisecondsSinceEpoch
         }));
   }
 
@@ -102,7 +103,8 @@ class TripProvider extends ChangeNotifier {
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .update({
-      'trips': FieldValue.arrayRemove([id])
+      'trips': FieldValue.arrayRemove([id]),
+      'updated_at': DateTime.now().millisecondsSinceEpoch
     });
   }
 }

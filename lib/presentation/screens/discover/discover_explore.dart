@@ -29,7 +29,7 @@ class DiscoverExploreScreen extends StatefulWidget {
 class _DiscoverExploreScreenState extends State<DiscoverExploreScreen> {
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
+    return Column(children: [
       MultiSelectDialogField<String>(
         items: const [],
         initialValue: widget.selectedCategories,
@@ -44,7 +44,8 @@ class _DiscoverExploreScreenState extends State<DiscoverExploreScreen> {
           },
         ),
       ),
-      ListView.builder(
+      Expanded(
+          child: ListView.builder(
         itemCount: widget.places.length,
         itemBuilder: (context, index) => Card(
           child: Column(
@@ -78,7 +79,7 @@ class _DiscoverExploreScreenState extends State<DiscoverExploreScreen> {
             ],
           ),
         ),
-      )
+      ))
     ]);
   }
 }

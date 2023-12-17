@@ -98,9 +98,9 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: MultiSelectDialogField<UserProfileMetadata>(
         items: context
-            .read<UserProvider>()
+            .read<AuthenticationProvider>()
             .users
-            .map((e) => MultiSelectItem(e, e.id))
+            .map((e) => MultiSelectItem(e, e.displayName))
             .toList(),
         listType: MultiSelectListType.CHIP,
         searchable: true,

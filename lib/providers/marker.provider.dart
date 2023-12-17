@@ -100,7 +100,8 @@ class MarkerProvider with ChangeNotifier {
             .collection('users')
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .update({
-          'markers': FieldValue.arrayUnion([value.id])
+          'markers': FieldValue.arrayUnion([value.id]),
+          'updated_at': DateTime.now().millisecondsSinceEpoch
         }));
   }
 
@@ -121,7 +122,8 @@ class MarkerProvider with ChangeNotifier {
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .update({
-      'markers': FieldValue.arrayRemove([id])
+      'markers': FieldValue.arrayRemove([id]),
+      'updated_at': DateTime.now().millisecondsSinceEpoch
     });
   }
 }

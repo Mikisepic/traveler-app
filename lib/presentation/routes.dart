@@ -69,7 +69,7 @@ final router = GoRouter(
                     GoRoute(
                       name: 'new_place',
                       path: 'places/new',
-                      builder: (context, state) => const PlaceListScreen(),
+                      builder: (context, state) => const PlaceCreateScreen(),
                     )
                   ]),
             ],

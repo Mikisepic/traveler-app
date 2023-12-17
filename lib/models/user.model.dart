@@ -1,18 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'marker.model.dart';
-import 'trip.model.dart';
-
 class UserProfileMetadata {
   final String id;
   final String displayName;
   final String email;
-  final List<Trip> trips;
-  final List<Marker> markers;
+  final List<String> trips;
+  final List<String> markers;
 
   UserProfileMetadata({
     required this.id,
-    this.displayName = '',
+    required this.displayName,
     required this.email,
     this.trips = const [],
     this.markers = const [],
@@ -25,7 +22,12 @@ class UserProfileMetadata {
     final data = snapshot.data();
     return UserProfileMetadata(
       id: data?['userId'] as String,
+      displayName: data?['displayName'] as String,
       email: data?['email'] as String,
+      markers:
+          (data?['markers'] as List<dynamic>).map((e) => e as String).toList(),
+      trips:
+          (data?['markers'] as List<dynamic>).map((e) => e as String).toList(),
     );
   }
 

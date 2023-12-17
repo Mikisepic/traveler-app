@@ -33,7 +33,9 @@ class TripProvider extends ChangeNotifier {
               isPrivate: document.data()['isPrivate'] as bool,
               contributors: (document.data()['contributors'] as List<dynamic>)
                   .map((e) => UserProfileMetadata(
-                      id: e['id'] as String, email: e['email'] as String))
+                      id: e['id'] as String,
+                      email: e['email'] as String,
+                      displayName: e['displayName'] as String))
                   .toList(),
               markers: (document.data()['markers'] as List<dynamic>)
                   .map((e) => Marker(

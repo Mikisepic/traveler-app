@@ -50,18 +50,14 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
                 buildCard(
                   context: context,
                   title: 'Trips',
-                  items: provider.userMetadata?.trips
-                          .map((e) => e.title)
-                          .toList() ??
-                      ['No Data'],
+                  content: provider.userMetadata?.trips.length.toString() ??
+                      'No Data',
                 ),
                 buildCard(
                     context: context,
                     title: 'Markers',
-                    items: provider.userMetadata?.markers
-                            .map((e) => e.title)
-                            .toList() ??
-                        ['No Data']),
+                    content: provider.userMetadata?.markers.length.toString() ??
+                        'No Data'),
               ]),
             ],
           );

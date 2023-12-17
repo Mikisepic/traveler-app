@@ -98,6 +98,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
             .toList(),
         listType: MultiSelectListType.CHIP,
         searchable: true,
+        searchHint: 'Add Places',
         initialValue: trip.markers,
         onConfirm: (values) {
           selectedMarkers = values;

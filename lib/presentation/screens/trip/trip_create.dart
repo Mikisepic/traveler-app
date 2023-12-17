@@ -81,6 +81,7 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
             .toList(),
         listType: MultiSelectListType.CHIP,
         searchable: true,
+        searchHint: 'Add Places',
         onConfirm: (values) {
           selectedMarkers = values;
         },
@@ -104,6 +105,7 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
             .toList(),
         listType: MultiSelectListType.CHIP,
         searchable: true,
+        searchHint: 'Add Contributors',
         onConfirm: (values) {
           selectedContributors = values;
         },

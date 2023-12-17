@@ -35,6 +35,7 @@ class UserProfileMetadata {
     return {
       "userId": id,
       "email": email,
+      "displayName": displayName,
     };
   }
 }

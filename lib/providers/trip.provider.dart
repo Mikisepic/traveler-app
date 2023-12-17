@@ -33,7 +33,7 @@ class TripProvider extends ChangeNotifier {
               isPrivate: document.data()['isPrivate'] as bool,
               contributors: (document.data()['contributors'] as List<dynamic>)
                   .map((e) => UserProfileMetadata(
-                      id: e['id'] as String,
+                      id: e['userId'] as String,
                       email: e['email'] as String,
                       displayName: e['displayName'] as String))
                   .toList(),
@@ -42,8 +42,8 @@ class TripProvider extends ChangeNotifier {
                       id: e['id'] as String,
                       title: e['title'] as String,
                       mapboxId: e['mapboxId'] as String,
-                      latitude: (e['coordinates'] as GeoPoint).latitude,
-                      longitude: (e['coordinates'] as GeoPoint).longitude))
+                      latitude: e['latitude'] as double,
+                      longitude: e['longitude'] as double))
                   .toList(),
             ));
           }
@@ -70,10 +70,23 @@ class TripProvider extends ChangeNotifier {
       'userId': FirebaseAuth.instance.currentUser!.uid,
       'title': trip.title,
       'description': trip.description,
-      'markers': trip.markers,
+      'markers': trip.markers.map((e) => e.toFirestore()).toList(),
       'contributors': trip.isPrivate
-          ? [FirebaseAuth.instance.currentUser!.uid]
-          : [FirebaseAuth.instance.currentUser!.uid, ...trip.contributors],
+          ? [
+              {
+                "userId": FirebaseAuth.instance.currentUser!.uid,
+                "email": FirebaseAuth.instance.currentUser!.email,
+                "displayName": FirebaseAuth.instance.currentUser!.displayName,
+              }
+            ]
+          : [
+              {
+                "userId": FirebaseAuth.instance.currentUser!.uid,
+                "email": FirebaseAuth.instance.currentUser!.email,
+                "displayName": FirebaseAuth.instance.currentUser!.displayName,
+              },
+              ...trip.contributors.map((e) => e.toFirestore()).toList()
+            ],
       'isPrivate': trip.isPrivate,
       'created_at': DateTime.now().millisecondsSinceEpoch,
       'updated_at': DateTime.now().millisecondsSinceEpoch

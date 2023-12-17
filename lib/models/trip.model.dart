@@ -7,14 +7,16 @@ class Trip {
   final String id;
   final String title;
   final String description;
+  final String notes;
   final bool isPrivate;
   final List<Marker> markers;
-  final List<dynamic> contributors;
+  final List<UserProfileMetadata> contributors;
 
   Trip({
     required this.id,
     required this.title,
     this.description = '',
+    this.notes = '',
     this.isPrivate = false,
     this.markers = const [],
     this.contributors = const [],

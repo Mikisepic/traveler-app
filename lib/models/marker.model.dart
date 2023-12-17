@@ -37,12 +37,12 @@ class Marker {
 
   Map<String, dynamic> toFirestore() {
     return {
-      "name": id,
-      "state": mapboxId,
-      "country": title,
-      "capital": latitude,
-      "population": longitude,
-      "regions": isFavorite,
+      "id": id,
+      "mapboxId": mapboxId,
+      "title": title,
+      "latitude": latitude,
+      "longitude": longitude,
+      "isFavorite": isFavorite,
     };
   }
 }

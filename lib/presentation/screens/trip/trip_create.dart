@@ -19,7 +19,9 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   bool isPrivate = false;
+  List<String> selectedMarkerIds = [];
   List<Marker> selectedMarkers = [];
+  List<String> selectedContributorIds = [];
   List<UserProfileMetadata> selectedContributors = [];
 
   @override
@@ -73,22 +75,32 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
 
     Widget markersField = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      child: MultiSelectDialogField<Marker>(
+      child: MultiSelectDialogField<String>(
         items: context
             .read<MarkerProvider>()
             .markers
-            .map((e) => MultiSelectItem(e, e.title))
+            .map((e) => MultiSelectItem(e.id, e.title))
             .toList(),
         listType: MultiSelectListType.CHIP,
         searchable: true,
         searchHint: 'Add Places',
         onConfirm: (values) {
-          selectedMarkers = values;
+          selectedMarkerIds = values;
+          selectedMarkers = context
+              .read<MarkerProvider>()
+              .markers
+              .where((element) => selectedMarkerIds.contains(element.id))
+              .toList();
         },
         chipDisplay: MultiSelectChipDisplay(
           onTap: (value) {
             setState(() {
-              selectedMarkers.remove(value);
+              selectedMarkerIds.remove(value);
+              selectedMarkers = context
+                  .read<MarkerProvider>()
+                  .markers
+                  .where((element) => selectedMarkerIds.contains(element.id))
+                  .toList();
             });
           },
         ),
@@ -97,22 +109,33 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
 
     Widget contributorsField = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      child: MultiSelectDialogField<UserProfileMetadata>(
+      child: MultiSelectDialogField<String>(
         items: context
             .read<AuthenticationProvider>()
             .users
-            .map((e) => MultiSelectItem(e, e.displayName))
+            .map((e) => MultiSelectItem(e.id, e.displayName))
             .toList(),
         listType: MultiSelectListType.CHIP,
         searchable: true,
         searchHint: 'Add Contributors',
         onConfirm: (values) {
-          selectedContributors = values;
+          selectedContributorIds = values;
+          selectedContributors = context
+              .read<AuthenticationProvider>()
+              .users
+              .where((element) => selectedContributorIds.contains(element.id))
+              .toList();
         },
         chipDisplay: MultiSelectChipDisplay(
           onTap: (value) {
             setState(() {
-              selectedContributors.remove(value);
+              selectedContributorIds.remove(value);
+              selectedContributors = context
+                  .read<AuthenticationProvider>()
+                  .users
+                  .where(
+                      (element) => selectedContributorIds.contains(element.id))
+                  .toList();
             });
           },
         ),

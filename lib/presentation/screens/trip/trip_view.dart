@@ -27,6 +27,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
     TextEditingController descriptionController =
         TextEditingController(text: trip.description);
     bool isPrivate = trip.isPrivate;
+    List<String> selectedMarkerIds = [];
     List<Marker> selectedMarkers = [];
     List<UserProfileMetadata> selectedContributors = [];
 
@@ -90,23 +91,33 @@ class _TripViewScreenState extends State<TripViewScreen> {
 
     Widget markersField = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      child: MultiSelectDialogField<Marker>(
+      child: MultiSelectDialogField<String>(
         items: context
             .read<MarkerProvider>()
             .markers
-            .map((e) => MultiSelectItem(e, e.title))
+            .map((e) => MultiSelectItem(e.id, e.title))
             .toList(),
         listType: MultiSelectListType.CHIP,
         searchable: true,
         searchHint: 'Add Places',
-        initialValue: trip.markers,
+        initialValue: trip.markers.map((e) => e.id).toList(),
         onConfirm: (values) {
-          selectedMarkers = values;
+          selectedMarkerIds = values;
+          selectedMarkers = context
+              .read<MarkerProvider>()
+              .markers
+              .where((element) => selectedMarkerIds.contains(element.id))
+              .toList();
         },
         chipDisplay: MultiSelectChipDisplay(
           onTap: (value) {
             setState(() {
-              selectedMarkers.remove(value);
+              selectedMarkerIds.remove(value);
+              selectedMarkers = context
+                  .read<MarkerProvider>()
+                  .markers
+                  .where((element) => selectedMarkerIds.contains(element.id))
+                  .toList();
             });
           },
         ),

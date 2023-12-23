@@ -25,12 +25,13 @@ class DiscoveryPlaceProperties {
   final String name;
   final String country;
   final String state;
-  final String county;
+  final String postcode;
   final String city;
+  final String street;
   final double lon;
   final double lat;
+  final String formatted;
   final List<String> categories;
-  final List<String> details;
   final double distance;
   final String placeId;
 
@@ -38,12 +39,13 @@ class DiscoveryPlaceProperties {
     required this.name,
     required this.country,
     required this.state,
-    required this.county,
+    required this.postcode,
     required this.city,
+    required this.street,
     required this.lon,
     required this.lat,
+    required this.formatted,
     required this.categories,
-    required this.details,
     required this.distance,
     required this.placeId,
   });

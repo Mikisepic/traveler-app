@@ -69,8 +69,7 @@ class _DiscoverRecommendedScreenState extends State<DiscoverRecommendedScreen> {
                     ListTile(
                       leading: const Icon(Icons.place),
                       title: Text(widget.places[index].properties.name),
-                      subtitle: Text(
-                          '${widget.places[index].properties.country}, ${widget.places[index].properties.state}, ${widget.places[index].properties.county}, ${widget.places[index].properties.city}'),
+                      subtitle: Text(widget.places[index].properties.formatted),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,

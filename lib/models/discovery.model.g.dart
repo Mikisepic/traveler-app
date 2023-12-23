@@ -28,15 +28,15 @@ DiscoveryPlaceProperties _$DiscoveryPlacePropertiesFromJson(
       name: json['name'] as String,
       country: json['country'] as String,
       state: json['state'] as String,
-      county: json['county'] as String,
+      postcode: json['postcode'] as String,
       city: json['city'] as String,
+      street: json['street'] as String,
       lon: (json['lon'] as num).toDouble(),
       lat: (json['lat'] as num).toDouble(),
+      formatted: json['formatted'] as String,
       categories: (json['categories'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      details:
-          (json['details'] as List<dynamic>).map((e) => e as String).toList(),
       distance: (json['distance'] as num).toDouble(),
       placeId: json['place_id'] as String,
     );
@@ -47,12 +47,13 @@ Map<String, dynamic> _$DiscoveryPlacePropertiesToJson(
       'name': instance.name,
       'country': instance.country,
       'state': instance.state,
-      'county': instance.county,
+      'postcode': instance.postcode,
       'city': instance.city,
+      'street': instance.street,
       'lon': instance.lon,
       'lat': instance.lat,
+      'formatted': instance.formatted,
       'categories': instance.categories,
-      'details': instance.details,
       'distance': instance.distance,
       'place_id': instance.placeId,
     };

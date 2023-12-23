@@ -118,6 +118,7 @@ class _ExploreListScreenState extends State<ExploreListScreen>
           ),
           DiscoverExploreScreen(
             places: _discoveryPlaces,
+            loading: loading,
             onSelected: (mapboxMarker, List<String> categories,
                 List<String> conditions) {
               fetchDiscoveryPlace(mapboxMarker.coordinates.latitude,

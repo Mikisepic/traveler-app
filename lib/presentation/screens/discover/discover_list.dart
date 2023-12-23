@@ -105,14 +105,6 @@ class _ExploreListScreenState extends State<ExploreListScreen>
         children: <Widget>[
           DiscoverRecommendedScreen(
             places: _discoveryPlaces,
-            onSelected: (mapboxMarker, List<String> categories,
-                List<String> conditions) {
-              fetchDiscoveryPlace(mapboxMarker.coordinates.latitude,
-                  mapboxMarker.coordinates.longitude, categories, conditions);
-            },
-          ),
-          DiscoverExploreScreen(
-            places: _discoveryPlaces,
             loading: loading,
             onSelected: (List<String> categories, List<String> conditions) {
               setState(() {
@@ -122,6 +114,14 @@ class _ExploreListScreenState extends State<ExploreListScreen>
                     categories,
                     conditions);
               });
+            },
+          ),
+          DiscoverExploreScreen(
+            places: _discoveryPlaces,
+            onSelected: (mapboxMarker, List<String> categories,
+                List<String> conditions) {
+              fetchDiscoveryPlace(mapboxMarker.coordinates.latitude,
+                  mapboxMarker.coordinates.longitude, categories, conditions);
             },
           ),
         ],

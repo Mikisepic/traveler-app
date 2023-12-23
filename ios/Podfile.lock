@@ -782,6 +782,8 @@ PODS:
   - gRPC-Core/Interface (1.49.1)
   - GTMSessionFetcher/Core (3.2.0)
   - leveldb-library (1.22.2)
+  - location (0.0.1):
+    - Flutter
   - mapbox_maps_flutter (0.4.4):
     - Flutter
     - MapboxMaps (~> 10.13.1)
@@ -811,6 +813,7 @@ DEPENDENCIES:
   - firebase_dynamic_links (from `.symlinks/plugins/firebase_dynamic_links/ios`)
   - Flutter (from `Flutter`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
+  - location (from `.symlinks/plugins/location/ios`)
   - mapbox_maps_flutter (from `.symlinks/plugins/mapbox_maps_flutter/ios`)
 
 SPEC REPOS:
@@ -856,6 +859,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_keyboard_visibility:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
+  location:
+    :path: ".symlinks/plugins/location/ios"
   mapbox_maps_flutter:
     :path: ".symlinks/plugins/mapbox_maps_flutter/ios"
 
@@ -884,6 +889,7 @@ SPEC CHECKSUMS:
   gRPC-Core: a21a60aefc08c68c247b439a9ef97174b0c54f96
   GTMSessionFetcher: 41b9ef0b4c08a6db4b7eb51a21ae5183ec99a2c8
   leveldb-library: f03246171cce0484482ec291f88b6d563699ee06
+  location: d5cf8598915965547c3f36761ae9cc4f4e87d22e
   mapbox_maps_flutter: b7750303639682268cc7f487bfc6f474a456acab
   MapboxCommon: fdf7fd31c90b7b607cd9c63e37797f023c01d860
   MapboxCoreMaps: 24270c7c6b8cb71819fc2f3c549db9620ee4d019

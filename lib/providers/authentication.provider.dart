@@ -48,6 +48,12 @@ class AuthenticationProvider extends ChangeNotifier {
               id: document.id,
               displayName: document.data()['displayName'] as String,
               email: document.data()['email'] as String,
+              markers: (document.data()['markers'] as List<dynamic>)
+                  .map((e) => e.toString())
+                  .toList(),
+              trips: (document.data()['trips'] as List<dynamic>)
+                  .map((e) => e.toString())
+                  .toList(),
             ));
           }
           notifyListeners();

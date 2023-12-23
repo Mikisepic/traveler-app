@@ -18,20 +18,22 @@ class _ExploreListScreenState extends State<ExploreListScreen>
   GeoapifyService geoapifyService = GeoapifyService();
   List<DiscoveryPlace> _discoveryPlaces = [];
   late final TabController _tabController;
+  bool loading = false;
   LocationData? currentLocation;
-  List<String> selectedCategories = ['activity'];
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(_onTabChange);
+
     getLocationData().then((value) {
       currentLocation = value;
     });
+  }
 
-    fetchDiscoveryPlace(currentLocation?.latitude ?? 54.6905948,
-        currentLocation?.longitude ?? 25.2818487, selectedCategories);
-
-    _tabController = TabController(length: 2, vsync: this);
+  void _onTabChange() {
+    _discoveryPlaces = [];
   }
 
   @override
@@ -67,13 +69,19 @@ class _ExploreListScreenState extends State<ExploreListScreen>
     return locationData;
   }
 
-  fetchDiscoveryPlace(double lat, double lng, List<String> categories) {
+  fetchDiscoveryPlace(double lat, double lng, List<String> categories,
+      List<String> conditions) {
+    setState(() {
+      loading = true;
+    });
+    loading = true;
     Future<List<DiscoveryPlace>> discoveryPlaces =
-        geoapifyService.fetchPlaceSuggestions(lat, lng, categories);
+        geoapifyService.fetchPlaceSuggestions(lat, lng, categories, conditions);
 
     discoveryPlaces.then((value) {
       setState(() {
         _discoveryPlaces = value;
+        loading = false;
       });
     });
   }
@@ -95,38 +103,27 @@ class _ExploreListScreenState extends State<ExploreListScreen>
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
-          DiscoverExploreScreen(
-            locationData: currentLocation,
+          DiscoverRecommendedScreen(
             places: _discoveryPlaces,
-            selectedCategories: selectedCategories,
-            onCategoriesSelect: (categoryList) {
-              setState(() {
-                selectedCategories = categoryList;
-              });
+            onSelected: (mapboxMarker, List<String> categories,
+                List<String> conditions) {
+              fetchDiscoveryPlace(mapboxMarker.coordinates.latitude,
+                  mapboxMarker.coordinates.longitude, categories, conditions);
             },
-            onCategoryRemove: (category) {
+          ),
+          DiscoverExploreScreen(
+            places: _discoveryPlaces,
+            loading: loading,
+            onSelected: (List<String> categories, List<String> conditions) {
               setState(() {
-                selectedCategories.remove(category);
+                fetchDiscoveryPlace(
+                    currentLocation?.latitude ?? 54.6905948,
+                    currentLocation?.longitude ?? 25.2818487,
+                    categories,
+                    conditions);
               });
             },
           ),
-          DiscoverRecommendedScreen(
-            selectedCategories: selectedCategories,
-            onMarkerSelected: (mapboxMarker) {
-              fetchDiscoveryPlace(mapboxMarker.coordinates.latitude,
-                  mapboxMarker.coordinates.longitude, selectedCategories);
-            },
-            onCategoriesSelect: (categoryList) {
-              setState(() {
-                selectedCategories = categoryList;
-              });
-            },
-            onCategoryRemove: (category) {
-              setState(() {
-                selectedCategories.remove(category);
-              });
-            },
-          )
         ],
       ),
     );

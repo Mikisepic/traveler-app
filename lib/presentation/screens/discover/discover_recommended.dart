@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:traveler/common/constants.dart';
+import 'package:traveler/models/discovery.model.dart';
 import 'package:traveler/models/marker.model.dart';
 import 'package:traveler/presentation/components/components.dart';
 
 class DiscoverRecommendedScreen extends StatefulWidget {
-  final List<String> selectedCategories;
-  final Function(MarkerRetrieval mapboxMarker) onMarkerSelected;
-  final Function(List<String> categoryList) onCategoriesSelect;
-  final Function(String category) onCategoryRemove;
+  final List<DiscoveryPlace> places;
+  final Function(MarkerRetrieval mapboxMarker, List<String> categoies,
+      List<String> conditions) onSelected;
 
   const DiscoverRecommendedScreen({
     super.key,
-    required this.selectedCategories,
-    required this.onMarkerSelected,
-    required this.onCategoriesSelect,
-    required this.onCategoryRemove,
+    required this.places,
+    required this.onSelected,
   });
 
   @override
@@ -23,6 +22,10 @@ class DiscoverRecommendedScreen extends StatefulWidget {
 }
 
 class _DiscoverRecommendedScreenState extends State<DiscoverRecommendedScreen> {
+  MarkerRetrieval? selectedMapboxMarker;
+  List<String> selectedCategories = ['activity'];
+  List<String> selectedConditions = [];
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -30,20 +33,31 @@ class _DiscoverRecommendedScreenState extends State<DiscoverRecommendedScreen> {
         Search(
           initialValue: '',
           onSearchComplete: (mapboxMarker) {
-            widget.onMarkerSelected(mapboxMarker);
+            widget.onSelected(
+                mapboxMarker, selectedCategories, selectedConditions);
           },
         ),
         MultiSelectDialogField<String>(
-          items: const [],
-          initialValue: widget.selectedCategories,
+          items: geoapifyPlacesCategories
+              .map((e) => MultiSelectItem(e, e))
+              .toList(),
+          initialValue: selectedCategories,
           listType: MultiSelectListType.CHIP,
           searchable: true,
           onConfirm: (values) {
-            widget.onCategoriesSelect(values);
+            setState(() {
+              selectedCategories = values;
+            });
+            widget.onSelected(selectedMapboxMarker as MarkerRetrieval,
+                selectedCategories, selectedConditions);
           },
           chipDisplay: MultiSelectChipDisplay(
             onTap: (value) {
-              widget.onCategoryRemove(value);
+              setState(() {
+                selectedCategories.remove(value);
+              });
+              widget.onSelected(selectedMapboxMarker as MarkerRetrieval,
+                  selectedCategories, selectedConditions);
             },
           ),
         ),

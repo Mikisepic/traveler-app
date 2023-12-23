@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:traveler/common/common.dart';
+import 'package:traveler/constants/constants.dart';
 import 'package:traveler/models/models.dart';
 
 class GeoapifyService {
@@ -10,7 +10,7 @@ class GeoapifyService {
   Future<List<DiscoveryPlace>> fetchPlaceSuggestions(double lat, double lng,
       List<String> categories, List<String> conditions) async {
     final url = Uri.parse(
-        "$placesURI?bias=proximity:$lng,$lat&categories=${categories.join(',')}${conditions.isNotEmpty ? '&conditions=${conditions.join(',')}' : ''}&limit=20&apiKey=$geoapifyApiKey");
+        "$placesURI?bias=proximity:$lng,$lat&categories=${categories.join(',')}${conditions.isNotEmpty ? '&conditions=${conditions.join(',')}' : ''}&limit=20&apiKey=${ApplicationConstants.geoapifyApiKey}");
     final Response response = await get(url);
     print(url);
 

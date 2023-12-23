@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:traveler/common/constants.dart';
+import 'package:traveler/constants/app_constants.dart';
 import 'package:traveler/models/discovery.model.dart';
 import 'package:traveler/models/marker.model.dart';
 import 'package:traveler/providers/authentication.provider.dart';
@@ -32,8 +32,9 @@ class _DiscoverRecommendedScreenState extends State<DiscoverRecommendedScreen> {
   Widget build(BuildContext context) {
     return Column(children: [
       MultiSelectDialogField<String>(
-        items:
-            geoapifyPlacesCategories.map((e) => MultiSelectItem(e, e)).toList(),
+        items: ApplicationConstants.geoapifyPlacesCategories
+            .map((e) => MultiSelectItem(e, e))
+            .toList(),
         initialValue: const [],
         listType: MultiSelectListType.CHIP,
         searchable: true,

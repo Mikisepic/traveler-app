@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:traveler/common/common.dart';
+import 'package:traveler/constants/constants.dart';
 import 'package:traveler/models/models.dart';
 import 'package:uuid/uuid.dart';
 
@@ -16,7 +16,7 @@ class MapboxService {
 
   Future<List<MarkerSuggestion>> fetchSuggestions(String query) async {
     final url = Uri.parse(
-        '$suggestURI?q=$query&access_token=$mapboxAccessToken&session_token=$sessionToken');
+        '$suggestURI?q=$query&access_token=${ApplicationConstants.mapboxAccessToken}&session_token=$sessionToken');
     final Response response = await get(url);
 
     if (response.statusCode == 200) {
@@ -32,7 +32,7 @@ class MapboxService {
 
   Future<MarkerRetrieval> retrieveSuggestionDetails(String id) async {
     final url = Uri.parse(
-        '$retrieveURI/$id?access_token=$mapboxAccessToken&session_token=$sessionToken');
+        '$retrieveURI/$id?access_token=${ApplicationConstants.mapboxAccessToken}&session_token=$sessionToken');
     final Response response = await get(url);
 
     if (response.statusCode == 200) {
@@ -48,7 +48,7 @@ class MapboxService {
   Future<TripOptimization> fetchTripOptimization(
       String profile, List<MarkerCoordinates> coordinates) async {
     final url = Uri.parse(
-        "$optimizationURI/$profile/${coordinates.map((e) => '${e.longitude},${e.latitude}').toList().join(';')}?steps=true&geometries=geojson&access_token=$mapboxAccessToken");
+        "$optimizationURI/$profile/${coordinates.map((e) => '${e.longitude},${e.latitude}').toList().join(';')}?steps=true&geometries=geojson&access_token=${ApplicationConstants.mapboxAccessToken}");
     final Response response = await get(url);
 
     print(url);

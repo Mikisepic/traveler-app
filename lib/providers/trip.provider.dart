@@ -43,7 +43,8 @@ class TripProvider extends ChangeNotifier {
                       title: e['title'] as String,
                       mapboxId: e['mapboxId'] as String,
                       latitude: e['latitude'] as double,
-                      longitude: e['longitude'] as double))
+                      longitude: e['longitude'] as double,
+                      rating: e['rating'] as int))
                   .toList(),
             ));
           }

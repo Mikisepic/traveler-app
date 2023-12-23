@@ -43,6 +43,7 @@ class MarkerProvider with ChangeNotifier {
                 latitude: (document.data()['coordinates'] as GeoPoint).latitude,
                 longitude:
                     (document.data()['coordinates'] as GeoPoint).longitude,
+                rating: document.data()['rating'] as int,
                 isFavorite: document.data()['isFavorite'] as bool,
               ),
             );
@@ -90,6 +91,7 @@ class MarkerProvider with ChangeNotifier {
       'username': FirebaseAuth.instance.currentUser!.displayName,
       'title': marker.title,
       'mapboxId': marker.mapboxId,
+      'rating': marker.rating,
       'isFavorite': marker.isFavorite,
       'coordinates': GeoPoint(marker.latitude, marker.longitude),
       'created_at': DateTime.now().millisecondsSinceEpoch,
@@ -111,6 +113,7 @@ class MarkerProvider with ChangeNotifier {
       'userId': FirebaseAuth.instance.currentUser!.uid,
       'mapboxId': marker.mapboxId,
       'isFavorite': marker.isFavorite,
+      'rating': marker.rating,
       'coordinates': GeoPoint(marker.latitude, marker.longitude),
       'updated_at': DateTime.now().millisecondsSinceEpoch
     });

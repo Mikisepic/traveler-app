@@ -9,6 +9,7 @@ class Marker {
   final String title;
   final double latitude;
   final double longitude;
+  final int rating;
   final bool isFavorite;
 
   Marker({
@@ -17,6 +18,7 @@ class Marker {
     required this.title,
     required this.latitude,
     required this.longitude,
+    this.rating = 0,
     this.isFavorite = false,
   });
 
@@ -31,6 +33,7 @@ class Marker {
       title: data?['title'] as String,
       latitude: (data?['coordinates'] as GeoPoint).latitude,
       longitude: (data?['coordinates'] as GeoPoint).longitude,
+      rating: data?['rating'] as int,
       isFavorite: data?['isFavorite'] as bool,
     );
   }
@@ -42,6 +45,7 @@ class Marker {
       "title": title,
       "latitude": latitude,
       "longitude": longitude,
+      "rating": rating,
       "isFavorite": isFavorite,
     };
   }

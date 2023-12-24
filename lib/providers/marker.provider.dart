@@ -6,17 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:traveler/models/models.dart';
 
 class MarkerProvider with ChangeNotifier {
+  final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
   StreamSubscription<QuerySnapshot>? _markersSubscription;
   bool _loading = false;
   bool get loading => _loading;
   List<Marker> _markers = [];
   List<Marker> get markers => _markers;
 
-  final FirebaseFirestore firebaseFirestore;
-  final FirebaseAuth firebaseAuth;
-
-  MarkerProvider(
-      {required this.firebaseFirestore, required this.firebaseAuth}) {
+  MarkerProvider() {
     init();
   }
 
@@ -43,7 +42,7 @@ class MarkerProvider with ChangeNotifier {
                 latitude: (document.data()['coordinates'] as GeoPoint).latitude,
                 longitude:
                     (document.data()['coordinates'] as GeoPoint).longitude,
-                rating: document.data()['rating'] as int,
+                rating: 0,
                 isFavorite: document.data()['isFavorite'] as bool,
               ),
             );
@@ -58,21 +57,14 @@ class MarkerProvider with ChangeNotifier {
     });
   }
 
-  Future<Marker?> fetchOne(String id) async {
-    final reference = firebaseFirestore
-        .collection('markers')
-        .doc(id)
-        .withConverter(
+  Future<Marker> getMarkerByReference(DocumentReference markerRef) async {
+    final snapshot = await markerRef
+        .withConverter<Marker>(
             fromFirestore: Marker.fromFirestore,
-            toFirestore: (Marker marker, _) => marker.toFirestore());
+            toFirestore: (Marker marker, _) => marker.toFirestore())
+        .get();
 
-    var docSnap = await reference.get();
-    final marker = docSnap.data();
-
-    if (marker != null) {
-      return marker;
-    }
-    return null;
+    return snapshot.data()!;
   }
 
   Marker fetchDialogData(String id) {

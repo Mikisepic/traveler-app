@@ -16,15 +16,10 @@ class TravelerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(
-              create: (_) => AuthenticationProvider(
-                  firebaseAuth: firebaseAuth,
-                  firebaseFirestore: firebaseFirestore)),
-          ChangeNotifierProvider(
-              create: (_) => MarkerProvider(
-                  firebaseFirestore: firebaseFirestore,
-                  firebaseAuth: firebaseAuth)),
+          ChangeNotifierProvider(create: (_) => AuthenticationProvider()),
+          ChangeNotifierProvider(create: (_) => MarkerProvider()),
           ChangeNotifierProvider(create: (_) => TripProvider()),
+          ChangeNotifierProvider(create: (_) => NoteProvider()),
         ],
         child: MaterialApp.router(
           title: 'Traveller',

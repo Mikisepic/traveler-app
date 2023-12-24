@@ -8,11 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:traveler/models/user.model.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
-  final FirebaseFirestore firebaseFirestore;
-  final FirebaseAuth firebaseAuth;
+  final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  AuthenticationProvider(
-      {required this.firebaseAuth, required this.firebaseFirestore}) {
+  AuthenticationProvider() {
     init();
   }
 

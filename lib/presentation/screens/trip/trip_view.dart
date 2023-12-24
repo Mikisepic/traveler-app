@@ -31,6 +31,12 @@ class _TripViewScreenState extends State<TripViewScreen> {
     List<Marker> selectedMarkers = [];
     List<UserProfileMetadata> selectedContributors = [];
 
+    @override
+    void initState() {
+      super.initState();
+      // Fetch marker data
+    }
+
     Widget titleField = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Row(
@@ -155,6 +161,8 @@ class _TripViewScreenState extends State<TripViewScreen> {
                       description: descriptionValue,
                       isPrivate: isPrivate,
                       markers: selectedMarkers,
+                      // .map((e) => FirebaseFirestore.instance.doc(e.id))
+                      // .toList(),
                       contributors: selectedContributors),
                 );
             context.goNamed('trip_list');

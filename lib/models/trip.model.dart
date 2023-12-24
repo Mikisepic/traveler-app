@@ -9,6 +9,7 @@ class Trip {
   final String description;
   final String notes;
   final bool isPrivate;
+  // final List<DocumentReference> markers;
   final List<Marker> markers;
   final List<UserProfileMetadata> contributors;
 

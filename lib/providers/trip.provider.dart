@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:traveler/models/models.dart';
+import 'package:traveler/providers/marker.provider.dart';
 
 class TripProvider extends ChangeNotifier {
   StreamSubscription<QuerySnapshot>? _tripsSubscription;
@@ -46,6 +47,9 @@ class TripProvider extends ChangeNotifier {
                       longitude: e['longitude'] as double,
                       rating: e['rating'] as int))
                   .toList(),
+              // markers: (document.data()['markers'] as List<dynamic>)
+              //     .map((e) => FirebaseFirestore.instance.doc(e.toString()))
+              //     .toList(),
             ));
           }
           notifyListeners();
@@ -62,6 +66,18 @@ class TripProvider extends ChangeNotifier {
     return _trips[index];
   }
 
+  List<Marker> fetchTripMarkerData(List<DocumentReference> refs) {
+    List<Marker> receivedMarkers = [];
+
+    for (DocumentReference ref in refs) {
+      Future<Marker> associatedMarker =
+          MarkerProvider().getMarkerByReference(ref);
+      associatedMarker.then((value) => receivedMarkers.add(value));
+    }
+
+    return receivedMarkers;
+  }
+
   create(Trip trip, bool isAuthenticated) {
     if (!isAuthenticated) {
       throw Exception('Must be logged in');
@@ -71,6 +87,7 @@ class TripProvider extends ChangeNotifier {
       'userId': FirebaseAuth.instance.currentUser!.uid,
       'title': trip.title,
       'description': trip.description,
+      // 'markers': trip.markers,
       'markers': trip.markers.map((e) => e.toFirestore()).toList(),
       'contributors': trip.isPrivate
           ? [

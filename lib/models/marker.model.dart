@@ -33,7 +33,7 @@ class Marker {
       title: data?['title'] as String,
       latitude: (data?['coordinates'] as GeoPoint).latitude,
       longitude: (data?['coordinates'] as GeoPoint).longitude,
-      rating: data?['rating'] as int,
+      rating: 0,
       isFavorite: data?['isFavorite'] as bool,
     );
   }

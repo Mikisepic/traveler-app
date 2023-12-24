@@ -155,7 +155,10 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
                     title: titleValue,
                     isPrivate: isPrivate,
                     description: descriptionValue,
-                    markers: selectedMarkers),
+                    markers: selectedMarkers
+                    // .map((e) => FirebaseFirestore.instance.doc(e.id))
+                    // .toList()
+                    ),
                 context.read<AuthenticationProvider>().isAuthenticated);
             context.goNamed('trip_list');
           }

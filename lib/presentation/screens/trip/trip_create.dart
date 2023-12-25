@@ -21,9 +21,7 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
 
   bool isPrivate = false;
   List<String> selectedMarkerIds = [];
-  List<Marker> selectedMarkers = [];
   List<String> selectedContributorIds = [];
-  List<UserProfileMetadata> selectedContributors = [];
 
   @override
   Widget build(BuildContext context) {
@@ -88,21 +86,11 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
         buttonText: const Text('Select places for your trip'),
         onConfirm: (values) {
           selectedMarkerIds = values;
-          selectedMarkers = context
-              .read<MarkerProvider>()
-              .markers
-              .where((element) => selectedMarkerIds.contains(element.id))
-              .toList();
         },
         chipDisplay: MultiSelectChipDisplay(
           onTap: (value) {
             setState(() {
               selectedMarkerIds.remove(value);
-              selectedMarkers = context
-                  .read<MarkerProvider>()
-                  .markers
-                  .where((element) => selectedMarkerIds.contains(element.id))
-                  .toList();
             });
           },
         ),
@@ -123,22 +111,11 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
         buttonText: const Text('Select who will contribute to this trip'),
         onConfirm: (values) {
           selectedContributorIds = values;
-          selectedContributors = context
-              .read<AuthenticationProvider>()
-              .users
-              .where((element) => selectedContributorIds.contains(element.id))
-              .toList();
         },
         chipDisplay: MultiSelectChipDisplay(
           onTap: (value) {
             setState(() {
               selectedContributorIds.remove(value);
-              selectedContributors = context
-                  .read<AuthenticationProvider>()
-                  .users
-                  .where(
-                      (element) => selectedContributorIds.contains(element.id))
-                  .toList();
             });
           },
         ),
@@ -161,7 +138,7 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
                         .map(
                             (e) => FirebaseFirestore.instance.doc('markers/$e'))
                         .toList(),
-                    contributors: selectedContributors
+                    contributors: selectedContributorIds
                         .map((e) => FirebaseFirestore.instance.doc('users/$e'))
                         .toList()),
                 context.read<AuthenticationProvider>().isAuthenticated);

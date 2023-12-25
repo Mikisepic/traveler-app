@@ -19,7 +19,7 @@ class MarkerProvider with ChangeNotifier {
     init();
   }
 
-  init() async {
+  init() {
     firebaseAuth.userChanges().listen((user) {
       _markersSubscription?.cancel();
 
@@ -99,7 +99,7 @@ class MarkerProvider with ChangeNotifier {
           .collection('users')
           .doc(firebaseAuth.currentUser!.uid)
           .update({
-        'markers': FieldValue.arrayUnion([value.id]),
+        'markers': FieldValue.arrayUnion(['markers/${value.id}']),
         'updated_at': DateTime.now().millisecondsSinceEpoch
       });
     });
@@ -117,18 +117,33 @@ class MarkerProvider with ChangeNotifier {
     });
   }
 
-  delete(String id) {
-    firebaseFirestore.collection('markers').doc(id).delete();
-    firebaseFirestore
-        .collection('users')
-        .doc(firebaseAuth.currentUser!.uid)
-        .update({
-      'markers': FieldValue.arrayRemove([id]),
-      'updated_at': DateTime.now().millisecondsSinceEpoch
-    });
+  delete(String id) async {
+    final batch = firebaseFirestore.batch();
+
+    final parentDocRef = firebaseFirestore.collection('markers').doc(id);
+    batch.delete(parentDocRef);
+
+    final relatedDocsQuery = firebaseFirestore
+        .collection('trips')
+        .where('markers', arrayContains: 'markers/$id');
+    final relatedDocs = await relatedDocsQuery.get();
+
+    for (final doc in relatedDocs.docs) {
+      batch.update(doc.reference, {
+        'markers': FieldValue.arrayRemove(['markers/$id']),
+        'updated_at': DateTime.now().millisecondsSinceEpoch
+      });
+    }
+
+    batch.update(
+        firebaseFirestore
+            .collection('users')
+            .doc(firebaseAuth.currentUser!.uid),
+        {
+          'markers': FieldValue.arrayRemove(['markers/$id']),
+          'updated_at': DateTime.now().millisecondsSinceEpoch
+        });
+
+    batch.commit();
   }
 }
-
-
-// 1702905115347
-// 1703504308104

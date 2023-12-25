@@ -135,7 +135,7 @@ class TripProvider extends ChangeNotifier {
             .collection('users')
             .doc(firebaseAuth.currentUser!.uid)
             .update({
-          'trips': FieldValue.arrayUnion([value.id]),
+          'trips': FieldValue.arrayUnion(['trips/${value.id}']),
           'updated_at': DateTime.now().millisecondsSinceEpoch
         }));
   }
@@ -144,20 +144,25 @@ class TripProvider extends ChangeNotifier {
     firebaseFirestore.collection('trips').doc(trip.id).update({
       'title': trip.title,
       'description': trip.description,
+      'markers': trip.markers.map((e) => e.path).toList(),
+      'contributors': trip.isPrivate
+          ? ['users/${firebaseAuth.currentUser!.uid}']
+          : [
+              'users/${firebaseAuth.currentUser!.uid}',
+              ...trip.contributors.map((e) => e.path).toList()
+            ],
       'isPrivate': trip.isPrivate,
-      'markers': trip.markers,
-      'contributors': trip.contributors,
       'updated_at': DateTime.now().millisecondsSinceEpoch
     });
   }
 
   delete(String id) {
     firebaseFirestore.collection('trips').doc(id).delete();
-    FirebaseFirestore.instance
+    firebaseFirestore
         .collection('users')
         .doc(firebaseAuth.currentUser!.uid)
         .update({
-      'trips': FieldValue.arrayRemove([id]),
+      'trips': FieldValue.arrayRemove(['trips/$id']),
       'updated_at': DateTime.now().millisecondsSinceEpoch
     });
   }

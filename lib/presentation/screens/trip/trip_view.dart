@@ -32,9 +32,10 @@ class _TripViewScreenState extends State<TripViewScreen> {
     bool isPrivate = trip.isPrivate;
 
     bool loading = false;
-    List<String> selectedMarkerIds = [];
+    List<String> selectedMarkerIds = trip.markers.map((e) => e.id).toList();
     List<Marker> selectedMarkers = [];
-    List<String> selectedContributorIds = [];
+    List<String> selectedContributorIds =
+        trip.contributors.map((e) => e.id).toList();
     List<UserProfileMetadata> selectedContributors = [];
 
     @override
@@ -45,7 +46,6 @@ class _TripViewScreenState extends State<TripViewScreen> {
     Future<void> fetchMarkerData() async {
       setState(() {
         loading = true;
-        selectedMarkerIds = [];
       });
       final tripMarkers =
           context.read<TripProvider>().fetchTripMarkers(trip.markers);
@@ -59,7 +59,6 @@ class _TripViewScreenState extends State<TripViewScreen> {
     Future<void> fetchContributorData() async {
       setState(() {
         loading = true;
-        selectedContributorIds = [];
       });
       final tripContributors =
           context.read<TripProvider>().fetchTripContributors(trip.contributors);
@@ -277,11 +276,11 @@ class _TripViewScreenState extends State<TripViewScreen> {
                       title: titleValue,
                       description: descriptionValue,
                       isPrivate: isPrivate,
-                      markers: selectedMarkers
+                      markers: selectedMarkerIds
                           .map((e) =>
                               FirebaseFirestore.instance.doc('markers/$e'))
                           .toList(),
-                      contributors: selectedContributors
+                      contributors: selectedContributorIds
                           .map(
                               (e) => FirebaseFirestore.instance.doc('users/$e'))
                           .toList()),

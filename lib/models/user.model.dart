@@ -4,8 +4,8 @@ class UserProfileMetadata {
   final String id;
   final String displayName;
   final String email;
-  final List<String> trips;
-  final List<String> markers;
+  final List<DocumentReference> markers;
+  final List<DocumentReference> trips;
 
   UserProfileMetadata({
     required this.id,
@@ -24,9 +24,12 @@ class UserProfileMetadata {
       id: data?['userId'] as String,
       displayName: data?['displayName'] as String,
       email: data?['email'] as String,
-      markers:
-          (data?['markers'] as List<dynamic>).map((e) => e as String).toList(),
-      trips: (data?['trips'] as List<dynamic>).map((e) => e as String).toList(),
+      markers: (data?['markers'] as List<dynamic>)
+          .map((e) => FirebaseFirestore.instance.doc(e.toString()))
+          .toList(),
+      trips: (data?['trips'] as List<dynamic>)
+          .map((e) => FirebaseFirestore.instance.doc(e.toString()))
+          .toList(),
     );
   }
 

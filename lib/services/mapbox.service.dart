@@ -50,9 +50,7 @@ class MapboxService {
     final url = Uri.parse(
         "$optimizationURI/$profile/${coordinates.map((e) => '${e.longitude},${e.latitude}').toList().join(';')}?steps=true&geometries=geojson&access_token=${ApplicationConstants.mapboxAccessToken}");
     final Response response = await get(url);
-
     print(url);
-
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       return TripOptimization.fromJson(data as Map<String, dynamic>);

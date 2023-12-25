@@ -10,10 +10,10 @@ class MarkerProvider with ChangeNotifier {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   StreamSubscription<QuerySnapshot>? _markersSubscription;
-  bool _loading = false;
-  bool get loading => _loading;
   List<Marker> _markers = [];
   List<Marker> get markers => _markers;
+  bool _loading = false;
+  bool get loading => _loading;
 
   MarkerProvider() {
     init();
@@ -62,14 +62,14 @@ class MarkerProvider with ChangeNotifier {
     return snapshot.data()!;
   }
 
-  Future<Marker> getMarkerByReference(DocumentReference markerRef) async {
-    final snapshot = await markerRef
+  Future<Marker?> getMarkerByReference(DocumentReference markerRef) async {
+    final snapshot = await firebaseFirestore
+        .doc(markerRef.path)
         .withConverter<Marker>(
             fromFirestore: Marker.fromFirestore,
             toFirestore: (Marker marker, _) => marker.toFirestore())
         .get();
-
-    return snapshot.data()!;
+    return snapshot.data();
   }
 
   Marker fetchDialogData(String id) {

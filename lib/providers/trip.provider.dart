@@ -7,51 +7,38 @@ import 'package:traveler/models/models.dart';
 import 'package:traveler/providers/marker.provider.dart';
 
 class TripProvider extends ChangeNotifier {
+  final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
   StreamSubscription<QuerySnapshot>? _tripsSubscription;
   List<Trip> _trips = [];
   List<Trip> get trips => _trips;
+  bool _loading = false;
+  bool get loading => _loading;
 
   TripProvider() {
     init();
   }
 
-  init() async {
-    FirebaseAuth.instance.userChanges().listen((user) {
+  init() {
+    firebaseAuth.userChanges().listen((user) {
       _tripsSubscription?.cancel();
 
       if (user != null) {
-        _tripsSubscription = FirebaseFirestore.instance
+        _tripsSubscription = firebaseFirestore
             .collection('trips')
             .orderBy('updated_at', descending: true)
             .snapshots()
-            .listen((snapshot) {
+            .listen((snapshot) async {
           _trips = [];
+          _loading = true;
+          List<Future<Trip>> futures = [];
           for (final document in snapshot.docs) {
-            _trips.add(Trip(
-              id: document.id,
-              title: document.data()['title'] as String,
-              description: document.data()['description'] as String,
-              isPrivate: document.data()['isPrivate'] as bool,
-              contributors: (document.data()['contributors'] as List<dynamic>)
-                  .map((e) => UserProfileMetadata(
-                      id: e['userId'] as String,
-                      email: e['email'] as String,
-                      displayName: e['displayName'] as String))
-                  .toList(),
-              markers: (document.data()['markers'] as List<dynamic>)
-                  .map((e) => Marker(
-                      id: e['id'] as String,
-                      title: e['title'] as String,
-                      mapboxId: e['mapboxId'] as String,
-                      latitude: e['latitude'] as double,
-                      longitude: e['longitude'] as double,
-                      rating: e['rating'] as int))
-                  .toList(),
-              // markers: (document.data()['markers'] as List<dynamic>)
-              //     .map((e) => FirebaseFirestore.instance.doc(e.toString()))
-              //     .toList(),
-            ));
+            final localTrip = getTripById(document.id);
+            futures.add(localTrip);
           }
+          _trips = await Future.wait(futures);
+          _loading = false;
           notifyListeners();
         });
       } else {
@@ -59,6 +46,19 @@ class TripProvider extends ChangeNotifier {
       }
       notifyListeners();
     });
+  }
+
+  Future<Trip> getTripById(String id) async {
+    final reference = firebaseFirestore
+        .collection('trips')
+        .doc(id)
+        .withConverter(
+            fromFirestore: Trip.fromFirestore,
+            toFirestore: (Trip trip, _) => trip.toFirestore());
+
+    final snapshot = await reference.get();
+
+    return snapshot.data()!;
   }
 
   Future<Trip> getTripByReference(DocumentReference tripRef) async {
@@ -80,9 +80,13 @@ class TripProvider extends ChangeNotifier {
     List<Marker> receivedMarkers = [];
 
     for (DocumentReference ref in refs) {
-      Future<Marker> associatedMarker =
+      Future<Marker?> associatedMarker =
           MarkerProvider().getMarkerByReference(ref);
-      associatedMarker.then((value) => receivedMarkers.add(value));
+      associatedMarker.then((value) {
+        if (value != null) {
+          receivedMarkers.add(value);
+        }
+      });
     }
 
     return receivedMarkers;
@@ -93,25 +97,24 @@ class TripProvider extends ChangeNotifier {
       throw Exception('Must be logged in');
     }
 
-    final doc = FirebaseFirestore.instance.collection('trips').add({
-      'userId': FirebaseAuth.instance.currentUser!.uid,
+    final doc = firebaseFirestore.collection('trips').add({
+      'userId': firebaseAuth.currentUser!.uid,
       'title': trip.title,
       'description': trip.description,
-      // 'markers': trip.markers,
-      'markers': trip.markers.map((e) => e.toFirestore()).toList(),
+      'markers': trip.markers.map((e) => e.path),
       'contributors': trip.isPrivate
           ? [
               {
-                "userId": FirebaseAuth.instance.currentUser!.uid,
-                "email": FirebaseAuth.instance.currentUser!.email,
-                "displayName": FirebaseAuth.instance.currentUser!.displayName,
+                "userId": firebaseAuth.currentUser!.uid,
+                "email": firebaseAuth.currentUser!.email,
+                "displayName": firebaseAuth.currentUser!.displayName,
               }
             ]
           : [
               {
-                "userId": FirebaseAuth.instance.currentUser!.uid,
-                "email": FirebaseAuth.instance.currentUser!.email,
-                "displayName": FirebaseAuth.instance.currentUser!.displayName,
+                "userId": firebaseAuth.currentUser!.uid,
+                "email": firebaseAuth.currentUser!.email,
+                "displayName": firebaseAuth.currentUser!.displayName,
               },
               ...trip.contributors.map((e) => e.toFirestore()).toList()
             ],
@@ -122,7 +125,7 @@ class TripProvider extends ChangeNotifier {
 
     doc.then((value) => FirebaseFirestore.instance
             .collection('users')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .doc(firebaseAuth.currentUser!.uid)
             .update({
           'trips': FieldValue.arrayUnion([value.id]),
           'updated_at': DateTime.now().millisecondsSinceEpoch
@@ -130,7 +133,7 @@ class TripProvider extends ChangeNotifier {
   }
 
   void update(Trip trip) {
-    FirebaseFirestore.instance.collection('trips').doc(trip.id).update({
+    firebaseFirestore.collection('trips').doc(trip.id).update({
       'title': trip.title,
       'description': trip.description,
       'isPrivate': trip.isPrivate,
@@ -141,10 +144,10 @@ class TripProvider extends ChangeNotifier {
   }
 
   delete(String id) {
-    FirebaseFirestore.instance.collection('trips').doc(id).delete();
+    firebaseFirestore.collection('trips').doc(id).delete();
     FirebaseFirestore.instance
         .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .doc(firebaseAuth.currentUser!.uid)
         .update({
       'trips': FieldValue.arrayRemove([id]),
       'updated_at': DateTime.now().millisecondsSinceEpoch

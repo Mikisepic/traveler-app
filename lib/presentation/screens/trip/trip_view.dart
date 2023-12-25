@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -6,6 +7,20 @@ import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/components/wrap.dart';
 import 'package:traveler/providers/providers.dart';
 import 'package:traveler/services/mapbox.service.dart';
+
+class Item {
+  Item({
+    required this.expandedBody,
+    required this.headerValue,
+    // required this.expandedCallback,
+    this.isExpanded = false,
+  });
+
+  Widget expandedBody;
+  String headerValue;
+  bool isExpanded;
+  // Function() expandedCallback;
+}
 
 class TripViewScreen extends StatefulWidget {
   final String id;
@@ -17,6 +32,8 @@ class TripViewScreen extends StatefulWidget {
 }
 
 class _TripViewScreenState extends State<TripViewScreen> {
+  List<bool> isOpen = [false, false];
+
   @override
   Widget build(BuildContext context) {
     final MapboxService mapboxService = MapboxService();
@@ -30,11 +47,31 @@ class _TripViewScreenState extends State<TripViewScreen> {
     List<String> selectedMarkerIds = [];
     List<Marker> selectedMarkers = [];
     List<UserProfileMetadata> selectedContributors = [];
+    bool loading = false;
 
     @override
     void initState() {
       super.initState();
-      // Fetch marker data
+    }
+
+    Future<void> fetchMarkerData() async {
+      setState(() {
+        loading = true;
+        selectedMarkerIds = [];
+      });
+      final tripMarkers =
+          context.read<TripProvider>().fetchTripMarkerData(trip.markers);
+      setState(() {
+        selectedMarkers = tripMarkers;
+        selectedMarkerIds = selectedMarkers.map((e) => e.id).toList();
+        loading = false;
+      });
+    }
+
+    Future<void> fetchContributorData() async {
+      for (final contributor in trip.contributors) {
+        print(contributor);
+      }
     }
 
     Widget titleField = Padding(
@@ -137,7 +174,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
           Future<TripOptimization> tripOptimization =
               mapboxService.fetchTripOptimization(
                   'driving',
-                  trip.markers
+                  selectedMarkers
                       .map((e) => MarkerCoordinates(
                           latitude: e.latitude, longitude: e.longitude))
                       .toList());
@@ -146,6 +183,57 @@ class _TripViewScreenState extends State<TripViewScreen> {
         child: const Text('Optimize Route'),
       ),
     );
+
+    Widget expansionPanelList = ExpansionPanelList(
+        expansionCallback: (int index, bool isExpanded) {
+          setState(() {
+            isOpen[index] = isExpanded;
+          });
+
+          if (isOpen[0]) {
+            fetchMarkerData();
+          }
+
+          if (isOpen[1]) {
+            fetchContributorData();
+          }
+        },
+        children: [
+          ExpansionPanel(
+            headerBuilder: (BuildContext context, bool isExpanded) {
+              return const ListTile(
+                title:
+                    Text('Markers'), // You can customize the header as needed
+              );
+            },
+            body: loading
+                ? const CircularProgressIndicator()
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      markersField,
+                      optimizeRouteButton,
+                    ],
+                  ),
+            isExpanded: isOpen[0],
+          ),
+          ExpansionPanel(
+            headerBuilder: (BuildContext context, bool isExpanded) {
+              return const ListTile(
+                title: Text(
+                    'Contributors'), // You can customize the header as needed
+              );
+            },
+            body: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Add your expansion panel content here
+                // For example, you can add a list of markers or any other widgets
+              ],
+            ),
+            isExpanded: isOpen[1],
+          ),
+        ]);
 
     Widget submitButton = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -160,9 +248,10 @@ class _TripViewScreenState extends State<TripViewScreen> {
                       title: titleValue,
                       description: descriptionValue,
                       isPrivate: isPrivate,
-                      markers: selectedMarkers,
-                      // .map((e) => FirebaseFirestore.instance.doc(e.id))
-                      // .toList(),
+                      markers: selectedMarkers
+                          .map((e) =>
+                              FirebaseFirestore.instance.doc('markers/$e'))
+                          .toList(),
                       contributors: selectedContributors),
                 );
             context.goNamed('trip_list');
@@ -183,8 +272,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
                   titleField,
                   descriptionField,
                   isPrivateField,
-                  markersField,
-                  optimizeRouteButton,
+                  expansionPanelList,
                   submitButton
                 ],
               ))),

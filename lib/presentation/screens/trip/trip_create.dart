@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -153,10 +154,10 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
                     title: titleValue,
                     isPrivate: isPrivate,
                     description: descriptionValue,
-                    markers: selectedMarkers
-                    // .map((e) => FirebaseFirestore.instance.doc(e.id))
-                    // .toList()
-                    ),
+                    markers: selectedMarkerIds
+                        .map(
+                            (e) => FirebaseFirestore.instance.doc('markers/$e'))
+                        .toList()),
                 context.read<AuthenticationProvider>().isAuthenticated);
             context.goNamed('trip_list');
           }

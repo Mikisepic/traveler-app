@@ -67,14 +67,17 @@ class _TripListScreenState extends State<TripListScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
-            child: Consumer<TripProvider>(builder: (context, provider, child) {
-              return ListView.builder(
-                  itemCount: provider.trips.length,
-                  itemBuilder: (context, index) =>
-                      card(provider.trips[index], provider));
-            }),
-          )
+          context.read<TripProvider>().loading
+              ? const CircularProgressIndicator()
+              : Expanded(
+                  child: Consumer<TripProvider>(
+                      builder: (context, provider, child) {
+                    return ListView.builder(
+                        itemCount: provider.trips.length,
+                        itemBuilder: (context, index) =>
+                            card(provider.trips[index], provider));
+                  }),
+                )
         ],
       ),
       floatingActionButton: FloatingActionButton(

@@ -10,8 +10,7 @@ class Trip {
   final String description;
   final String notes;
   final bool isPrivate;
-  // final List<DocumentReference> markers;
-  final List<Marker> markers;
+  final List<DocumentReference> markers;
   final List<UserProfileMetadata> contributors;
 
   Trip({
@@ -35,13 +34,7 @@ class Trip {
       description: data?['description'] as String,
       isPrivate: data?['isPrivate'] as bool,
       markers: (data?['markers'] as List<dynamic>)
-          .map((e) => Marker(
-              id: e['id'] as String,
-              title: e['title'] as String,
-              mapboxId: e['mapboxId'] as String,
-              latitude: e['latitude'] as double,
-              longitude: e['longitude'] as double,
-              rating: e['rating'] as int))
+          .map((e) => FirebaseFirestore.instance.doc(e.toString()))
           .toList(),
       contributors: (data?['contributors'] as List<dynamic>)
           .map((e) => UserProfileMetadata(

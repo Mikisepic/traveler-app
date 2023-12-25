@@ -8,20 +8,6 @@ import 'package:traveler/presentation/components/wrap.dart';
 import 'package:traveler/providers/providers.dart';
 import 'package:traveler/services/mapbox.service.dart';
 
-class Item {
-  Item({
-    required this.expandedBody,
-    required this.headerValue,
-    // required this.expandedCallback,
-    this.isExpanded = false,
-  });
-
-  Widget expandedBody;
-  String headerValue;
-  bool isExpanded;
-  // Function() expandedCallback;
-}
-
 class TripViewScreen extends StatefulWidget {
   final String id;
 
@@ -44,10 +30,12 @@ class _TripViewScreenState extends State<TripViewScreen> {
     TextEditingController descriptionController =
         TextEditingController(text: trip.description);
     bool isPrivate = trip.isPrivate;
+
+    bool loading = false;
     List<String> selectedMarkerIds = [];
     List<Marker> selectedMarkers = [];
+    List<String> selectedContributorIds = [];
     List<UserProfileMetadata> selectedContributors = [];
-    bool loading = false;
 
     @override
     void initState() {
@@ -60,7 +48,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
         selectedMarkerIds = [];
       });
       final tripMarkers =
-          context.read<TripProvider>().fetchTripMarkerData(trip.markers);
+          context.read<TripProvider>().fetchTripMarkers(trip.markers);
       setState(() {
         selectedMarkers = tripMarkers;
         selectedMarkerIds = selectedMarkers.map((e) => e.id).toList();
@@ -69,9 +57,17 @@ class _TripViewScreenState extends State<TripViewScreen> {
     }
 
     Future<void> fetchContributorData() async {
-      for (final contributor in trip.contributors) {
-        print(contributor);
-      }
+      setState(() {
+        loading = true;
+        selectedContributorIds = [];
+      });
+      final tripContributors =
+          context.read<TripProvider>().fetchTripContributors(trip.contributors);
+      setState(() {
+        selectedContributors = tripContributors;
+        selectedContributorIds = selectedContributors.map((e) => e.id).toList();
+        loading = false;
+      });
     }
 
     Widget titleField = Padding(
@@ -142,7 +138,8 @@ class _TripViewScreenState extends State<TripViewScreen> {
             .toList(),
         listType: MultiSelectListType.CHIP,
         searchable: true,
-        searchHint: 'Add Places',
+        title: const Text('Select Places'),
+        buttonText: const Text('Select places for your trip'),
         initialValue: trip.markers.map((e) => e.id).toList(),
         onConfirm: (values) {
           selectedMarkerIds = values;
@@ -184,6 +181,43 @@ class _TripViewScreenState extends State<TripViewScreen> {
       ),
     );
 
+    Widget contributorsField = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: MultiSelectDialogField<String>(
+        items: context
+            .read<AuthenticationProvider>()
+            .users
+            .map((e) => MultiSelectItem(e.id, e.displayName))
+            .toList(),
+        listType: MultiSelectListType.CHIP,
+        searchable: true,
+        title: const Text('Select Contributors'),
+        buttonText: const Text('Select who will contribute to this trip'),
+        initialValue: trip.contributors.map((e) => e.id).toList(),
+        onConfirm: (values) {
+          selectedContributorIds = values;
+          selectedContributors = context
+              .read<AuthenticationProvider>()
+              .users
+              .where((element) => selectedContributorIds.contains(element.id))
+              .toList();
+        },
+        chipDisplay: MultiSelectChipDisplay(
+          onTap: (value) {
+            setState(() {
+              selectedContributorIds.remove(value);
+              selectedContributors = context
+                  .read<AuthenticationProvider>()
+                  .users
+                  .where(
+                      (element) => selectedContributorIds.contains(element.id))
+                  .toList();
+            });
+          },
+        ),
+      ),
+    );
+
     Widget expansionPanelList = ExpansionPanelList(
         expansionCallback: (int index, bool isExpanded) {
           setState(() {
@@ -202,8 +236,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
           ExpansionPanel(
             headerBuilder: (BuildContext context, bool isExpanded) {
               return const ListTile(
-                title:
-                    Text('Markers'), // You can customize the header as needed
+                title: Text('Markers'),
               );
             },
             body: loading
@@ -220,16 +253,12 @@ class _TripViewScreenState extends State<TripViewScreen> {
           ExpansionPanel(
             headerBuilder: (BuildContext context, bool isExpanded) {
               return const ListTile(
-                title: Text(
-                    'Contributors'), // You can customize the header as needed
+                title: Text('Contributors'),
               );
             },
-            body: const Column(
+            body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Add your expansion panel content here
-                // For example, you can add a list of markers or any other widgets
-              ],
+              children: [contributorsField],
             ),
             isExpanded: isOpen[1],
           ),
@@ -252,7 +281,10 @@ class _TripViewScreenState extends State<TripViewScreen> {
                           .map((e) =>
                               FirebaseFirestore.instance.doc('markers/$e'))
                           .toList(),
-                      contributors: selectedContributors),
+                      contributors: selectedContributors
+                          .map(
+                              (e) => FirebaseFirestore.instance.doc('users/$e'))
+                          .toList()),
                 );
             context.goNamed('trip_list');
           }

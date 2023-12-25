@@ -50,14 +50,13 @@ class MarkerProvider with ChangeNotifier {
   }
 
   Future<Marker> getMarkerById(String id) async {
-    final reference = firebaseFirestore
+    final snapshot = await firebaseFirestore
         .collection('markers')
         .doc(id)
         .withConverter(
             fromFirestore: Marker.fromFirestore,
-            toFirestore: (Marker marker, _) => marker.toFirestore());
-
-    final snapshot = await reference.get();
+            toFirestore: (Marker marker, _) => marker.toFirestore())
+        .get();
 
     return snapshot.data()!;
   }
@@ -69,6 +68,7 @@ class MarkerProvider with ChangeNotifier {
             fromFirestore: Marker.fromFirestore,
             toFirestore: (Marker marker, _) => marker.toFirestore())
         .get();
+
     return snapshot.data();
   }
 

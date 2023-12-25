@@ -70,6 +70,33 @@ class AuthenticationProvider extends ChangeNotifier {
     });
   }
 
+  Future<UserProfileMetadata> getUserProfileMetadataById(String id) async {
+    final reference = firebaseFirestore
+        .collection('users')
+        .doc(id)
+        .withConverter(
+            fromFirestore: UserProfileMetadata.fromFirestore,
+            toFirestore: (UserProfileMetadata userProfileMetadata, _) =>
+                userProfileMetadata.toFirestore());
+
+    final snapshot = await reference.get();
+
+    return snapshot.data()!;
+  }
+
+  Future<UserProfileMetadata?> getUserProfileMetadataByReference(
+      DocumentReference markerRef) async {
+    final snapshot = await firebaseFirestore
+        .doc(markerRef.path)
+        .withConverter<UserProfileMetadata>(
+            fromFirestore: UserProfileMetadata.fromFirestore,
+            toFirestore: (UserProfileMetadata userProfileMetadata, _) =>
+                userProfileMetadata.toFirestore())
+        .get();
+
+    return snapshot.data();
+  }
+
   void registerUserInFirestore(String uid, String? email, String? displayName) {
     firebaseFirestore.collection('users').doc(uid).set({
       'userId': uid,

@@ -87,12 +87,15 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
 
     return WrapScaffold(
       label: 'Map',
-      body: Column(
-        children: [
-          IconButton(onPressed: fetchNoteData, icon: const Icon(Icons.add)),
-          context.read<MarkerProvider>().loading
-              ? const CircularProgressIndicator()
-              : Expanded(
+      body: context.read<MarkerProvider>().loading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Column(
+              children: [
+                IconButton(
+                    onPressed: fetchNoteData, icon: const Icon(Icons.add)),
+                Expanded(
                   child: Consumer<MarkerProvider>(
                     builder: (context, provider, child) {
                       return provider.loading
@@ -105,8 +108,8 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
                     },
                   ),
                 ),
-        ],
-      ),
+              ],
+            ),
       // body: MapWidget(
       //   key: const ValueKey('mapWidget'),
       //   resourceOptions: ResourceOptions(accessToken: accessToken),

@@ -18,6 +18,7 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+
   bool isPrivate = false;
   List<String> selectedMarkerIds = [];
   List<Marker> selectedMarkers = [];
@@ -83,7 +84,8 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
             .toList(),
         listType: MultiSelectListType.CHIP,
         searchable: true,
-        searchHint: 'Add Places',
+        title: const Text('Select Places'),
+        buttonText: const Text('Select places for your trip'),
         onConfirm: (values) {
           selectedMarkerIds = values;
           selectedMarkers = context
@@ -117,7 +119,8 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
             .toList(),
         listType: MultiSelectListType.CHIP,
         searchable: true,
-        searchHint: 'Add Contributors',
+        title: const Text('Select Contributors'),
+        buttonText: const Text('Select who will contribute to this trip'),
         onConfirm: (values) {
           selectedContributorIds = values;
           selectedContributors = context
@@ -157,6 +160,9 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
                     markers: selectedMarkerIds
                         .map(
                             (e) => FirebaseFirestore.instance.doc('markers/$e'))
+                        .toList(),
+                    contributors: selectedContributors
+                        .map((e) => FirebaseFirestore.instance.doc('users/$e'))
                         .toList()),
                 context.read<AuthenticationProvider>().isAuthenticated);
             context.goNamed('trip_list');

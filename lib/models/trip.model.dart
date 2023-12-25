@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:traveler/models/models.dart';
 
 part 'trip.model.g.dart';
 
@@ -11,7 +10,7 @@ class Trip {
   final String notes;
   final bool isPrivate;
   final List<DocumentReference> markers;
-  final List<UserProfileMetadata> contributors;
+  final List<DocumentReference> contributors;
 
   Trip({
     this.id = '',
@@ -37,10 +36,7 @@ class Trip {
           .map((e) => FirebaseFirestore.instance.doc(e.toString()))
           .toList(),
       contributors: (data?['contributors'] as List<dynamic>)
-          .map((e) => UserProfileMetadata(
-              id: e['userId'] as String,
-              email: e['email'] as String,
-              displayName: e['displayName'] as String))
+          .map((e) => FirebaseFirestore.instance.doc(e.toString()))
           .toList(),
     );
   }

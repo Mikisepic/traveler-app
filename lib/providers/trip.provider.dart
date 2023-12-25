@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:traveler/models/models.dart';
+import 'package:traveler/providers/authentication.provider.dart';
 import 'package:traveler/providers/marker.provider.dart';
 
 class TripProvider extends ChangeNotifier {
@@ -76,7 +77,7 @@ class TripProvider extends ChangeNotifier {
     return _trips[index];
   }
 
-  List<Marker> fetchTripMarkerData(List<DocumentReference> refs) {
+  List<Marker> fetchTripMarkers(List<DocumentReference> refs) {
     List<Marker> receivedMarkers = [];
 
     for (DocumentReference ref in refs) {
@@ -92,6 +93,23 @@ class TripProvider extends ChangeNotifier {
     return receivedMarkers;
   }
 
+  List<UserProfileMetadata> fetchTripContributors(
+      List<DocumentReference> refs) {
+    List<UserProfileMetadata> tripContributors = [];
+
+    for (DocumentReference ref in refs) {
+      Future<UserProfileMetadata?> associatedMarker =
+          AuthenticationProvider().getUserProfileMetadataByReference(ref);
+      associatedMarker.then((value) {
+        if (value != null) {
+          tripContributors.add(value);
+        }
+      });
+    }
+
+    return tripContributors;
+  }
+
   create(Trip trip, bool isAuthenticated) {
     if (!isAuthenticated) {
       throw Exception('Must be logged in');
@@ -101,22 +119,12 @@ class TripProvider extends ChangeNotifier {
       'userId': firebaseAuth.currentUser!.uid,
       'title': trip.title,
       'description': trip.description,
-      'markers': trip.markers.map((e) => e.path),
+      'markers': trip.markers.map((e) => e.path).toList(),
       'contributors': trip.isPrivate
-          ? [
-              {
-                "userId": firebaseAuth.currentUser!.uid,
-                "email": firebaseAuth.currentUser!.email,
-                "displayName": firebaseAuth.currentUser!.displayName,
-              }
-            ]
+          ? ['users/${firebaseAuth.currentUser!.uid}']
           : [
-              {
-                "userId": firebaseAuth.currentUser!.uid,
-                "email": firebaseAuth.currentUser!.email,
-                "displayName": firebaseAuth.currentUser!.displayName,
-              },
-              ...trip.contributors.map((e) => e.toFirestore()).toList()
+              'users/${firebaseAuth.currentUser!.uid}',
+              ...trip.contributors.map((e) => e.path).toList()
             ],
       'isPrivate': trip.isPrivate,
       'created_at': DateTime.now().millisecondsSinceEpoch,

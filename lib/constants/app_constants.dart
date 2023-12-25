@@ -5,7 +5,7 @@ class ApplicationConstants {
       dotenv.env['MAPBOX_ACCESS_TOKEN'] as String;
   static final String geoapifyApiKey = dotenv.env['GEOAPIFY_API_KEY'] as String;
   static const List<String> geoapifyPlacesCategories = [
-    'accomodation',
+    'accommodation',
     'activity',
     'commercial',
     'catering',

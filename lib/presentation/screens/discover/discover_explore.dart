@@ -31,7 +31,7 @@ class _DiscoverExploreScreenState extends State<DiscoverExploreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Column(
       children: [
         Search(
           initialValue: '',
@@ -46,7 +46,8 @@ class _DiscoverExploreScreenState extends State<DiscoverExploreScreen> {
               .toList(),
           initialValue: _selectedCategories,
           listType: MultiSelectListType.CHIP,
-          searchable: true,
+          title: const Text('Select Categories'),
+          buttonText: const Text('Select at least one category'),
           onConfirm: (values) {
             setState(() {
               _selectedCategories = values;

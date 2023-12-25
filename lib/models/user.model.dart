@@ -26,8 +26,7 @@ class UserProfileMetadata {
       email: data?['email'] as String,
       markers:
           (data?['markers'] as List<dynamic>).map((e) => e as String).toList(),
-      trips:
-          (data?['markers'] as List<dynamic>).map((e) => e as String).toList(),
+      trips: (data?['trips'] as List<dynamic>).map((e) => e as String).toList(),
     );
   }
 
@@ -36,6 +35,8 @@ class UserProfileMetadata {
       "userId": id,
       "email": email,
       "displayName": displayName,
+      "markers": markers,
+      "trips": trips,
     };
   }
 }

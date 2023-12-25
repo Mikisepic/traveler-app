@@ -21,11 +21,6 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> fetchNoteData() async {
-      await context.read<NoteProvider>().displayNotes();
-      print(context.read<NoteProvider>().notes);
-    }
-
     Widget listTile(Marker marker, MarkerProvider provider) => ListTile(
           title: Text(marker.title),
           subtitle: Text(
@@ -93,8 +88,6 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
             )
           : Column(
               children: [
-                IconButton(
-                    onPressed: fetchNoteData, icon: const Icon(Icons.add)),
                 Expanded(
                   child: Consumer<MarkerProvider>(
                     builder: (context, provider, child) {

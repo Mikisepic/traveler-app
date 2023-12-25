@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart'
-    hide EmailAuthProvider, PhoneAuthProvider;
+import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:traveler/models/user.model.dart';
@@ -18,6 +17,8 @@ class AuthenticationProvider extends ChangeNotifier {
   bool _isAuthenticated = false;
   bool get isAuthenticated => _isAuthenticated;
   User? get user => firebaseAuth.currentUser;
+  bool _loading = false;
+  bool get loading => _loading;
 
   List<UserProfileMetadata> _users = [];
   List<UserProfileMetadata> get users => _users;
@@ -38,27 +39,19 @@ class AuthenticationProvider extends ChangeNotifier {
       if (isAuthenticated) {
         _usersSubscription = firebaseFirestore
             .collection('users')
-            .orderBy('updated_at', descending: true)
             .snapshots()
-            .listen((snapshot) {
+            .listen((snapshot) async {
+          _loading = true;
           _users = [];
+          List<Future<UserProfileMetadata>> futures = [];
           for (final document in snapshot.docs) {
-            _users.add(UserProfileMetadata(
-              id: document.id,
-              displayName: document.data()['displayName'] as String,
-              email: document.data()['email'] as String,
-              markers: (document.data()['markers'] as List<dynamic>)
-                  .map((e) => e.toString())
-                  .toList(),
-              trips: (document.data()['trips'] as List<dynamic>)
-                  .map((e) => e.toString())
-                  .toList(),
-            ));
+            final futureUser = getUserProfileMetadataById(document.id);
+            futures.add(futureUser);
           }
-          notifyListeners();
-
+          _users = await Future.wait(futures);
           _userMetadata =
               _users.firstWhere((element) => element.id == user!.uid);
+          _loading = false;
           notifyListeners();
         });
         updateUserDetails();

@@ -3,11 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Note {
   final String id;
   final String content;
-  final DocumentReference markerId;
+  final DocumentReference tripId;
 
   Note({
     required this.id,
     required this.content,
-    required this.markerId,
+    required this.tripId,
   });
 }

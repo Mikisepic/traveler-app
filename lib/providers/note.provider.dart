@@ -21,7 +21,7 @@ class NoteProvider with ChangeNotifier {
         .map((doc) => Note(
               id: doc.id,
               content: doc['content'] as String,
-              markerId: doc['markerId'] as DocumentReference,
+              tripId: doc['tripId'] as DocumentReference,
             ))
         .toList();
   }

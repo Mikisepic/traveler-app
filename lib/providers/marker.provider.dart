@@ -31,8 +31,8 @@ class MarkerProvider with ChangeNotifier {
             .limit(10)
             .snapshots()
             .listen((snapshot) async {
-          _markers = [];
           _loading = true;
+          _markers = [];
           List<Future<Marker>> futures = [];
           for (final document in snapshot.docs) {
             final localMarker = getMarkerById(document.id);

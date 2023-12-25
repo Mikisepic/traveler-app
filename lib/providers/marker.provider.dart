@@ -77,10 +77,9 @@ class MarkerProvider with ChangeNotifier {
       throw Exception('Must be logged in');
     }
 
-    final doc = FirebaseFirestore.instance.collection('markers').add({
-      'id': marker.id,
-      'userId': FirebaseAuth.instance.currentUser!.uid,
-      'username': FirebaseAuth.instance.currentUser!.displayName,
+    final doc = firebaseFirestore.collection('markers').add({
+      'userId': firebaseAuth.currentUser!.uid,
+      'username': firebaseAuth.currentUser!.displayName,
       'title': marker.title,
       'mapboxId': marker.mapboxId,
       'rating': marker.rating,
@@ -90,19 +89,21 @@ class MarkerProvider with ChangeNotifier {
       'updated_at': DateTime.now().millisecondsSinceEpoch
     });
 
-    doc.then((value) => FirebaseFirestore.instance
-            .collection('users')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .update({
-          'markers': FieldValue.arrayUnion([value.id]),
-          'updated_at': DateTime.now().millisecondsSinceEpoch
-        }));
+    doc.then((value) {
+      firebaseFirestore
+          .collection('users')
+          .doc(firebaseAuth.currentUser!.uid)
+          .update({
+        'markers': FieldValue.arrayUnion([value.id]),
+        'updated_at': DateTime.now().millisecondsSinceEpoch
+      });
+    });
   }
 
   update(Marker marker) {
-    FirebaseFirestore.instance.collection('markers').doc(marker.id).update({
+    firebaseFirestore.collection('markers').doc(marker.id).update({
       'title': marker.title,
-      'userId': FirebaseAuth.instance.currentUser!.uid,
+      'userId': firebaseAuth.currentUser!.uid,
       'mapboxId': marker.mapboxId,
       'isFavorite': marker.isFavorite,
       'rating': marker.rating,
@@ -112,10 +113,10 @@ class MarkerProvider with ChangeNotifier {
   }
 
   delete(String id) {
-    FirebaseFirestore.instance.collection('markers').doc(id).delete();
-    FirebaseFirestore.instance
+    firebaseFirestore.collection('markers').doc(id).delete();
+    firebaseFirestore
         .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .doc(firebaseAuth.currentUser!.uid)
         .update({
       'markers': FieldValue.arrayRemove([id]),
       'updated_at': DateTime.now().millisecondsSinceEpoch

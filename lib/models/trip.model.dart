@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:traveler/models/models.dart';
 
@@ -14,7 +15,7 @@ class Trip {
   final List<UserProfileMetadata> contributors;
 
   Trip({
-    required this.id,
+    this.id = '',
     required this.title,
     this.description = '',
     this.notes = '',
@@ -22,6 +23,46 @@ class Trip {
     this.markers = const [],
     this.contributors = const [],
   });
+
+  factory Trip.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final data = snapshot.data();
+    return Trip(
+      id: snapshot.id,
+      title: data?['title'] as String,
+      description: data?['description'] as String,
+      isPrivate: data?['isPrivate'] as bool,
+      markers: (data?['markers'] as List<dynamic>)
+          .map((e) => Marker(
+              id: e['id'] as String,
+              title: e['title'] as String,
+              mapboxId: e['mapboxId'] as String,
+              latitude: e['latitude'] as double,
+              longitude: e['longitude'] as double,
+              rating: e['rating'] as int))
+          .toList(),
+      contributors: (data?['contributors'] as List<dynamic>)
+          .map((e) => UserProfileMetadata(
+              id: e['userId'] as String,
+              email: e['email'] as String,
+              displayName: e['displayName'] as String))
+          .toList(),
+    );
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      "id": id,
+      "title": title,
+      "description": description,
+      "notes": notes,
+      "isPrivate": isPrivate,
+      "markers": markers,
+      "contributors": contributors,
+    };
+  }
 }
 
 @JsonSerializable()

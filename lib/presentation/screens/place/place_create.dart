@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/components/components.dart';
 import 'package:traveler/providers/providers.dart';
-import 'package:uuid/uuid.dart';
 
 class PlaceCreateScreen extends StatefulWidget {
   const PlaceCreateScreen({super.key});
@@ -68,7 +67,6 @@ class _PlaceCreateScreenState extends State<PlaceCreateScreen> {
 
             context.read<MarkerProvider>().create(
                 Marker(
-                  id: const Uuid().v4(),
                   title: titleValue,
                   mapboxId: mapboxId,
                   latitude: latitude,

@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/components/components.dart';
 import 'package:traveler/providers/providers.dart';
-import 'package:uuid/uuid.dart';
 
 class TripCreateScreen extends StatefulWidget {
   const TripCreateScreen({super.key});
@@ -151,7 +150,6 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
             final descriptionValue = descriptionController.text;
             context.read<TripProvider>().create(
                 Trip(
-                    id: const Uuid().v4(),
                     title: titleValue,
                     isPrivate: isPrivate,
                     description: descriptionValue,

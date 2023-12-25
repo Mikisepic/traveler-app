@@ -18,7 +18,6 @@ class NoteProvider with ChangeNotifier {
     QuerySnapshot querySnapshot = await firebaseFirestore
         .collection('notes')
         .where('userId', isEqualTo: userId)
-        .where('tripId', isEqualTo: tripId)
         .orderBy('updated_at', descending: true)
         .get();
 
@@ -26,21 +25,17 @@ class NoteProvider with ChangeNotifier {
         .map((doc) => Note(
               id: doc.id,
               content: doc['content'] as String,
-              tripId: doc['tripId'] as DocumentReference,
               userId: doc['userId'] as String,
             ))
         .toList();
   }
 
-  Future<Note> getNoteById(String id) async {
-    final reference = firebaseFirestore
-        .collection('notes')
-        .doc(id)
-        .withConverter(
+  Future<Note?> getNoteByReference(DocumentReference noteRef) async {
+    final snapshot = await noteRef
+        .withConverter<Note>(
             fromFirestore: Note.fromFirestore,
-            toFirestore: (Note trip, _) => trip.toFirestore());
-
-    final snapshot = await reference.get();
+            toFirestore: (Note note, _) => note.toFirestore())
+        .get();
 
     return snapshot.data()!;
   }

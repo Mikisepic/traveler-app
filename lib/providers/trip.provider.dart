@@ -4,8 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:traveler/models/models.dart';
-import 'package:traveler/providers/authentication.provider.dart';
-import 'package:traveler/providers/marker.provider.dart';
+import 'package:traveler/providers/providers.dart';
 
 class TripProvider extends ChangeNotifier {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -111,6 +110,21 @@ class TripProvider extends ChangeNotifier {
     }
 
     return tripContributors;
+  }
+
+  List<Note> fetchTripNotes(List<DocumentReference> refs) {
+    List<Note> tripNotes = [];
+
+    for (DocumentReference ref in refs) {
+      Future<Note?> associatedMarker = NoteProvider().getNoteByReference(ref);
+      associatedMarker.then((value) {
+        if (value != null) {
+          tripNotes.add(value);
+        }
+      });
+    }
+
+    return tripNotes;
   }
 
   create(Trip trip, bool isAuthenticated) {

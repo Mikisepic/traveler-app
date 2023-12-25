@@ -30,23 +30,15 @@ class MarkerProvider with ChangeNotifier {
             .orderBy('updated_at', descending: true)
             .limit(10)
             .snapshots()
-            .listen((snapshot) {
+            .listen((snapshot) async {
           _markers = [];
           _loading = true;
+          List<Future<Marker>> futures = [];
           for (final document in snapshot.docs) {
-            _markers.add(
-              Marker(
-                id: document.id,
-                mapboxId: document.data()['mapboxId'] as String,
-                title: document.data()['title'] as String,
-                latitude: (document.data()['coordinates'] as GeoPoint).latitude,
-                longitude:
-                    (document.data()['coordinates'] as GeoPoint).longitude,
-                rating: 0,
-                isFavorite: document.data()['isFavorite'] as bool,
-              ),
-            );
+            final localMarker = getMarkerById(document.id);
+            futures.add(localMarker);
           }
+          _markers = await Future.wait(futures);
           _loading = false;
           notifyListeners();
         });
@@ -55,6 +47,19 @@ class MarkerProvider with ChangeNotifier {
       }
       notifyListeners();
     });
+  }
+
+  Future<Marker> getMarkerById(String id) async {
+    final reference = firebaseFirestore
+        .collection('markers')
+        .doc(id)
+        .withConverter(
+            fromFirestore: Marker.fromFirestore,
+            toFirestore: (Marker marker, _) => marker.toFirestore());
+
+    final snapshot = await reference.get();
+
+    return snapshot.data()!;
   }
 
   Future<Marker> getMarkerByReference(DocumentReference markerRef) async {
@@ -123,3 +128,7 @@ class MarkerProvider with ChangeNotifier {
     });
   }
 }
+
+
+// 1702905115347
+// 1703504308104

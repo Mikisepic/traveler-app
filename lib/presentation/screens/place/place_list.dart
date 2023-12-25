@@ -22,8 +22,8 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
   @override
   Widget build(BuildContext context) {
     Future<void> fetchNoteData() async {
-      await context.read<NoteProvider>().displayNotesWithMarkers();
-      // You can now use provider.notes and provider.markers in your widget
+      await context.read<NoteProvider>().displayNotes();
+      print(context.read<NoteProvider>().notes);
     }
 
     Widget listTile(Marker marker, MarkerProvider provider) => ListTile(
@@ -90,19 +90,21 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
       body: Column(
         children: [
           IconButton(onPressed: fetchNoteData, icon: const Icon(Icons.add)),
-          Expanded(
-            child: Consumer<MarkerProvider>(
-              builder: (context, provider, child) {
-                return provider.loading
-                    ? const CircularProgressIndicator()
-                    : ListView.builder(
-                        itemCount: provider.markers.length,
-                        itemBuilder: (context, index) =>
-                            listTile(provider.markers[index], provider),
-                      );
-              },
-            ),
-          ),
+          context.read<MarkerProvider>().loading
+              ? const CircularProgressIndicator()
+              : Expanded(
+                  child: Consumer<MarkerProvider>(
+                    builder: (context, provider, child) {
+                      return provider.loading
+                          ? const CircularProgressIndicator()
+                          : ListView.builder(
+                              itemCount: provider.markers.length,
+                              itemBuilder: (context, index) =>
+                                  listTile(provider.markers[index], provider),
+                            );
+                    },
+                  ),
+                ),
         ],
       ),
       // body: MapWidget(

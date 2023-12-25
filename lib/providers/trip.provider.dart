@@ -61,6 +61,16 @@ class TripProvider extends ChangeNotifier {
     });
   }
 
+  Future<Trip> getTripByReference(DocumentReference tripRef) async {
+    final snapshot = await tripRef
+        .withConverter<Trip>(
+            fromFirestore: Trip.fromFirestore,
+            toFirestore: (Trip trip, _) => trip.toFirestore())
+        .get();
+
+    return snapshot.data()!;
+  }
+
   Trip fetchDialogData(String id) {
     final index = _trips.indexWhere((element) => element.id == id);
     return _trips[index];

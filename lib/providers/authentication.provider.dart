@@ -36,7 +36,7 @@ class AuthenticationProvider extends ChangeNotifier {
       notifyListeners();
 
       if (isAuthenticated) {
-        _usersSubscription = FirebaseFirestore.instance
+        _usersSubscription = firebaseFirestore
             .collection('users')
             .orderBy('updated_at', descending: true)
             .snapshots()

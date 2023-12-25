@@ -28,7 +28,7 @@ class Marker {
   ) {
     final data = snapshot.data();
     return Marker(
-      id: data?['id'] as String,
+      id: snapshot.id,
       mapboxId: data?['mapboxId'] as String,
       title: data?['title'] as String,
       latitude: (data?['coordinates'] as GeoPoint).latitude,

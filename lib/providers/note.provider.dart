@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:traveler/models/marker.model.dart';
 import 'package:traveler/models/note.model.dart';
-import 'package:traveler/providers/marker.provider.dart';
 
 class NoteProvider with ChangeNotifier {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -28,18 +26,10 @@ class NoteProvider with ChangeNotifier {
         .toList();
   }
 
-  Future<void> displayNotesWithMarkers() async {
+  Future<void> displayNotes() async {
     _loading = true;
-    List<Note> notes = await getNotes();
-
-    for (Note note in notes) {
-      Marker associatedMarker =
-          await MarkerProvider().getMarkerByReference(note.markerId);
-
-      print(
-          'Note ${note.id} is associated with Marker ${associatedMarker.title}');
-    }
-    _notes = notes;
+    List<Note> noteList = await getNotes();
+    _notes = noteList;
     _loading = false;
     notifyListeners();
   }

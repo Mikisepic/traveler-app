@@ -33,12 +33,14 @@ class MarkerProvider with ChangeNotifier {
             .listen((snapshot) async {
           _loading = true;
           _markers = [];
-          List<Future<Marker>> futures = [];
           for (final document in snapshot.docs) {
-            final localMarker = getMarkerById(document.id);
-            futures.add(localMarker);
+            final snapshot = await document.reference
+                .withConverter(
+                    fromFirestore: Marker.fromFirestore,
+                    toFirestore: (Marker marker, _) => marker.toFirestore())
+                .get();
+            _markers.add(snapshot.data()!);
           }
-          _markers = await Future.wait(futures);
           _loading = false;
           notifyListeners();
         });

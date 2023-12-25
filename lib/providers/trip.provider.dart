@@ -28,17 +28,20 @@ class TripProvider extends ChangeNotifier {
       if (user != null) {
         _tripsSubscription = firebaseFirestore
             .collection('trips')
+            .where('contributors', arrayContains: user.uid)
             .orderBy('updated_at', descending: true)
             .snapshots()
             .listen((snapshot) async {
           _trips = [];
           _loading = true;
-          List<Future<Trip>> futures = [];
           for (final document in snapshot.docs) {
-            final localTrip = getTripById(document.id);
-            futures.add(localTrip);
+            final snapshot = await document.reference
+                .withConverter(
+                    fromFirestore: Trip.fromFirestore,
+                    toFirestore: (Trip trip, _) => trip.toFirestore())
+                .get();
+            _trips.add(snapshot.data()!);
           }
-          _trips = await Future.wait(futures);
           _loading = false;
           notifyListeners();
         });
@@ -140,7 +143,7 @@ class TripProvider extends ChangeNotifier {
         }));
   }
 
-  void update(Trip trip) {
+  update(Trip trip) {
     firebaseFirestore.collection('trips').doc(trip.id).update({
       'title': trip.title,
       'description': trip.description,

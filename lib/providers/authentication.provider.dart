@@ -43,12 +43,15 @@ class AuthenticationProvider extends ChangeNotifier {
             .listen((snapshot) async {
           _loading = true;
           _users = [];
-          List<Future<UserProfileMetadata>> futures = [];
           for (final document in snapshot.docs) {
-            final futureUser = getUserProfileMetadataById(document.id);
-            futures.add(futureUser);
+            final snapshot = await document.reference
+                .withConverter(
+                    fromFirestore: UserProfileMetadata.fromFirestore,
+                    toFirestore: (UserProfileMetadata userProfileMetadata, _) =>
+                        userProfileMetadata.toFirestore())
+                .get();
+            _users.add(snapshot.data()!);
           }
-          _users = await Future.wait(futures);
           _userMetadata =
               _users.firstWhere((element) => element.id == user!.uid);
           _loading = false;

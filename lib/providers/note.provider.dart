@@ -9,28 +9,39 @@ class NoteProvider with ChangeNotifier {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  bool _loading = false;
+  final bool _loading = false;
   bool get loading => _loading;
-  List<Note> _notes = [];
+  final List<Note> _notes = [];
   List<Note> get notes => _notes;
 
-  Future<List<Note>> getNotes() async {
-    QuerySnapshot querySnapshot =
-        await firebaseFirestore.collection('notes').get();
+  Future<List<Note>> getNotes(String tripId, String userId) async {
+    QuerySnapshot querySnapshot = await firebaseFirestore
+        .collection('notes')
+        .where('userId', isEqualTo: userId)
+        .where('tripId', isEqualTo: tripId)
+        .orderBy('updated_at', descending: true)
+        .get();
+
     return querySnapshot.docs
         .map((doc) => Note(
               id: doc.id,
               content: doc['content'] as String,
               tripId: doc['tripId'] as DocumentReference,
+              userId: doc['userId'] as String,
             ))
         .toList();
   }
 
-  Future<void> displayNotes() async {
-    _loading = true;
-    List<Note> noteList = await getNotes();
-    _notes = noteList;
-    _loading = false;
-    notifyListeners();
+  Future<Note> getNoteById(String id) async {
+    final reference = firebaseFirestore
+        .collection('notes')
+        .doc(id)
+        .withConverter(
+            fromFirestore: Note.fromFirestore,
+            toFirestore: (Note trip, _) => trip.toFirestore());
+
+    final snapshot = await reference.get();
+
+    return snapshot.data()!;
   }
 }

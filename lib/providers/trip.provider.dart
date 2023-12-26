@@ -11,8 +11,10 @@ class TripProvider extends ChangeNotifier {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   StreamSubscription<QuerySnapshot>? _tripsSubscription;
+
   List<Trip> _trips = [];
   List<Trip> get trips => _trips;
+
   bool _loading = false;
   bool get loading => _loading;
 

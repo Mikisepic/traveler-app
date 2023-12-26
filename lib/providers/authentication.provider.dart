@@ -10,21 +10,25 @@ class AuthenticationProvider extends ChangeNotifier {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  AuthenticationProvider() {
-    init();
-  }
+  StreamSubscription<QuerySnapshot>? _usersSubscription;
 
-  bool _isAuthenticated = false;
-  bool get isAuthenticated => _isAuthenticated;
   User? get user => firebaseAuth.currentUser;
-  bool _loading = false;
-  bool get loading => _loading;
 
   List<UserProfileMetadata> _users = [];
   List<UserProfileMetadata> get users => _users;
+
   UserProfileMetadata? _userMetadata;
   UserProfileMetadata? get userMetadata => _userMetadata;
-  StreamSubscription<QuerySnapshot>? _usersSubscription;
+
+  bool _loading = false;
+  bool get loading => _loading;
+
+  bool _isAuthenticated = false;
+  bool get isAuthenticated => _isAuthenticated;
+
+  AuthenticationProvider() {
+    init();
+  }
 
   init() {
     FirebaseUIAuth.configureProviders([

@@ -9,10 +9,11 @@ class NoteProvider with ChangeNotifier {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  final bool _loading = false;
-  bool get loading => _loading;
   final List<Note> _notes = [];
   List<Note> get notes => _notes;
+
+  final bool _loading = false;
+  bool get loading => _loading;
 
   Future<List<Note>> getNotes(String tripId, String userId) async {
     QuerySnapshot querySnapshot = await firebaseFirestore

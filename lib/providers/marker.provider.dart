@@ -10,8 +10,10 @@ class MarkerProvider with ChangeNotifier {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   StreamSubscription<QuerySnapshot>? _markersSubscription;
+
   List<Marker> _markers = [];
   List<Marker> get markers => _markers;
+
   bool _loading = false;
   bool get loading => _loading;
 

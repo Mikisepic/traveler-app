@@ -41,14 +41,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
-  benchmark:
-    dependency: transitive
-    description:
-      name: benchmark
-      sha256: cb3eeea01e3f054df76ee9775ca680f3afa5f19f39b2bb426ba78ba27654493b
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -209,14 +201,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
-  dart_sort_queue:
-    dependency: transitive
-    description:
-      name: dart_sort_queue
-      sha256: f3353ba8b4850e072d3368757f62edb79af34a9703c3e3df9c59342721f5f5b1
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.2+3"
   dart_style:
     dependency: transitive
     description:
@@ -241,14 +225,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.17"
-  enum_to_string:
-    dependency: transitive
-    description:
-      name: enum_to_string
-      sha256: bd9e83a33b754cb43a75b36a9af2a0b92a757bfd9847d2621ca0b1bed45f8e7a
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -443,14 +419,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_plugin_android_lifecycle:
-    dependency: transitive
+  flutter_map:
+    dependency: "direct main"
     description:
-      name: flutter_plugin_android_lifecycle
-      sha256: f185ac890306b5779ecbd611f52502d8d4d63d27703ef73161ca0407e815f02c
+      name: flutter_map
+      sha256: cda8d72135b697f519287258b5294a57ce2f2a5ebf234f0e406aad4dc14c9399
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.16"
+    version: "6.1.0"
   flutter_svg:
     dependency: transitive
     description:
@@ -573,6 +549,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.7.1"
+  latlong2:
+    dependency: "direct main"
+    description:
+      name: latlong2
+      sha256: "18712164760cee655bc790122b0fd8f3d5b3c36da2cb7bf94b68a197fbb0811b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.0"
   lints:
     dependency: transitive
     description:
@@ -581,6 +565,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  lists:
+    dependency: transitive
+    description:
+      name: lists
+      sha256: "4ca5c19ae4350de036a7e996cdd1ee39c93ac0a2b840f4915459b7d0a7d4ab27"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   location:
     dependency: "direct main"
     description:
@@ -605,6 +597,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.0"
+  logger:
+    dependency: transitive
+    description:
+      name: logger
+      sha256: "6bbb9d6f7056729537a4309bda2e74e18e5d9f14302489cc1e93f33b3fe32cac"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2+1"
   logging:
     dependency: transitive
     description:
@@ -613,14 +613,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  mapbox_maps_flutter:
-    dependency: "direct main"
-    description:
-      name: mapbox_maps_flutter
-      sha256: "7b60bb473d9a962d20690f71456520abd3bd2003d5728cd2347f3326139b3ca0"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.4"
   matcher:
     dependency: transitive
     description:
@@ -645,6 +637,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.0"
+  mgrs_dart:
+    dependency: transitive
+    description:
+      name: mgrs_dart
+      sha256: fb89ae62f05fa0bb90f70c31fc870bcbcfd516c843fb554452ab3396f78586f7
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   mime:
     dependency: transitive
     description:
@@ -717,6 +717,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.9.3+7"
+  polylabel:
+    dependency: transitive
+    description:
+      name: polylabel
+      sha256: "41b9099afb2aa6c1730bdd8a0fab1400d287694ec7615dd8516935fa3144214b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   pool:
     dependency: transitive
     description:
@@ -725,6 +733,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.1"
+  proj4dart:
+    dependency: transitive
+    description:
+      name: proj4dart
+      sha256: c8a659ac9b6864aa47c171e78d41bbe6f5e1d7bd790a5814249e6b68bc44324e
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   provider:
     dependency: "direct main"
     description:
@@ -749,14 +765,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.3"
-  rbush:
-    dependency: transitive
-    description:
-      name: rbush
-      sha256: "48b683421b4afb43a642f82c6aa31911e54f3069143d31c7d33cbe329df13403"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.1"
   shelf:
     dependency: transitive
     description:
@@ -842,14 +850,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  sweepline_intersections:
-    dependency: transitive
-    description:
-      name: sweepline_intersections
-      sha256: "924fce1b02b9783fae5ca33ba4f2cc33743b0422b8b829fac60bcd3717a69afb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.3+2"
   term_glyph:
     dependency: transitive
     description:
@@ -874,30 +874,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
-  turf:
-    dependency: transitive
-    description:
-      name: turf
-      sha256: "2be48cc7ed7e9acccaeee18e06d1ce183f3f7eee7abc0622371880951d41a0d6"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.8"
-  turf_equality:
-    dependency: transitive
-    description:
-      name: turf_equality
-      sha256: "2ae3b117afd5fb134412a245a883589cae80d9d9472c587f754a0c34f82fa1b9"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.2"
-  turf_pip:
-    dependency: transitive
-    description:
-      name: turf_pip
-      sha256: "2b33d14ad979e4c33a4f01949b62510356d28037062bd45b60752e4dec9e7dd1"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.1+1"
   typed_data:
     dependency: transitive
     description:
@@ -906,6 +882,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.2"
+  unicode:
+    dependency: transitive
+    description:
+      name: unicode
+      sha256: "0f69e46593d65245774d4f17125c6084d2c20b4e473a983f6e21b7d7762218f1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.1"
   uuid:
     dependency: "direct main"
     description:
@@ -970,6 +954,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.0"
+  wkt_parser:
+    dependency: transitive
+    description:
+      name: wkt_parser
+      sha256: "8a555fc60de3116c00aad67891bcab20f81a958e4219cc106e3c037aa3937f13"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   xml:
     dependency: transitive
     description:

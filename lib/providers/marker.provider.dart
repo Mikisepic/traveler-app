@@ -11,8 +11,8 @@ class MarkerProvider with ChangeNotifier {
 
   StreamSubscription<QuerySnapshot>? _markersSubscription;
 
-  List<Marker> _markers = [];
-  List<Marker> get markers => _markers;
+  List<Place> _markers = [];
+  List<Place> get markers => _markers;
 
   bool _loading = false;
   bool get loading => _loading;
@@ -38,8 +38,8 @@ class MarkerProvider with ChangeNotifier {
           for (final document in snapshot.docs) {
             final snapshot = await document.reference
                 .withConverter(
-                    fromFirestore: Marker.fromFirestore,
-                    toFirestore: (Marker marker, _) => marker.toFirestore())
+                    fromFirestore: Place.fromFirestore,
+                    toFirestore: (Place marker, _) => marker.toFirestore())
                 .get();
             _markers.add(snapshot.data()!);
           }
@@ -53,35 +53,35 @@ class MarkerProvider with ChangeNotifier {
     });
   }
 
-  Future<Marker> getMarkerById(String id) async {
+  Future<Place> getMarkerById(String id) async {
     final snapshot = await firebaseFirestore
         .collection('markers')
         .doc(id)
         .withConverter(
-            fromFirestore: Marker.fromFirestore,
-            toFirestore: (Marker marker, _) => marker.toFirestore())
+            fromFirestore: Place.fromFirestore,
+            toFirestore: (Place marker, _) => marker.toFirestore())
         .get();
 
     return snapshot.data()!;
   }
 
-  Future<Marker?> getMarkerByReference(DocumentReference markerRef) async {
+  Future<Place?> getMarkerByReference(DocumentReference markerRef) async {
     final snapshot = await firebaseFirestore
         .doc(markerRef.path)
-        .withConverter<Marker>(
-            fromFirestore: Marker.fromFirestore,
-            toFirestore: (Marker marker, _) => marker.toFirestore())
+        .withConverter<Place>(
+            fromFirestore: Place.fromFirestore,
+            toFirestore: (Place marker, _) => marker.toFirestore())
         .get();
 
     return snapshot.data();
   }
 
-  Marker fetchDialogData(String id) {
+  Place fetchDialogData(String id) {
     final index = _markers.indexWhere((element) => element.id == id);
     return _markers[index];
   }
 
-  create(Marker marker, bool isAuthenticated) {
+  create(Place marker, bool isAuthenticated) {
     if (!isAuthenticated) {
       throw Exception('Must be logged in');
     }
@@ -109,7 +109,7 @@ class MarkerProvider with ChangeNotifier {
     });
   }
 
-  update(Marker marker) {
+  update(Place marker) {
     firebaseFirestore.collection('markers').doc(marker.id).update({
       'title': marker.title,
       'userId': firebaseAuth.currentUser!.uid,

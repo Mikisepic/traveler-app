@@ -6,7 +6,7 @@ import 'package:traveler/providers/providers.dart';
 
 class PlaceViewScreen extends StatefulWidget {
   final String id;
-  final Function(Marker updatedMarker) onEditComplete;
+  final Function(Place updatedMarker) onEditComplete;
 
   const PlaceViewScreen(
       {super.key, required this.id, required this.onEditComplete});
@@ -84,7 +84,7 @@ class _PlaceViewScreenState extends State<PlaceViewScreen> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               final titleValue = titleController.text;
-              widget.onEditComplete(Marker(
+              widget.onEditComplete(Place(
                   id: widget.id,
                   mapboxId: mapboxId,
                   title: titleValue,

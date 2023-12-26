@@ -33,7 +33,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
 
     bool loading = false;
     List<String> selectedMarkerIds = trip.markers.map((e) => e.id).toList();
-    List<Marker> selectedMarkers = [];
+    List<Place> selectedMarkers = [];
     List<String> selectedContributorIds =
         trip.contributors.map((e) => e.id).toList();
     List<UserProfileMetadata> selectedContributors = [];

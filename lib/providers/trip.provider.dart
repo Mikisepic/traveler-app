@@ -81,11 +81,11 @@ class TripProvider extends ChangeNotifier {
     return _trips[index];
   }
 
-  List<Marker> fetchTripMarkers(List<DocumentReference> refs) {
-    List<Marker> receivedMarkers = [];
+  List<Place> fetchTripMarkers(List<DocumentReference> refs) {
+    List<Place> receivedMarkers = [];
 
     for (DocumentReference ref in refs) {
-      Future<Marker?> associatedMarker =
+      Future<Place?> associatedMarker =
           MarkerProvider().getMarkerByReference(ref);
       associatedMarker.then((value) {
         if (value != null) {

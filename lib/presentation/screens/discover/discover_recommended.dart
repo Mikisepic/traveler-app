@@ -79,7 +79,7 @@ class _DiscoverRecommendedScreenState extends State<DiscoverRecommendedScreen> {
                           child: const Text('Add Place'),
                           onPressed: () {
                             context.read<MarkerProvider>().create(
-                                Marker(
+                                Place(
                                     mapboxId: '',
                                     title: widget.places[index].properties.name,
                                     latitude:

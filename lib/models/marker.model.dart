@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'marker.model.g.dart';
 
-class Marker {
+class Place {
   final String id;
   final String mapboxId;
   final String title;
@@ -12,7 +12,7 @@ class Marker {
   final int rating;
   final bool isFavorite;
 
-  Marker({
+  Place({
     this.id = '',
     required this.mapboxId,
     required this.title,
@@ -22,12 +22,12 @@ class Marker {
     this.isFavorite = false,
   });
 
-  factory Marker.fromFirestore(
+  factory Place.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   ) {
     final data = snapshot.data();
-    return Marker(
+    return Place(
       id: snapshot.id,
       mapboxId: data?['mapboxId'] as String,
       title: data?['title'] as String,

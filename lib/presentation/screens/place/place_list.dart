@@ -18,7 +18,7 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Widget listTile(Marker marker, MarkerProvider provider) => ListTile(
+    // Widget listTile(Place marker, MarkerProvider provider) => ListTile(
     //       title: Text(marker.title),
     //       subtitle: Text(
     //           'Latitude: ${marker.latitude}, Longitude: ${marker.longitude}'),
@@ -29,7 +29,7 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
     //             icon: Icon(marker.isFavorite ? Icons.star : Icons.star_border),
     //             color: Colors.red[500],
     //             onPressed: () {
-    //               provider.update(Marker(
+    //               provider.update(Place(
     //                   id: marker.id,
     //                   mapboxId: marker.mapboxId,
     //                   title: marker.title,
@@ -77,26 +77,15 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
     //       ),
     //     );
 
-    void showMarkerInfo() {
-      // You can implement your logic to show information about the tapped marker
-      // For example, show a dialog or navigate to a new screen with marker details.
-      print('Marker tapped! Add your logic here.');
-    }
-
     void addMarker(LatLng point) {
       Marker marker = Marker(
-        width: 80.0,
-        height: 80.0,
-        point: point,
-        child: GestureDetector(
-            onTap: () {
-              showMarkerInfo();
-            },
-            child: const Icon(
-              Icons.location_on,
-              size: 40.0,
-            )),
-      );
+          width: 80.0,
+          height: 80.0,
+          point: point,
+          child: const Icon(
+            Icons.location_on,
+            size: 40.0,
+          ));
 
       markers.add(marker);
       polylinePoints.add(point);

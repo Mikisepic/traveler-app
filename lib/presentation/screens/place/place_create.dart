@@ -66,7 +66,7 @@ class _PlaceCreateScreenState extends State<PlaceCreateScreen> {
             final titleValue = titleController.text;
 
             context.read<MarkerProvider>().create(
-                Marker(
+                Place(
                   title: titleValue,
                   mapboxId: mapboxId,
                   latitude: latitude,

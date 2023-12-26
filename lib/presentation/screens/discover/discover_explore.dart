@@ -5,7 +5,7 @@ import 'package:traveler/constants/app_constants.dart';
 import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/components/search.dart';
 import 'package:traveler/providers/authentication.provider.dart';
-import 'package:traveler/providers/marker.provider.dart';
+import 'package:traveler/providers/place.provider.dart';
 
 class DiscoverExploreScreen extends StatefulWidget {
   final List<DiscoveryPlace> places;
@@ -85,7 +85,7 @@ class _DiscoverExploreScreenState extends State<DiscoverExploreScreen> {
                           TextButton(
                             child: const Text('Add Place'),
                             onPressed: () {
-                              context.read<MarkerProvider>().create(
+                              context.read<PlaceProvider>().create(
                                   Place(
                                       mapboxId: '',
                                       title:

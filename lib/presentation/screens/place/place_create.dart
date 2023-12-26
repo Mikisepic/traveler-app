@@ -65,7 +65,7 @@ class _PlaceCreateScreenState extends State<PlaceCreateScreen> {
           if (_formKey.currentState!.validate()) {
             final titleValue = titleController.text;
 
-            context.read<MarkerProvider>().create(
+            context.read<PlaceProvider>().create(
                 Place(
                   title: titleValue,
                   mapboxId: mapboxId,

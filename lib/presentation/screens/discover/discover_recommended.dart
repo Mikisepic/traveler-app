@@ -5,7 +5,7 @@ import 'package:traveler/constants/app_constants.dart';
 import 'package:traveler/models/discovery.model.dart';
 import 'package:traveler/models/marker.model.dart';
 import 'package:traveler/providers/authentication.provider.dart';
-import 'package:traveler/providers/marker.provider.dart';
+import 'package:traveler/providers/place.provider.dart';
 
 class DiscoverRecommendedScreen extends StatefulWidget {
   final List<DiscoveryPlace> places;
@@ -78,7 +78,7 @@ class _DiscoverRecommendedScreenState extends State<DiscoverRecommendedScreen> {
                         TextButton(
                           child: const Text('Add Place'),
                           onPressed: () {
-                            context.read<MarkerProvider>().create(
+                            context.read<PlaceProvider>().create(
                                 Place(
                                     mapboxId: '',
                                     title: widget.places[index].properties.name,

@@ -131,7 +131,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: MultiSelectDialogField<String>(
         items: context
-            .read<MarkerProvider>()
+            .read<PlaceProvider>()
             .markers
             .map((e) => MultiSelectItem(e.id, e.title))
             .toList(),
@@ -143,7 +143,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
         onConfirm: (values) {
           selectedMarkerIds = values;
           selectedMarkers = context
-              .read<MarkerProvider>()
+              .read<PlaceProvider>()
               .markers
               .where((element) => selectedMarkerIds.contains(element.id))
               .toList();
@@ -153,7 +153,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
             setState(() {
               selectedMarkerIds.remove(value);
               selectedMarkers = context
-                  .read<MarkerProvider>()
+                  .read<PlaceProvider>()
                   .markers
                   .where((element) => selectedMarkerIds.contains(element.id))
                   .toList();

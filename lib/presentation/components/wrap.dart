@@ -5,14 +5,16 @@ class WrapScaffold extends StatelessWidget {
     super.key,
     required this.label,
     required this.body,
-    this.bottomAppBar,
+    this.appBarLeading,
+    this.appBarBottom,
     this.floatingActionButton,
     this.detailsPath,
   });
 
   final String label;
   final Widget body;
-  final PreferredSizeWidget? bottomAppBar;
+  final Widget? appBarLeading;
+  final PreferredSizeWidget? appBarBottom;
   final Widget? floatingActionButton;
   final String? detailsPath;
 
@@ -20,9 +22,10 @@ class WrapScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: appBarLeading,
         backgroundColor: Theme.of(context).colorScheme.background,
         title: Text(label),
-        bottom: bottomAppBar,
+        bottom: appBarBottom,
       ),
       body: body,
       floatingActionButton: floatingActionButton,

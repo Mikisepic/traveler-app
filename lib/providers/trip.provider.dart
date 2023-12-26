@@ -86,7 +86,7 @@ class TripProvider extends ChangeNotifier {
 
     for (DocumentReference ref in refs) {
       Future<Place?> associatedMarker =
-          MarkerProvider().getMarkerByReference(ref);
+          PlaceProvider().getMarkerByReference(ref);
       associatedMarker.then((value) {
         if (value != null) {
           receivedMarkers.add(value);

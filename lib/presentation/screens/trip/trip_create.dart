@@ -76,7 +76,7 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: MultiSelectDialogField<String>(
         items: context
-            .read<MarkerProvider>()
+            .read<PlaceProvider>()
             .markers
             .map((e) => MultiSelectItem(e.id, e.title))
             .toList(),

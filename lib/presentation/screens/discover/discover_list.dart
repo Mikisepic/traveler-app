@@ -90,7 +90,7 @@ class _ExploreListScreenState extends State<ExploreListScreen>
   Widget build(BuildContext context) {
     return WrapScaffold(
       label: 'Discover',
-      bottomAppBar: TabBar(controller: _tabController, tabs: const <Widget>[
+      appBarBottom: TabBar(controller: _tabController, tabs: const <Widget>[
         Tab(
           icon: Icon(Icons.person),
           text: 'For me',

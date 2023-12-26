@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:traveler/models/models.dart';
 
-class MarkerProvider with ChangeNotifier {
+class PlaceProvider with ChangeNotifier {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -17,7 +17,7 @@ class MarkerProvider with ChangeNotifier {
   bool _loading = false;
   bool get loading => _loading;
 
-  MarkerProvider() {
+  PlaceProvider() {
     init();
   }
 

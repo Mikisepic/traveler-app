@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:traveler/models/models.dart';
+import 'package:traveler/presentation/components/map.dart';
 import 'package:traveler/presentation/components/wrap.dart';
 import 'package:traveler/providers/providers.dart';
 import 'package:traveler/services/mapbox.service.dart';
@@ -49,6 +50,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
       });
       final tripMarkers =
           context.read<TripProvider>().fetchTripMarkers(trip.markers);
+      context.read<MapProvider>().initMarkers(selectedMarkers);
       setState(() {
         selectedMarkers = tripMarkers;
         selectedMarkerIds = selectedMarkers.map((e) => e.id).toList();
@@ -174,7 +176,10 @@ class _TripViewScreenState extends State<TripViewScreen> {
                       .map((e) => MarkerCoordinates(
                           latitude: e.latitude, longitude: e.longitude))
                       .toList());
-          tripOptimization.then((value) => print(value.toJson()));
+          tripOptimization.then((value) {
+            context.read<MapProvider>().drawOptimizationPolylines(value);
+            print(value.toJson());
+          });
         },
         child: const Text('Optimize Route'),
       ),
@@ -293,6 +298,13 @@ class _TripViewScreenState extends State<TripViewScreen> {
     );
 
     return WrapScaffold(
+      appBarLeading: IconButton(
+          onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) => const Dialog(
+                    child: MapScreen(),
+                  )),
+          icon: const Icon(Icons.map_outlined)),
       label: trip.title,
       body: Form(
           key: formKey,

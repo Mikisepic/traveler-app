@@ -86,11 +86,21 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
         buttonText: const Text('Select places for your trip'),
         onConfirm: (values) {
           selectedMarkerIds = values;
+          context.read<MapProvider>().initMarkers(context
+              .read<PlaceProvider>()
+              .markers
+              .where((element) => selectedMarkerIds.contains(element.id))
+              .toList());
         },
         chipDisplay: MultiSelectChipDisplay(
           onTap: (value) {
             setState(() {
               selectedMarkerIds.remove(value);
+              context.read<MapProvider>().initMarkers(context
+                  .read<PlaceProvider>()
+                  .markers
+                  .where((element) => selectedMarkerIds.contains(element.id))
+                  .toList());
             });
           },
         ),
@@ -150,6 +160,13 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
     );
 
     return WrapScaffold(
+        appBarLeading: IconButton(
+            onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext context) => const Dialog(
+                      child: MapScreen(),
+                    )),
+            icon: const Icon(Icons.map_outlined)),
         label: 'New Trip',
         body: Form(
           key: formKey,

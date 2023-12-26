@@ -38,9 +38,9 @@ class Trip {
       contributors: (data?['contributors'] as List<dynamic>)
           .map((e) => FirebaseFirestore.instance.doc(e.toString()))
           .toList(),
-      notes: (data?['notes'] as List<dynamic>)
-          .map((e) => FirebaseFirestore.instance.doc(e.toString()))
-          .toList(),
+      // notes: (data?['notes'] as List<dynamic>)
+      //     .map((e) => FirebaseFirestore.instance.doc(e.toString()))
+      //     .toList(),
     );
   }
 

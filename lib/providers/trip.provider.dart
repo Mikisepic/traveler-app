@@ -29,7 +29,7 @@ class TripProvider extends ChangeNotifier {
       if (user != null) {
         _tripsSubscription = firebaseFirestore
             .collection('trips')
-            .where('contributors', arrayContains: user.uid)
+            .where('contributors', arrayContains: 'users/${user.uid}')
             .orderBy('updated_at', descending: true)
             .snapshots()
             .listen((snapshot) async {

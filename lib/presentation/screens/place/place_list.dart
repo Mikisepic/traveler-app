@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:traveler/models/marker.model.dart';
 import 'package:traveler/presentation/components/components.dart';
 import 'package:traveler/presentation/screens/place/place_view.dart';
-import 'package:traveler/providers/place.provider.dart';
+import 'package:traveler/providers/providers.dart';
 
 class PlaceListScreen extends StatefulWidget {
   const PlaceListScreen({super.key});
@@ -93,6 +93,7 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
                 Expanded(
                   child: Consumer<PlaceProvider>(
                     builder: (context, provider, child) {
+                      context.read<MapProvider>().initMarkers(provider.markers);
                       return provider.loading
                           ? const CircularProgressIndicator()
                           : ListView.builder(

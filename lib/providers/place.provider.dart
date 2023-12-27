@@ -14,6 +14,9 @@ class PlaceProvider with ChangeNotifier {
   List<Place> _markers = [];
   List<Place> get markers => _markers;
 
+  Place? _marker;
+  Place? get marker => _marker;
+
   bool _loading = false;
   bool get loading => _loading;
 
@@ -76,9 +79,12 @@ class PlaceProvider with ChangeNotifier {
     return snapshot.data()!;
   }
 
-  Place fetchDialogData(String id) {
-    final index = _markers.indexWhere((element) => element.id == id);
-    return _markers[index];
+  Future<void> fetchDialogData(String id) async {
+    _loading = true;
+    final currentMarker = await getMarkerById(id);
+    _marker = currentMarker;
+    _loading = false;
+    notifyListeners();
   }
 
   create(Place marker, bool isAuthenticated) {

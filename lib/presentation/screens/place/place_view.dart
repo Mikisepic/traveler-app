@@ -20,12 +20,12 @@ class _PlaceViewScreenState extends State<PlaceViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final marker = context.read<PlaceProvider>().fetchDialogData(widget.id);
-    late var titleController = TextEditingController(text: marker.title);
-    late String mapboxId = marker.mapboxId;
-    late double latitude = marker.latitude;
-    late double longitude = marker.longitude;
-    late bool isFavorite = marker.isFavorite;
+    final marker = context.read<PlaceProvider>().marker;
+    late var titleController = TextEditingController(text: marker!.title);
+    late String mapboxId = marker!.mapboxId;
+    late double latitude = marker!.latitude;
+    late double longitude = marker!.longitude;
+    late bool isFavorite = marker!.isFavorite;
 
     Widget titleField = Container(
       padding: const EdgeInsets.symmetric(vertical: 20),

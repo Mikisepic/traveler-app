@@ -61,27 +61,36 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
                               ])))
             ],
           ),
-          onTap: () => showDialog(
-            context: context,
-            builder: (BuildContext context) => SmallDialog(
-              body: PlaceViewScreen(
-                id: marker.id,
-                onEditComplete: (marker) {
-                  context.read<PlaceProvider>().update(marker);
-                  Navigator.pop(context);
-                },
+          onTap: () async {
+            await provider.fetchDialogData(marker.id);
+            if (!mounted) return;
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => SmallDialog(
+                body: PlaceViewScreen(
+                  id: marker.id,
+                  onEditComplete: (marker) {
+                    context.read<PlaceProvider>().update(marker);
+                    Navigator.pop(context);
+                  },
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
 
     return WrapScaffold(
       appBarLeading: IconButton(
-          onPressed: () => showDialog(
-              context: context,
-              builder: (BuildContext context) => const Dialog(
-                    child: MapScreen(),
-                  )),
+          onPressed: () {
+            context
+                .read<MapProvider>()
+                .initMarkers(context.read<PlaceProvider>().markers);
+            showDialog(
+                context: context,
+                builder: (BuildContext context) => const Dialog(
+                      child: MapScreen(),
+                    ));
+          },
           icon: const Icon(Icons.map_outlined)),
       label: 'Places',
       body: context.read<PlaceProvider>().loading
@@ -93,7 +102,6 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
                 Expanded(
                   child: Consumer<PlaceProvider>(
                     builder: (context, provider, child) {
-                      context.read<MapProvider>().initMarkers(provider.markers);
                       return provider.loading
                           ? const CircularProgressIndicator()
                           : ListView.builder(

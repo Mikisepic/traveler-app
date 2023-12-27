@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:traveler/models/models.dart';
-import 'package:traveler/presentation/components/map.dart';
-import 'package:traveler/presentation/components/wrap.dart';
+import 'package:traveler/presentation/components/components.dart';
+import 'package:traveler/presentation/screens/trip/trip_view_note.dart';
 import 'package:traveler/providers/providers.dart';
 import 'package:traveler/services/mapbox.service.dart';
 
@@ -253,12 +253,30 @@ class _TripViewScreenState extends State<TripViewScreen> {
 
     return WrapScaffold(
       appBarLeading: IconButton(
-          onPressed: () => showDialog(
-              context: context,
-              builder: (BuildContext context) => const Dialog(
-                    child: MapScreen(),
-                  )),
+          onPressed: () {
+            context
+                .read<MapProvider>()
+                .initMarkers(context.read<TripProvider>().tripMarkers);
+            showDialog(
+                context: context,
+                builder: (BuildContext context) => const Dialog(
+                      child: MapScreen(),
+                    ));
+          },
           icon: const Icon(Icons.map_outlined)),
+      appBarActions: [
+        IconButton(
+            onPressed: () async {
+              context.read<TripProvider>().fetchTripNotes(trip.notes);
+              if (!mounted) return;
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => const SmallDialog(
+                        body: TripViewNoteScreen(),
+                      ));
+            },
+            icon: const Icon(Icons.map_outlined))
+      ],
       label: trip.title,
       body: Form(
           key: formKey,

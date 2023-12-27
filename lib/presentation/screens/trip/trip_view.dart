@@ -20,12 +20,12 @@ class TripViewScreen extends StatefulWidget {
 
 class _TripViewScreenState extends State<TripViewScreen> {
   List<bool> isOpen = [false, false];
+  MapboxService mapboxService = MapboxService();
 
   @override
   Widget build(BuildContext context) {
-    final MapboxService mapboxService = MapboxService();
+    Trip trip = context.read<TripProvider>().trip!;
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    Trip trip = context.read<TripProvider>().fetchDialogData(widget.id);
     TextEditingController titleController =
         TextEditingController(text: trip.title);
     TextEditingController descriptionController =

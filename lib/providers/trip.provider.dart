@@ -15,6 +15,9 @@ class TripProvider extends ChangeNotifier {
   List<Trip> _trips = [];
   List<Trip> get trips => _trips;
 
+  Trip? _trip;
+  Trip? get trip => _trip;
+
   List<Place> _tripMarkers = [];
   List<Place> get tripMarkers => _tripMarkers;
 
@@ -85,9 +88,11 @@ class TripProvider extends ChangeNotifier {
     return snapshot.data()!;
   }
 
-  Trip fetchDialogData(String id) {
-    final index = _trips.indexWhere((element) => element.id == id);
-    return _trips[index];
+  Future<void> fetchTrip(String id) async {
+    _loading = true;
+    final currentTrip = await getTripById(id);
+    _trip = currentTrip;
+    _loading = false;
   }
 
   Future<void> fetchTripMarkers(List<DocumentReference> refs) async {

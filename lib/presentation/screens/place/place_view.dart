@@ -16,16 +16,17 @@ class PlaceViewScreen extends StatefulWidget {
 }
 
 class _PlaceViewScreenState extends State<PlaceViewScreen> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final marker = context.read<PlaceProvider>().marker;
-    late var titleController = TextEditingController(text: marker!.title);
-    late String mapboxId = marker!.mapboxId;
-    late double latitude = marker!.latitude;
-    late double longitude = marker!.longitude;
-    late bool isFavorite = marker!.isFavorite;
+    Place marker = context.read<PlaceProvider>().marker!;
+    TextEditingController titleController =
+        TextEditingController(text: marker.title);
+    String mapboxId = marker.mapboxId;
+    double latitude = marker.latitude;
+    double longitude = marker.longitude;
+    bool isFavorite = marker.isFavorite;
 
     Widget titleField = Container(
       padding: const EdgeInsets.symmetric(vertical: 20),

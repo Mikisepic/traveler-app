@@ -19,46 +19,48 @@ class _TripListScreenState extends State<TripListScreen> {
           margin: const EdgeInsets.all(10.0),
           color: Theme.of(context).cardColor,
           child: ListTile(
-            contentPadding: const EdgeInsets.all(16.0),
-            title: Text(
-              trip.title,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            subtitle: Text(
-              trip.description,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () => showDialog(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                                title: Text('Delete ${trip.title}?'),
-                                content: const Text(
-                                    'Are you sure you want to delete?'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      provider.delete(trip.id);
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Yes'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('No'),
-                                  ),
-                                ])))
-              ],
-            ),
-            onTap: () =>
-                context.goNamed('trip', pathParameters: {'tripId': trip.id}),
-          ),
+              contentPadding: const EdgeInsets.all(16.0),
+              title: Text(
+                trip.title,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              subtitle: Text(
+                trip.description,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () => showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                                  title: Text('Delete ${trip.title}?'),
+                                  content: const Text(
+                                      'Are you sure you want to delete?'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        provider.delete(trip.id);
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Yes'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('No'),
+                                    ),
+                                  ])))
+                ],
+              ),
+              onTap: () async {
+                await provider.fetchTrip(trip.id);
+                if (!mounted) return;
+                context.goNamed('trip', pathParameters: {'tripId': trip.id});
+              }),
         );
 
     return WrapScaffold(

@@ -31,7 +31,7 @@ class NoteProvider with ChangeNotifier {
         .toList();
   }
 
-  Future<Note?> getNoteByReference(DocumentReference noteRef) async {
+  Future<Note> getNoteByReference(DocumentReference noteRef) async {
     final snapshot = await noteRef
         .withConverter<Note>(
             fromFirestore: Note.fromFirestore,

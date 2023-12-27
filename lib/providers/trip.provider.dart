@@ -15,6 +15,15 @@ class TripProvider extends ChangeNotifier {
   List<Trip> _trips = [];
   List<Trip> get trips => _trips;
 
+  List<Place> _tripMarkers = [];
+  List<Place> get tripMarkers => _tripMarkers;
+
+  List<UserProfileMetadata> _tripContributors = [];
+  List<UserProfileMetadata> get tripContributors => _tripContributors;
+
+  List<Note> _tripNotes = [];
+  List<Note> get tripNotes => _tripNotes;
+
   bool _loading = false;
   bool get loading => _loading;
 
@@ -22,7 +31,7 @@ class TripProvider extends ChangeNotifier {
     init();
   }
 
-  init() {
+  void init() {
     firebaseAuth.userChanges().listen((user) {
       _tripsSubscription?.cancel();
 
@@ -81,55 +90,48 @@ class TripProvider extends ChangeNotifier {
     return _trips[index];
   }
 
-  List<Place> fetchTripMarkers(List<DocumentReference> refs) {
-    List<Place> receivedMarkers = [];
-
+  Future<void> fetchTripMarkers(List<DocumentReference> refs) async {
+    _loading = true;
+    _tripMarkers = [];
+    List<Future<Place>> futures = [];
     for (DocumentReference ref in refs) {
-      Future<Place?> associatedMarker =
+      Future<Place> associatedMarker =
           PlaceProvider().getMarkerByReference(ref);
-      associatedMarker.then((value) {
-        if (value != null) {
-          receivedMarkers.add(value);
-        }
-      });
+      futures.add(associatedMarker);
     }
-
-    return receivedMarkers;
+    _tripMarkers = await Future.wait(futures);
+    _loading = false;
+    notifyListeners();
   }
 
-  List<UserProfileMetadata> fetchTripContributors(
-      List<DocumentReference> refs) {
-    List<UserProfileMetadata> tripContributors = [];
-
+  Future<void> fetchTripContributors(List<DocumentReference> refs) async {
+    _loading = true;
+    _tripContributors = [];
+    List<Future<UserProfileMetadata>> futures = [];
     for (DocumentReference ref in refs) {
-      Future<UserProfileMetadata?> associatedMarker =
+      Future<UserProfileMetadata> associatedContributor =
           AuthenticationProvider().getUserProfileMetadataByReference(ref);
-      associatedMarker.then((value) {
-        if (value != null) {
-          tripContributors.add(value);
-        }
-      });
+      futures.add(associatedContributor);
     }
-
-    return tripContributors;
+    _tripContributors = await Future.wait(futures);
+    _loading = false;
+    notifyListeners();
   }
 
-  List<Note> fetchTripNotes(List<DocumentReference> refs) {
-    List<Note> tripNotes = [];
-
+  Future<void> fetchTripNotes(List<DocumentReference> refs) async {
+    _loading = true;
+    _tripNotes = [];
+    List<Future<Note>> futures = [];
     for (DocumentReference ref in refs) {
-      Future<Note?> associatedMarker = NoteProvider().getNoteByReference(ref);
-      associatedMarker.then((value) {
-        if (value != null) {
-          tripNotes.add(value);
-        }
-      });
+      Future<Note> associatedNote = NoteProvider().getNoteByReference(ref);
+      futures.add(associatedNote);
     }
-
-    return tripNotes;
+    _tripNotes = await Future.wait(futures);
+    _loading = false;
+    notifyListeners();
   }
 
-  create(Trip trip, bool isAuthenticated) {
+  void create(Trip trip, bool isAuthenticated) {
     if (!isAuthenticated) {
       throw Exception('Must be logged in');
     }
@@ -159,7 +161,7 @@ class TripProvider extends ChangeNotifier {
         }));
   }
 
-  update(Trip trip) {
+  void update(Trip trip) {
     firebaseFirestore.collection('trips').doc(trip.id).update({
       'title': trip.title,
       'description': trip.description,
@@ -175,7 +177,7 @@ class TripProvider extends ChangeNotifier {
     });
   }
 
-  delete(String id) {
+  void delete(String id) {
     firebaseFirestore.collection('trips').doc(id).delete();
     firebaseFirestore
         .collection('users')

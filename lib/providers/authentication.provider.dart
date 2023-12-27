@@ -84,7 +84,7 @@ class AuthenticationProvider extends ChangeNotifier {
     return snapshot.data()!;
   }
 
-  Future<UserProfileMetadata?> getUserProfileMetadataByReference(
+  Future<UserProfileMetadata> getUserProfileMetadataByReference(
       DocumentReference markerRef) async {
     final snapshot = await firebaseFirestore
         .doc(markerRef.path)
@@ -94,7 +94,7 @@ class AuthenticationProvider extends ChangeNotifier {
                 userProfileMetadata.toFirestore())
         .get();
 
-    return snapshot.data();
+    return snapshot.data()!;
   }
 
   void registerUserInFirestore(String uid, String? email, String? displayName) {

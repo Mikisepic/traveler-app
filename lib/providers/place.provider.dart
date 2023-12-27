@@ -65,7 +65,7 @@ class PlaceProvider with ChangeNotifier {
     return snapshot.data()!;
   }
 
-  Future<Place?> getMarkerByReference(DocumentReference markerRef) async {
+  Future<Place> getMarkerByReference(DocumentReference markerRef) async {
     final snapshot = await firebaseFirestore
         .doc(markerRef.path)
         .withConverter<Place>(
@@ -73,7 +73,7 @@ class PlaceProvider with ChangeNotifier {
             toFirestore: (Place marker, _) => marker.toFirestore())
         .get();
 
-    return snapshot.data();
+    return snapshot.data()!;
   }
 
   Place fetchDialogData(String id) {

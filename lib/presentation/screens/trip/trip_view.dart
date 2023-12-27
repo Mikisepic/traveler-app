@@ -32,43 +32,18 @@ class _TripViewScreenState extends State<TripViewScreen> {
         TextEditingController(text: trip.description);
     bool isPrivate = trip.isPrivate;
 
-    bool loading = false;
     List<String> selectedMarkerIds = trip.markers.map((e) => e.id).toList();
-    List<Place> selectedMarkers = [];
     List<String> selectedContributorIds =
         trip.contributors.map((e) => e.id).toList();
-    List<UserProfileMetadata> selectedContributors = [];
-
-    @override
-    void initState() {
-      super.initState();
-    }
 
     Future<void> fetchMarkerData() async {
-      setState(() {
-        loading = true;
-      });
-      final tripMarkers =
-          context.read<TripProvider>().fetchTripMarkers(trip.markers);
-      context.read<MapProvider>().initMarkers(selectedMarkers);
-      setState(() {
-        selectedMarkers = tripMarkers;
-        selectedMarkerIds = selectedMarkers.map((e) => e.id).toList();
-        loading = false;
-      });
+      await context.read<TripProvider>().fetchTripMarkers(trip.markers);
     }
 
     Future<void> fetchContributorData() async {
-      setState(() {
-        loading = true;
-      });
-      final tripContributors =
-          context.read<TripProvider>().fetchTripContributors(trip.contributors);
-      setState(() {
-        selectedContributors = tripContributors;
-        selectedContributorIds = selectedContributors.map((e) => e.id).toList();
-        loading = false;
-      });
+      await context
+          .read<TripProvider>()
+          .fetchTripContributors(trip.contributors);
     }
 
     Widget titleField = Padding(
@@ -144,21 +119,11 @@ class _TripViewScreenState extends State<TripViewScreen> {
         initialValue: trip.markers.map((e) => e.id).toList(),
         onConfirm: (values) {
           selectedMarkerIds = values;
-          selectedMarkers = context
-              .read<PlaceProvider>()
-              .markers
-              .where((element) => selectedMarkerIds.contains(element.id))
-              .toList();
         },
         chipDisplay: MultiSelectChipDisplay(
           onTap: (value) {
             setState(() {
               selectedMarkerIds.remove(value);
-              selectedMarkers = context
-                  .read<PlaceProvider>()
-                  .markers
-                  .where((element) => selectedMarkerIds.contains(element.id))
-                  .toList();
             });
           },
         ),
@@ -172,7 +137,9 @@ class _TripViewScreenState extends State<TripViewScreen> {
           Future<TripOptimization> tripOptimization =
               mapboxService.fetchTripOptimization(
                   'driving',
-                  selectedMarkers
+                  context
+                      .read<TripProvider>()
+                      .tripMarkers
                       .map((e) => MarkerCoordinates(
                           latitude: e.latitude, longitude: e.longitude))
                       .toList());
@@ -200,22 +167,11 @@ class _TripViewScreenState extends State<TripViewScreen> {
         initialValue: trip.contributors.map((e) => e.id).toList(),
         onConfirm: (values) {
           selectedContributorIds = values;
-          selectedContributors = context
-              .read<AuthenticationProvider>()
-              .users
-              .where((element) => selectedContributorIds.contains(element.id))
-              .toList();
         },
         chipDisplay: MultiSelectChipDisplay(
           onTap: (value) {
             setState(() {
               selectedContributorIds.remove(value);
-              selectedContributors = context
-                  .read<AuthenticationProvider>()
-                  .users
-                  .where(
-                      (element) => selectedContributorIds.contains(element.id))
-                  .toList();
             });
           },
         ),
@@ -243,15 +199,13 @@ class _TripViewScreenState extends State<TripViewScreen> {
                 title: Text('Markers'),
               );
             },
-            body: loading
-                ? const CircularProgressIndicator()
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      markersField,
-                      optimizeRouteButton,
-                    ],
-                  ),
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                markersField,
+                optimizeRouteButton,
+              ],
+            ),
             isExpanded: isOpen[0],
           ),
           ExpansionPanel(
@@ -310,15 +264,17 @@ class _TripViewScreenState extends State<TripViewScreen> {
           key: formKey,
           child: Padding(
               padding: const EdgeInsets.all(40.0),
-              child: ListView(
-                children: <Widget>[
-                  titleField,
-                  descriptionField,
-                  isPrivateField,
-                  expansionPanelList,
-                  submitButton
-                ],
-              ))),
+              child: Consumer(builder: (context, provider, child) {
+                return ListView(
+                  children: <Widget>[
+                    titleField,
+                    descriptionField,
+                    isPrivateField,
+                    expansionPanelList,
+                    submitButton
+                  ],
+                );
+              }))),
     );
   }
 }

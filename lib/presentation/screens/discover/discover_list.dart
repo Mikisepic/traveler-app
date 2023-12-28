@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:traveler/constants/constants.dart';
 import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/components/components.dart';
-import 'package:traveler/presentation/screens/discover/discover_explore.dart';
-import 'package:traveler/presentation/screens/discover/discover_recommended.dart';
+import 'package:traveler/presentation/screens/discover/discover.dart';
 import 'package:traveler/services/services.dart';
 
 class ExploreListScreen extends StatefulWidget {
@@ -109,8 +109,10 @@ class _ExploreListScreenState extends State<ExploreListScreen>
             onSelected: (List<String> categories, List<String> conditions) {
               setState(() {
                 fetchDiscoveryPlace(
-                    currentLocation?.latitude ?? 54.6905948,
-                    currentLocation?.longitude ?? 25.2818487,
+                    currentLocation?.latitude ??
+                        ApplicationConstants.vilniusCoordinatesLatitude,
+                    currentLocation?.longitude ??
+                        ApplicationConstants.vilniusCoordinatesLongitude,
                     categories,
                     conditions);
               });

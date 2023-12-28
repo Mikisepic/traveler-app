@@ -43,4 +43,10 @@ class ApplicationConstants {
     'vegetarian',
     'vegan'
   ];
+  static double vilniusCoordinatesLatitude = 54.6905948;
+  static double vilniusCoordinatesLongitude = 25.2818487;
+  static double flutterMapsMinLlatitude = -90;
+  static double flutterMapsMaxLatitude = 90;
+  static double flutterMapsMinLongitude = -180;
+  static double flutterMapsMaxLongitude = 180;
 }

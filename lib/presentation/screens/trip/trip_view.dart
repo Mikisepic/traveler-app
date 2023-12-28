@@ -5,7 +5,7 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/components/components.dart';
-import 'package:traveler/presentation/screens/trip/trip_view_note.dart';
+import 'package:traveler/presentation/screens/trip/trip.dart';
 import 'package:traveler/providers/providers.dart';
 import 'package:traveler/services/mapbox.service.dart';
 

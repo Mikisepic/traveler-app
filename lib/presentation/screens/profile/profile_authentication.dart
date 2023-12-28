@@ -17,7 +17,7 @@ class Authentication extends StatelessWidget {
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 24, bottom: 8),
+          padding: const EdgeInsets.symmetric(vertical: 8),
           child: StyledButton(
               onPressed: () {
                 !isAuthenticated ? context.push('/sign-in') : signOut();
@@ -29,7 +29,7 @@ class Authentication extends StatelessWidget {
         Visibility(
             visible: isAuthenticated,
             child: Padding(
-              padding: const EdgeInsets.only(left: 24, bottom: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child: StyledButton(
                   onPressed: () {
                     context.push('/profile');

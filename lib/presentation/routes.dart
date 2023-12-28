@@ -5,10 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:traveler/presentation/screens/discover/discover.dart';
 import 'package:traveler/presentation/screens/place/place.dart';
 import 'package:traveler/presentation/screens/profile/profile.dart';
+import 'package:traveler/presentation/screens/screens.dart';
 import 'package:traveler/presentation/screens/trip/trip.dart';
 import 'package:traveler/providers/providers.dart';
-
-import './screens/screens.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKeyTrips = GlobalKey<NavigatorState>();

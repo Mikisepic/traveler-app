@@ -15,6 +15,7 @@ class MapProvider extends ChangeNotifier {
 
   void initMarkers(List<Place> places) {
     _loading = true;
+    _polylinePoints = [];
     _markers = places
         .map((place) => Marker(
               width: 80.0,
@@ -28,13 +29,13 @@ class MapProvider extends ChangeNotifier {
                   )),
             ))
         .toList();
-    _polylinePoints = [];
     _loading = false;
     notifyListeners();
   }
 
   void drawOptimizationPolylines(TripOptimization optimization) {
     _loading = true;
+    _polylinePoints = [];
     for (var leg in optimization.trips[0].legs) {
       for (var step in leg.steps) {
         _polylinePoints.addAll(

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:traveler/constants/app_constants.dart';
+import 'package:traveler/constants/constants.dart';
 import 'package:traveler/models/models.dart';
 import 'package:traveler/presentation/components/search.dart';
-import 'package:traveler/providers/authentication.provider.dart';
-import 'package:traveler/providers/place.provider.dart';
+import 'package:traveler/providers/providers.dart';
 
 class DiscoverExploreScreen extends StatefulWidget {
   final List<DiscoveryPlace> places;

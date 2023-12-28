@@ -11,6 +11,7 @@ class Trip {
   final List<DocumentReference> markers;
   final List<DocumentReference> contributors;
   final List<DocumentReference> notes;
+  final List<DocumentReference> reminders;
 
   Trip({
     this.id = '',
@@ -20,6 +21,7 @@ class Trip {
     this.markers = const [],
     this.contributors = const [],
     this.notes = const [],
+    this.reminders = const [],
   });
 
   factory Trip.fromFirestore(
@@ -41,6 +43,9 @@ class Trip {
       // notes: (data?['notes'] as List<dynamic>)
       //     .map((e) => FirebaseFirestore.instance.doc(e.toString()))
       //     .toList(),
+      // reminders: (data?['reminders'] as List<dynamic>)
+      //     .map((e) => FirebaseFirestore.instance.doc(e.toString()))
+      //     .toList(),
     );
   }
 
@@ -49,10 +54,11 @@ class Trip {
       "id": id,
       "title": title,
       "description": description,
-      "notes": notes,
       "isPrivate": isPrivate,
       "markers": markers,
       "contributors": contributors,
+      "notes": notes,
+      "reminders": reminders,
     };
   }
 }

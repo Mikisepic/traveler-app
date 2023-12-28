@@ -5,37 +5,38 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:traveler/models/models.dart';
 
-class NoteProvider with ChangeNotifier {
+class ReminderProvider with ChangeNotifier {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  final List<Note> _notes = [];
-  List<Note> get notes => _notes;
+  final List<Reminder> _reminders = [];
+  List<Reminder> get notes => _reminders;
 
   final bool _loading = false;
   bool get loading => _loading;
 
-  Future<List<Note>> getNotesByUser(String userId) async {
+  Future<List<Reminder>> getRemindersByUser(String userId) async {
     QuerySnapshot querySnapshot = await firebaseFirestore
-        .collection('notes')
+        .collection('reminders')
         .where('userId', isEqualTo: userId)
         .orderBy('updated_at', descending: true)
         .get();
 
     return querySnapshot.docs
-        .map((doc) => Note(
+        .map((doc) => Reminder(
               id: doc.id,
               content: doc['content'] as String,
+              setUntil: (doc['setUntil'] as Timestamp).toDate(),
               userId: doc['userId'] as String,
             ))
         .toList();
   }
 
-  Future<Note> getNoteByReference(DocumentReference noteRef) async {
-    final snapshot = await noteRef
-        .withConverter<Note>(
-            fromFirestore: Note.fromFirestore,
-            toFirestore: (Note note, _) => note.toFirestore())
+  Future<Reminder> getReminderByReference(DocumentReference reminderRef) async {
+    final snapshot = await reminderRef
+        .withConverter<Reminder>(
+            fromFirestore: Reminder.fromFirestore,
+            toFirestore: (Reminder reminder, _) => reminder.toFirestore())
         .get();
 
     return snapshot.data()!;

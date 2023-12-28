@@ -27,6 +27,9 @@ class TripProvider extends ChangeNotifier {
   List<Note> _tripNotes = [];
   List<Note> get tripNotes => _tripNotes;
 
+  List<Reminder> _tripReminders = [];
+  List<Reminder> get tripReminders => _tripReminders;
+
   bool _loading = false;
   bool get loading => _loading;
 
@@ -132,6 +135,20 @@ class TripProvider extends ChangeNotifier {
       futures.add(associatedNote);
     }
     _tripNotes = await Future.wait(futures);
+    _loading = false;
+    notifyListeners();
+  }
+
+  Future<void> fetchTripReminders(List<DocumentReference> refs) async {
+    _loading = true;
+    _tripReminders = [];
+    List<Future<Reminder>> futures = [];
+    for (DocumentReference ref in refs) {
+      Future<Reminder> associatedReminder =
+          ReminderProvider().getReminderByReference(ref);
+      futures.add(associatedReminder);
+    }
+    _tripReminders = await Future.wait(futures);
     _loading = false;
     notifyListeners();
   }

@@ -6,6 +6,7 @@ class UserProfileMetadata {
   final String email;
   final List<DocumentReference> markers;
   final List<DocumentReference> trips;
+  final List<DocumentReference> reminders;
 
   UserProfileMetadata({
     required this.id,
@@ -13,6 +14,7 @@ class UserProfileMetadata {
     required this.email,
     this.trips = const [],
     this.markers = const [],
+    this.reminders = const [],
   });
 
   factory UserProfileMetadata.fromFirestore(
@@ -30,6 +32,9 @@ class UserProfileMetadata {
       trips: (data?['trips'] as List<dynamic>)
           .map((e) => FirebaseFirestore.instance.doc(e.toString()))
           .toList(),
+      // reminders: (data?['reminders'] as List<dynamic>)
+      //     .map((e) => FirebaseFirestore.instance.doc(e.toString()))
+      //     .toList(),
     );
   }
 
@@ -40,6 +45,7 @@ class UserProfileMetadata {
       "displayName": displayName,
       "markers": markers,
       "trips": trips,
+      "reminders": reminders,
     };
   }
 }

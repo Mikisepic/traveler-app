@@ -784,18 +784,6 @@ PODS:
   - leveldb-library (1.22.2)
   - location (0.0.1):
     - Flutter
-  - mapbox_maps_flutter (0.4.4):
-    - Flutter
-    - MapboxMaps (~> 10.13.1)
-  - MapboxCommon (23.5.0)
-  - MapboxCoreMaps (10.13.1):
-    - MapboxCommon (~> 23.5)
-  - MapboxMaps (10.13.1):
-    - MapboxCommon (= 23.5.0)
-    - MapboxCoreMaps (= 10.13.1)
-    - MapboxMobileEvents (= 1.0.10)
-    - Turf (~> 2.0)
-  - MapboxMobileEvents (1.0.10)
   - nanopb (2.30909.1):
     - nanopb/decode (= 2.30909.1)
     - nanopb/encode (= 2.30909.1)
@@ -803,7 +791,6 @@ PODS:
   - nanopb/encode (2.30909.1)
   - PromisesObjC (2.3.1)
   - RecaptchaInterop (100.0.0)
-  - Turf (2.7.0)
 
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
@@ -814,7 +801,6 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - location (from `.symlinks/plugins/location/ios`)
-  - mapbox_maps_flutter (from `.symlinks/plugins/mapbox_maps_flutter/ios`)
 
 SPEC REPOS:
   trunk:
@@ -835,14 +821,9 @@ SPEC REPOS:
     - gRPC-Core
     - GTMSessionFetcher
     - leveldb-library
-    - MapboxCommon
-    - MapboxCoreMaps
-    - MapboxMaps
-    - MapboxMobileEvents
     - nanopb
     - PromisesObjC
     - RecaptchaInterop
-    - Turf
 
 EXTERNAL SOURCES:
   cloud_firestore:
@@ -861,8 +842,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
   location:
     :path: ".symlinks/plugins/location/ios"
-  mapbox_maps_flutter:
-    :path: ".symlinks/plugins/mapbox_maps_flutter/ios"
 
 SPEC CHECKSUMS:
   abseil: 926fb7a82dc6d2b8e1f2ed7f3a718bce691d1e46
@@ -890,15 +869,9 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 41b9ef0b4c08a6db4b7eb51a21ae5183ec99a2c8
   leveldb-library: f03246171cce0484482ec291f88b6d563699ee06
   location: d5cf8598915965547c3f36761ae9cc4f4e87d22e
-  mapbox_maps_flutter: b7750303639682268cc7f487bfc6f474a456acab
-  MapboxCommon: fdf7fd31c90b7b607cd9c63e37797f023c01d860
-  MapboxCoreMaps: 24270c7c6b8cb71819fc2f3c549db9620ee4d019
-  MapboxMaps: cb76511b98d3b95c74b0771ed105bc69f30ace6b
-  MapboxMobileEvents: de50b3a4de180dd129c326e09cd12c8adaaa46d6
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
-  Turf: 13d1a92d969ca0311bbc26e8356cca178ce95da2
 
 PODFILE CHECKSUM: 70d9d25280d0dd177a5f637cdb0f0b0b12c6a189
 

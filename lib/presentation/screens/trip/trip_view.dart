@@ -256,7 +256,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
           onPressed: () {
             context
                 .read<MapProvider>()
-                .initMarkers(context.read<TripProvider>().tripMarkers);
+                .initMarkers(context.read<TripProvider>().tripMarkers, false);
             showDialog(
                 context: context,
                 builder: (BuildContext context) => const Dialog(

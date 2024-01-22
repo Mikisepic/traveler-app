@@ -39,13 +39,8 @@ class _MapScreenState extends State<MapScreen> {
                       'https://api.mapbox.com/styles/v1/mikisepic1/clqmg0kdf00ph01que0w02n2a/tiles/256/{z}/{x}/{y}@2x?access_token=${ApplicationConstants.mapboxAccessToken}',
                   userAgentPackageName: 'traveller',
                 ),
-                PolylineLayer(polylines: [
-                  Polyline(
-                      points: provider.polylinePoints,
-                      color: Colors.blue,
-                      strokeWidth: 2),
-                ]),
                 MarkerLayer(markers: provider.markers),
+                PolylineLayer(polylines: provider.polylines),
               ],
             );
     });

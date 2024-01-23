@@ -53,11 +53,6 @@ class _PlaceCreateScreenState extends State<PlaceCreateScreen> {
       ),
     );
 
-    Widget searchFieldPayload = Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: Text('$latitude, $longitude'),
-    );
-
     Widget submitButton = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: ElevatedButton(
@@ -82,18 +77,13 @@ class _PlaceCreateScreenState extends State<PlaceCreateScreen> {
     );
 
     return WrapScaffold(
-        label: 'New PlaceViewScreen',
+        label: 'Add New Place',
         body: Form(
           key: _formKey,
           child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Column(
-                children: <Widget>[
-                  titleField,
-                  searchField,
-                  searchFieldPayload,
-                  submitButton
-                ],
+                children: <Widget>[titleField, searchField, submitButton],
               )),
         ));
   }

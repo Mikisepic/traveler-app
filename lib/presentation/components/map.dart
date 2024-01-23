@@ -40,7 +40,7 @@ class _MapScreenState extends State<MapScreen> {
                   userAgentPackageName: 'traveller',
                 ),
                 MarkerLayer(markers: provider.markers),
-                PolylineLayer(polylines: provider.polylines),
+                ...provider.polylineLayers
               ],
             );
     });

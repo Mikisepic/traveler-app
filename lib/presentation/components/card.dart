@@ -15,12 +15,12 @@ Widget buildCard({
           children: [
             Text(
               title,
-              style: Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             if (content != null)
               Text(
                 content,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
           ],
         ),

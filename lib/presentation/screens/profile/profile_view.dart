@@ -37,7 +37,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
               _buildRow([
                 buildCard(
                   context: context,
-                  title: 'Display Name',
+                  title: 'Username',
                   content: provider.userMetadata?.displayName ?? 'No Data',
                 ),
                 buildCard(

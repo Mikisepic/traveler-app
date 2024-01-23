@@ -163,12 +163,7 @@ class TripProvider extends ChangeNotifier {
       'title': trip.title,
       'description': trip.description,
       'markers': trip.markers.map((e) => e.path).toList(),
-      'contributors': trip.isPrivate
-          ? ['users/${firebaseAuth.currentUser!.uid}']
-          : [
-              'users/${firebaseAuth.currentUser!.uid}',
-              ...trip.contributors.map((e) => e.path).toList()
-            ],
+      'contributors': trip.contributors.map((e) => e.path).toList(),
       'isPrivate': trip.isPrivate,
       'created_at': DateTime.now().millisecondsSinceEpoch,
       'updated_at': DateTime.now().millisecondsSinceEpoch
@@ -188,12 +183,7 @@ class TripProvider extends ChangeNotifier {
       'title': trip.title,
       'description': trip.description,
       'markers': trip.markers.map((e) => e.path).toList(),
-      'contributors': trip.isPrivate
-          ? ['users/${firebaseAuth.currentUser!.uid}']
-          : [
-              'users/${firebaseAuth.currentUser!.uid}',
-              ...trip.contributors.map((e) => e.path).toList()
-            ],
+      'contributors': trip.contributors.map((e) => e.path).toList(),
       'isPrivate': trip.isPrivate,
       'updated_at': DateTime.now().millisecondsSinceEpoch
     });

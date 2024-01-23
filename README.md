@@ -1,4 +1,4 @@
-# Traveller
+# Traveler
 
 > Mikas Pupeikis 2024
 

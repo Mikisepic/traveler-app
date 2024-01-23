@@ -5,6 +5,7 @@ part 'trip.model.g.dart';
 
 class Trip {
   final String id;
+  final String userId;
   final String title;
   final String description;
   final bool isPrivate;
@@ -16,6 +17,7 @@ class Trip {
   Trip({
     this.id = '',
     required this.title,
+    this.userId = '',
     this.description = '',
     this.isPrivate = false,
     this.markers = const [],
@@ -31,6 +33,7 @@ class Trip {
     final data = snapshot.data();
     return Trip(
       id: snapshot.id,
+      userId: data?['userId'] as String,
       title: data?['title'] as String,
       description: data?['description'] as String,
       isPrivate: data?['isPrivate'] as bool,

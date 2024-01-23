@@ -19,7 +19,7 @@ class TravelerApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => ReminderProvider()),
         ],
         child: MaterialApp.router(
-          title: 'Traveller',
+          title: 'Traveler',
           theme: theme,
           routerConfig: router,
         ));

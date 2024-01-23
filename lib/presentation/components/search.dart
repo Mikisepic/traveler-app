@@ -32,7 +32,6 @@ class _SearchState extends State<Search> {
             return TextField(
                 controller: controller,
                 focusNode: focusNode,
-                autofocus: true,
                 decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
                   hintText: 'Search',

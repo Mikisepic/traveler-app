@@ -35,7 +35,6 @@ class _PlaceViewScreenState extends State<PlaceViewScreen> {
           Expanded(
               child: TextFormField(
             controller: titleController,
-            autofocus: true,
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),
               hintText: 'Title',

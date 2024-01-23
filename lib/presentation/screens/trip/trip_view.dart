@@ -30,7 +30,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
         TextEditingController(text: trip.title);
     TextEditingController descriptionController =
         TextEditingController(text: trip.description);
-    bool isPrivate = trip.isPrivate;
+    bool? isPrivate;
 
     List<String> selectedMarkerIds = trip.markers.map((e) => e.id).toList();
     List<String> selectedContributorIds =
@@ -53,7 +53,6 @@ class _TripViewScreenState extends State<TripViewScreen> {
           Expanded(
               child: TextFormField(
             controller: titleController,
-            autofocus: true,
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),
               hintText: 'Title',
@@ -76,7 +75,6 @@ class _TripViewScreenState extends State<TripViewScreen> {
           Expanded(
               child: TextFormField(
             controller: descriptionController,
-            autofocus: true,
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),
               hintText: 'Title',
@@ -94,7 +92,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
           children: [
             const Text('Is Private'),
             Switch(
-              value: isPrivate,
+              value: isPrivate ?? trip.isPrivate,
               onChanged: (bool value) {
                 setState(() {
                   isPrivate = value;
@@ -234,7 +232,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
                       id: widget.id,
                       title: titleValue,
                       description: descriptionValue,
-                      isPrivate: isPrivate,
+                      isPrivate: isPrivate ?? trip.isPrivate,
                       markers: selectedMarkerIds
                           .map((e) =>
                               FirebaseFirestore.instance.doc('markers/$e'))
@@ -287,7 +285,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
                   children: <Widget>[
                     titleField,
                     descriptionField,
-                    isPrivateField,
+                    // isPrivateField,
                     expansionPanelList,
                     submitButton
                   ],

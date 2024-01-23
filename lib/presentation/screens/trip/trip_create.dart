@@ -29,7 +29,6 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextFormField(
         controller: titleController,
-        autofocus: true,
         decoration: const InputDecoration(
           border: UnderlineInputBorder(),
           hintText: 'Title',

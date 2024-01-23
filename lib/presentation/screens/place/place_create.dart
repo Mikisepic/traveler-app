@@ -25,7 +25,6 @@ class _PlaceCreateScreenState extends State<PlaceCreateScreen> {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextFormField(
         controller: titleController,
-        autofocus: true,
         decoration: const InputDecoration(
           border: UnderlineInputBorder(),
           hintText: 'Title',

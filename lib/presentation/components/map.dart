@@ -37,7 +37,7 @@ class _MapScreenState extends State<MapScreen> {
                 TileLayer(
                   urlTemplate:
                       'https://api.mapbox.com/styles/v1/mikisepic1/clqmg0kdf00ph01que0w02n2a/tiles/256/{z}/{x}/{y}@2x?access_token=${ApplicationConstants.mapboxAccessToken}',
-                  userAgentPackageName: 'traveller',
+                  userAgentPackageName: 'traveler',
                 ),
                 MarkerLayer(markers: provider.markers),
                 ...provider.polylineLayers

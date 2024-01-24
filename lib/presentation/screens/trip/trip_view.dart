@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -30,7 +31,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
         TextEditingController(text: trip.title);
     TextEditingController descriptionController =
         TextEditingController(text: trip.description);
-    bool? isPrivate;
+    bool isPrivate = trip.isPrivate;
 
     List<String> selectedMarkerIds = trip.markers.map((e) => e.id).toList();
     List<String> selectedContributorIds =
@@ -84,49 +85,74 @@ class _TripViewScreenState extends State<TripViewScreen> {
       ),
     );
 
-    Widget isPrivateField = Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            const Text('Is Private'),
-            Switch(
-              value: isPrivate ?? trip.isPrivate,
-              onChanged: (bool value) {
-                setState(() {
-                  isPrivate = value;
-                });
-              },
-            )
-          ],
-        ));
+    Widget isPrivateField = Visibility(
+        visible: FirebaseAuth.instance.currentUser!.uid == trip.userId,
+        child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                StyledButton(
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        final titleValue = titleController.text;
+                        final descriptionValue = descriptionController.text;
+                        context.read<TripProvider>().update(
+                              Trip(
+                                  id: widget.id,
+                                  title: titleValue,
+                                  description: descriptionValue,
+                                  isPrivate: !trip.isPrivate,
+                                  markers: selectedMarkerIds
+                                      .map((e) => FirebaseFirestore.instance
+                                          .doc('markers/$e'))
+                                      .toList(),
+                                  contributors: selectedContributorIds
+                                      .map((e) => FirebaseFirestore.instance
+                                          .doc('users/$e'))
+                                      .toList()),
+                            );
+                        context.goNamed('trip_list');
+                      }
+                    },
+                    child: Text(
+                        isPrivate ? 'Allow Collaboration' : 'Privatize Trip'))
+              ],
+            )));
 
-    Widget markersField = Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: MultiSelectDialogField<String>(
-        items: context
-            .read<PlaceProvider>()
-            .markers
-            .map((e) => MultiSelectItem(e.id, e.title))
-            .toList(),
-        listType: MultiSelectListType.CHIP,
-        searchable: true,
-        title: const Text('Select Places'),
-        buttonText: const Text('Select places for your trip'),
-        initialValue: trip.markers.map((e) => e.id).toList(),
-        onConfirm: (values) {
-          selectedMarkerIds = values;
-        },
-        chipDisplay: MultiSelectChipDisplay(
-          onTap: (value) {
-            setState(() {
-              selectedMarkerIds.remove(value);
-            });
-          },
-        ),
-      ),
-    );
+    Widget markersField = FutureBuilder(
+        future: fetchMarkerData(),
+        builder: (context, snapshot) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: MultiSelectDialogField<String>(
+              items: [
+                ...context.read<TripProvider>().tripMarkers.toList(),
+                ...context.read<PlaceProvider>().markers.toList()
+              ]
+                  .toList()
+                  .map((e) => MultiSelectItem(e.id, e.title))
+                  .toSet()
+                  .toList(),
+              listType: MultiSelectListType.CHIP,
+              searchable: true,
+              title: const Text('Select Places'),
+              buttonText: const Text('Select places for your trip'),
+              initialValue: trip.markers.map((e) => e.id).toList(),
+              onConfirm: (values) {
+                selectedMarkerIds = values;
+              },
+              chipDisplay: MultiSelectChipDisplay(
+                onTap: (value) {
+                  setState(() {
+                    selectedMarkerIds.remove(value);
+                  });
+                },
+              ),
+            ),
+          );
+        });
 
     Widget optimizeRouteButton = Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -150,28 +176,32 @@ class _TripViewScreenState extends State<TripViewScreen> {
       ),
     );
 
-    Widget contributorsField = Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: MultiSelectDialogField<String>(
-        items: context
-            .read<AuthenticationProvider>()
-            .users
-            .map((e) => MultiSelectItem(e.id, e.displayName))
-            .toList(),
-        listType: MultiSelectListType.CHIP,
-        searchable: true,
-        title: const Text('Select Contributors'),
-        buttonText: const Text('Select who will contribute to this trip'),
-        initialValue: trip.contributors.map((e) => e.id).toList(),
-        onConfirm: (values) {
-          selectedContributorIds = values;
-        },
-        chipDisplay: MultiSelectChipDisplay(
-          onTap: (value) {
-            setState(() {
-              selectedContributorIds.remove(value);
-            });
+    Widget contributorsField = Visibility(
+      visible: FirebaseAuth.instance.currentUser!.uid == trip.userId,
+      replacement: const Text('Only trip owner can edit this field'),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: MultiSelectDialogField<String>(
+          items: context
+              .read<AuthenticationProvider>()
+              .users
+              .map((e) => MultiSelectItem(e.id, e.displayName))
+              .toList(),
+          listType: MultiSelectListType.CHIP,
+          searchable: true,
+          title: const Text('Select Contributors'),
+          buttonText: const Text('Select who will contribute to this trip'),
+          initialValue: trip.contributors.map((e) => e.id).toList(),
+          onConfirm: (values) {
+            selectedContributorIds = values;
           },
+          chipDisplay: MultiSelectChipDisplay(
+            onTap: (value) {
+              setState(() {
+                selectedContributorIds.remove(value);
+              });
+            },
+          ),
         ),
       ),
     );
@@ -232,7 +262,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
                       id: widget.id,
                       title: titleValue,
                       description: descriptionValue,
-                      isPrivate: isPrivate ?? trip.isPrivate,
+                      isPrivate: isPrivate,
                       markers: selectedMarkerIds
                           .map((e) =>
                               FirebaseFirestore.instance.doc('markers/$e'))
@@ -285,7 +315,7 @@ class _TripViewScreenState extends State<TripViewScreen> {
                   children: <Widget>[
                     titleField,
                     descriptionField,
-                    // isPrivateField,
+                    isPrivateField,
                     expansionPanelList,
                     submitButton
                   ],

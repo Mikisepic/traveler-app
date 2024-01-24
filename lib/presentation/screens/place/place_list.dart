@@ -18,8 +18,6 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
   Widget build(BuildContext context) {
     Widget listTile(Place marker, PlaceProvider provider) => ListTile(
           title: Text(marker.title),
-          subtitle: Text(
-              'Latitude: ${marker.latitude}, Longitude: ${marker.longitude}'),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
